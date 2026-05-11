@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRR Studios</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --red:#c0000a;
+  --red-dim:#6b0005;
+  --red-glow:rgba(192,0,10,0.35);
+  --bg:#000;
+  --surface:#080808;
+  --surface2:#0f0f0f;
+  --border:rgba(192,0,10,0.2);
+  --border2:rgba(192,0,10,0.5);
+  --text:#ddd;
+  --muted:#555;
+  --mono:'Share Tech Mono',monospace;
+  --display:'Bebas Neue',sans-serif;
+  --body:'Rajdhani',sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;cursor:crosshair;}
+
+/* ── SCANLINE OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+  pointer-events:none;z-index:9998;
+}
+
+/* ── CANVAS PARTICLES ── */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(0,0,0,0.95),transparent);
+  border-bottom:0.5px solid rgba(192,0,10,0.1);
+}
+
+.nav-logo{
+  font-family:var(--display);
+  font-size:22px;letter-spacing:0.12em;
+  color:white;
+  text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+
+.nav-logo .logo-mark{
+  width:28px;height:28px;
+  border:1.5px solid var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--red);
+  font-family:var(--display);
+}
+
+.nav-links{display:flex;gap:28px;align-items:center;}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:0.1em;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--red);}
+
+/* ── HERO ── */
+#hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:100px 40px 60px;
+  z-index:1;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(100,0,5,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(192,0,10,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+.hero-eyebrow{
+  font-family:var(--mono);font-size:11px;
+  color:var(--red);letter-spacing:0.25em;
+  text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';display:block;
+  width:40px;height:0.5px;background:var(--red);
+}
+
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(72px,14vw,160px);
+  line-height:0.9;
+  letter-spacing:0.05em;
+  color:white;
+  position:relative;
+  margin-bottom:10px;
+}
+
+.hero-title .glitch{
+  position:relative;
+  display:inline-block;
+}
+
+.hero-title .glitch::before,
+.hero-title .glitch::after{
+  content:attr(data-text);
+  position:absolute;top:0;left:0;right:0;
+  overflow:hidden;
+}
+
+.hero-title .glitch::before{
+  color:var(--red);
+  clip-path:polygon(0 0,100% 0,100% 35%,0 35%);
+  animation:glitch-top 4s infinite;
+  opacity:0.8;
+}
+
+.hero-title .glitch::after{
+  color:#00f0ff;
+  clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);
+  animation:glitch-bot 4s infinite;
+  opacity:0.4;
+}
+
+@keyframes glitch-top{
+  0%,90%,100%{transform:translate(0);}
+  91%{transform:translate(-3px,1px);}
+  93%{transform:translate(3px,-1px);}
+  95%{transform:translate(-2px);}
+}
+
+@keyframes glitch-bot{
+  0%,88%,100%{transform:translate(0);}
+  89%{transform:translate(3px,2px);}
+  91%{transform:translate(-3px,-1px);}
+  93%{transform:translate(2px);}
+}
+
+.hero-sub{
+  font-family:var(--display);
+  font-size:clamp(20px,4vw,36px);
+  color:var(--red);
+  letter-spacing:0.3em;
+  margin-bottom:24px;
+}
+
+.hero-desc{
+  font-family:var(--mono);font-size:13px;
+  color:var(--muted);max-width:500px;
+  line-height:1.8;margin-bottom:40px;
+  letter-spacing:0.05em;
+}
+
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+
+.btn-primary{
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:0.15em;text-transform:uppercase;
+  padding:14px 28px;
+  background:var(--red);color:white;
+  border:none;cursor:pointer;
+  text-decoration:none;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  transition:all 0.2s;
+  display:inline-block;
+}
+
+.btn-primary:hover{background:#e8000d;box-shadow:0 0 20px var(--red-glow);}
+
+.btn-outline{
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:0.15em;text-transform:uppercase;
+  padding:13px 27px;
+  background:transparent;color:var(--text);
+  border:1px solid var(--border2);
+  cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all 0.2s;
+}
+
+.btn-outline:hover{border-color:var(--red);color:var(--red);box-shadow:0 0 15px var(--red-glow);}
+
+.scroll-hint{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:0.15em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:float 2s ease-in-out infinite;
+}
+
+.scroll-hint::after{
+  content:'';width:0.5px;height:30px;background:var(--red-dim);
+}
+
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 auto;}
+
+.section-tag{
+  font-family:var(--mono);font-size:10px;
+  color:var(--red);letter-spacing:0.3em;text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+}
+
+.section-tag::before{
+  content:'';width:24px;height:0.5px;background:var(--red);
+}
+
+.section-title{
+  font-family:var(--display);
+  font-size:clamp(36px,6vw,64px);
+  color:white;letter-spacing:0.05em;
+  margin-bottom:40px;line-height:1;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--red-dim),transparent);
+  margin:0;
+}
+
+/* ── LORE ── */
+#lore-section{border-top:none;}
+
+.lore-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:3px;
+  margin-bottom:40px;
+}
+
+@media(max-width:680px){.lore-grid{grid-template-columns:1fr;}}
+
+.lore-block{
+  background:var(--surface);
+  border:0.5px solid var(--border);
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color 0.3s;
+}
+
+.lore-block:hover{border-color:var(--border2);}
+
+.lore-block::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:3px;height:100%;
+  background:var(--red);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 0.4s;
+}
+
+.lore-block:hover::before{transform:scaleY(1);}
+
+.lore-block-num{
+  font-family:var(--mono);font-size:10px;
+  color:var(--red-dim);letter-spacing:0.15em;
+  margin-bottom:12px;
+}
+
+.lore-block-title{
+  font-family:var(--display);font-size:22px;
+  color:white;letter-spacing:0.08em;margin-bottom:10px;
+}
+
+.lore-block-text{
+  font-size:14px;color:var(--muted);line-height:1.8;
+  font-family:var(--mono);
+}
+
+.lore-quote{
+  border-left:2px solid var(--red);
+  padding:20px 28px;
+  background:var(--surface);
+  font-family:var(--mono);font-size:14px;
+  color:#888;line-height:1.9;
+  font-style:italic;
+  position:relative;
+}
+
+.lore-quote::before{
+  content:'"';
+  position:absolute;top:-10px;left:20px;
+  font-size:60px;color:var(--red-dim);
+  font-family:serif;line-height:1;
+}
+
+/* ── UPDATES ── */
+#updates-section{max-width:1100px;}
+
+.updates-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:30px;flex-wrap:wrap;gap:12px;
+}
+
+#admin-toggle-btn{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:8px 16px;
+  background:transparent;
+  border:0.5px solid #222;
+  color:#333;cursor:pointer;
+  transition:all 0.2s;
+}
+
+#admin-toggle-btn:hover{border-color:var(--border2);color:var(--red);}
+
+#updates-list{display:flex;flex-direction:column;gap:3px;}
+
+.update-card{
+  background:var(--surface);
+  border:0.5px solid var(--border);
+  padding:22px 26px;
+  display:grid;grid-template-columns:120px 1fr;gap:20px;
+  transition:border-color 0.2s;
+  position:relative;overflow:hidden;
+}
+
+.update-card:hover{border-color:rgba(192,0,10,0.35);}
+
+.update-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:0.5px;
+  background:linear-gradient(90deg,var(--red),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+
+.update-card:hover::after{opacity:1;}
+
+.update-date{
+  font-family:var(--mono);font-size:11px;
+  color:var(--red);padding-top:3px;
+  letter-spacing:0.05em;
+}
+
+.update-title{
+  font-family:var(--display);font-size:20px;
+  color:white;letter-spacing:0.05em;margin-bottom:6px;
+}
+
+.update-body{
+  font-size:14px;color:var(--muted);
+  line-height:1.7;font-family:var(--body);
+}
+
+@media(max-width:600px){.update-card{grid-template-columns:1fr;gap:6px;}}
+
+.no-updates{
+  font-family:var(--mono);font-size:12px;
+  color:#333;text-align:center;padding:40px;
+  border:0.5px dashed #1a1a1a;
+  letter-spacing:0.1em;
+}
+
+/* ── JOIN ── */
+#join-section{
+  text-align:center;
+  padding:100px 40px;
+  position:relative;z-index:1;
+  max-width:100%;
+  background:linear-gradient(180deg,transparent,rgba(100,0,5,0.06),transparent);
+  border-top:0.5px solid var(--border);
+  border-bottom:0.5px solid var(--border);
+}
+
+.join-inner{max-width:700px;margin:0 auto;}
+
+.join-warning{
+  display:inline-block;
+  font-family:var(--mono);font-size:10px;
+  color:var(--red);letter-spacing:0.3em;text-transform:uppercase;
+  border:0.5px solid var(--border2);
+  padding:5px 14px;margin-bottom:24px;
+}
+
+.join-title{
+  font-family:var(--display);
+  font-size:clamp(42px,8vw,80px);
+  color:white;letter-spacing:0.05em;
+  margin-bottom:16px;line-height:1;
+}
+
+.join-sub{
+  font-family:var(--mono);font-size:13px;
+  color:var(--muted);line-height:1.8;margin-bottom:36px;
+  letter-spacing:0.04em;
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  padding:30px 40px;
+  border-top:0.5px solid #111;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+
+.footer-logo{
+  font-family:var(--display);font-size:16px;
+  color:#333;letter-spacing:0.1em;
+}
+
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{
+  font-family:var(--mono);font-size:10px;
+  color:#333;text-decoration:none;letter-spacing:0.1em;
+  text-transform:uppercase;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--red);}
+
+.footer-copy{
+  font-family:var(--mono);font-size:10px;
+  color:#222;letter-spacing:0.05em;
+}
+
+/* ── ADMIN MODAL ── */
+#admin-modal{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.92);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s;
+}
+
+#admin-modal.open{opacity:1;pointer-events:all;}
+
+.modal-box{
+  background:#080808;
+  border:0.5px solid var(--border2);
+  padding:30px;
+  width:100%;max-width:580px;
+  max-height:90vh;overflow-y:auto;
+  position:relative;
+}
+
+.modal-box::-webkit-scrollbar{width:3px;}
+.modal-box::-webkit-scrollbar-thumb{background:var(--red-dim);}
+
+.modal-title{
+  font-family:var(--display);font-size:26px;
+  color:white;letter-spacing:0.1em;margin-bottom:20px;
+}
+
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  background:none;border:none;color:#555;
+  font-size:20px;cursor:pointer;font-family:var(--mono);
+  transition:color 0.2s;
+}
+.modal-close:hover{color:var(--red);}
+
+#pw-screen,#editor-screen{display:flex;flex-direction:column;gap:12px;}
+#pw-screen.hidden,#editor-screen.hidden{display:none;}
+
+.field-label{
+  font-family:var(--mono);font-size:10px;
+  color:var(--muted);letter-spacing:0.1em;
+  text-transform:uppercase;margin-bottom:5px;
+}
+
+.modal-input{
+  width:100%;font-family:var(--mono);font-size:13px;
+  background:#0d0d0d;border:0.5px solid #222;
+  border-radius:0;color:white;padding:10px 13px;outline:none;
+  transition:border-color 0.2s;
+}
+
+.modal-input:focus{border-color:var(--border2);}
+textarea.modal-input{resize:vertical;min-height:80px;}
+
+.modal-btn{
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:11px 20px;background:var(--red);
+  color:white;border:none;cursor:pointer;
+  transition:background 0.2s;align-self:flex-start;
+}
+
+.modal-btn:hover{background:#e8000d;}
+.modal-btn.secondary{background:#111;color:#888;border:0.5px solid #222;}
+.modal-btn.secondary:hover{color:var(--red);border-color:var(--border2);}
+
+.error-msg{
+  font-family:var(--mono);font-size:11px;
+  color:var(--red);letter-spacing:0.05em;
+}
+
+.saved-updates-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+
+.saved-update-item{
+  background:#0a0a0a;border:0.5px solid #1a1a1a;
+  padding:12px 14px;display:flex;justify-content:space-between;
+  align-items:flex-start;gap:10px;
+}
+
+.saved-update-item .info{}
+.saved-update-item .info .t{font-size:13px;color:white;font-weight:600;margin-bottom:2px;}
+.saved-update-item .info .d{font-family:var(--mono);font-size:10px;color:var(--red);}
+
+.del-btn{
+  background:none;border:none;color:#333;
+  cursor:pointer;font-size:16px;flex-shrink:0;
+  transition:color 0.2s;padding:0 4px;
+}
+.del-btn:hover{color:var(--red);}
+
+.section-divider-label{
+  font-family:var(--mono);font-size:9px;
+  color:#333;letter-spacing:0.15em;text-transform:uppercase;
+  text-align:center;padding:8px 0;border-top:0.5px solid #111;
+  margin-top:4px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">H</div>
+    HRR STUDIOS
+  </a>
+  <div class="nav-links">
+    <a href="#lore-section">Lore</a>
+    <a href="#updates-section">Updates</a>
+    <a href="#join-section">Join</a>
+    <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank">YouTube</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Transmission Active</div>
+  <h1 class="hero-title">
+    <span class="glitch" data-text="HRR">HRR</span><br>
+    <span class="glitch" data-text="STUDIOS">STUDIOS</span>
+  </h1>
+  <div class="hero-sub">Game Development</div>
+  <p class="hero-desc">We build worlds that were never meant to exist.<br>Enter at your own risk.</p>
+  <div class="hero-btns">
+    <a href="#join-section" class="btn-primary">Join the Studio</a>
+    <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" class="btn-outline">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><path d="M13.7 1.6C13.5.7 12.8 0 12 0 10.3 0 7 0 7 0S3.7 0 2 0C1.2 0 .5.7.3 1.6 0 2.5 0 5 0 5s0 2.5.3 3.4C.5 9.3 1.2 10 2 10c1.7 0 5 0 5 0s3.3 0 5 0c.8 0 1.5-.7 1.7-1.6C14 7.5 14 5 14 5s0-2.5-.3-3.4zM5.6 7.1V2.9L9.3 5 5.6 7.1z"/></svg>
+      Watch
+    </a>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LORE -->
+<section id="lore-section">
+  <div class="section-tag">Origins</div>
+  <h2 class="section-title">The Lore</h2>
+
+  <div class="lore-grid">
+    <div class="lore-block">
+      <div class="lore-block-num">// FILE_001</div>
+      <div class="lore-block-title">The Beginning</div>
+      <div class="lore-block-text">HRR Studios was not founded. It was summoned. Born from the obsession of builders who refused to accept the games they were given — who needed to create the ones that didn't exist yet.</div>
+    </div>
+    <div class="lore-block">
+      <div class="lore-block-num">// FILE_002</div>
+      <div class="lore-block-title">The Mission</div>
+      <div class="lore-block-text">We don't make safe games. We forge experiences that leave marks — worlds with weight, stories with consequence, mechanics that rewire how you think. This is not entertainment. This is architecture of the mind.</div>
+    </div>
+    <div class="lore-block">
+      <div class="lore-block-num">// FILE_003</div>
+      <div class="lore-block-title">The Collective</div>
+      <div class="lore-block-text">Every person here was chosen. Designers, testers, strategists — assembled not for what they know, but for how they think. We operate in the dark so the player can find the light.</div>
+    </div>
+    <div class="lore-block">
+      <div class="lore-block-num">// FILE_004</div>
+      <div class="lore-block-title">What's Coming</div>
+      <div class="lore-block-text">We cannot tell you what we're building. Not yet. But signals have been detected. Progress is being made in the deep. Something is almost ready to surface. Watch the updates.</div>
+    </div>
+  </div>
+
+  <div class="lore-quote">
+    Something is being built in the dark. Not every game is meant to comfort you —<br>
+    some are meant to remind you that the dark has always been watching back.
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- UPDATES -->
+<section id="updates-section" style="max-width:1100px;">
+  <div class="updates-header">
+    <div>
+      <div class="section-tag">Transmissions</div>
+      <h2 class="section-title" style="margin-bottom:0;">Progress Updates</h2>
+    </div>
+    <button id="admin-toggle-btn" onclick="openAdminModal()">[ ADMIN ]</button>
+  </div>
+  <div id="updates-list"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- JOIN -->
+<div id="join-section">
+  <div class="join-inner">
+    <div class="join-warning">Recruitment Open</div>
+    <h2 class="join-title">Join HRR Studios</h2>
+    <p class="join-sub">
+      We're looking for game designers, testers, strategists, and those who don't fit neatly into any box.<br>
+      If you think you belong here — prove it.
+    </p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" class="btn-primary" style="font-size:13px;padding:16px 36px;">
+      Submit Your Application
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">HRR STUDIOS</div>
+  <div class="footer-links">
+    <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank">YouTube</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank">Apply</a>
+    <a href="mailto:hrrstudiosofficial@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 HRR Studios. All rights reserved.</div>
+</footer>
+
+<!-- ADMIN MODAL -->
+<div id="admin-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAdminModal()">✕</button>
+
+    <!-- Password screen -->
+    <div id="pw-screen">
+      <div class="modal-title">Admin Access</div>
+      <div>
+        <div class="field-label">Password</div>
+        <input type="password" id="pw-input" class="modal-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPassword()">
+      </div>
+      <div id="pw-error" class="error-msg" style="display:none;">Access denied.</div>
+      <button class="modal-btn" onclick="checkPassword()">Unlock</button>
+    </div>
+
+    <!-- Editor screen -->
+    <div id="editor-screen" class="hidden">
+      <div class="modal-title">Manage Updates</div>
+
+      <!-- Existing updates -->
+      <div>
+        <div class="field-label">Existing Updates</div>
+        <div class="saved-updates-list" id="saved-updates-list"></div>
+      </div>
+
+      <div class="section-divider-label">// Add New Update</div>
+
+      <!-- Add new update -->
+      <div>
+        <div class="field-label">Title</div>
+        <input type="text" id="new-title" class="modal-input" placeholder="e.g. Level Design — Phase 2 Complete">
+      </div>
+      <div>
+        <div class="field-label">Date</div>
+        <input type="text" id="new-date" class="modal-input" placeholder="e.g. May 2026">
+      </div>
+      <div>
+        <div class="field-label">Details</div>
+        <textarea id="new-body" class="modal-input" placeholder="Describe the update..."></textarea>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="modal-btn" onclick="addUpdate()">Post Update</button>
+        <button class="modal-btn secondary" onclick="closeAdminModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PASSWORD ──────────────────────────────────────────────
+// Change this to whatever you want your admin password to be
+const ADMIN_PASSWORD = "HRRAdmin2026";
+
+function openAdminModal(){
+  document.getElementById('admin-modal').classList.add('open');
+  document.getElementById('pw-screen').classList.remove('hidden');
+  document.getElementById('editor-screen').classList.add('hidden');
+  document.getElementById('pw-error').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  setTimeout(()=>document.getElementById('pw-input').focus(),100);
+}
+
+function closeAdminModal(){
+  document.getElementById('admin-modal').classList.remove('open');
+}
+
+function checkPassword(){
+  const val = document.getElementById('pw-input').value;
+  if(val === ADMIN_PASSWORD){
+    document.getElementById('pw-screen').classList.add('hidden');
+    document.getElementById('editor-screen').classList.remove('hidden');
+    renderSavedList();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+  }
+}
+
+// Close modal when clicking outside
+document.getElementById('admin-modal').addEventListener('click', function(e){
+  if(e.target === this) closeAdminModal();
+});
+
+// ── UPDATES STORAGE ───────────────────────────────────────
+function loadUpdates(){
+  try{ return JSON.parse(localStorage.getItem('hrr_updates') || '[]'); }
+  catch(e){ return []; }
+}
+
+function saveUpdates(arr){
+  localStorage.setItem('hrr_updates', JSON.stringify(arr));
+}
+
+function addUpdate(){
+  const title = document.getElementById('new-title').value.trim();
+  const date  = document.getElementById('new-date').value.trim();
+  const body  = document.getElementById('new-body').value.trim();
+  if(!title || !body){ alert('Title and details are required.'); return; }
+
+  const updates = loadUpdates();
+  updates.unshift({ id: Date.now(), title, date: date || new Date().toLocaleDateString('en-US',{month:'short',year:'numeric'}), body });
+  saveUpdates(updates);
+
+  document.getElementById('new-title').value = '';
+  document.getElementById('new-date').value  = '';
+  document.getElementById('new-body').value  = '';
+
+  renderSavedList();
+  renderUpdates();
+}
+
+function deleteUpdate(id){
+  if(!confirm('Delete this update?')) return;
+  const updates = loadUpdates().filter(u => u.id !== id);
+  saveUpdates(updates);
+  renderSavedList();
+  renderUpdates();
+}
+
+function renderSavedList(){
+  const updates = loadUpdates();
+  const container = document.getElementById('saved-updates-list');
+  if(!updates.length){
+    container.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:#333;padding:8px 0;">No updates posted yet.</div>';
+    return;
+  }
+  container.innerHTML = updates.map(u => `
+    <div class="saved-update-item">
+      <div class="info">
+        <div class="t">${escHtml(u.title)}</div>
+        <div class="d">${escHtml(u.date)}</div>
+      </div>
+      <button class="del-btn" onclick="deleteUpdate(${u.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function renderUpdates(){
+  const updates = loadUpdates();
+  const list = document.getElementById('updates-list');
+  if(!updates.length){
+    list.innerHTML = '<div class="no-updates">// No transmissions yet. Check back soon.</div>';
+    return;
+  }
+  list.innerHTML = updates.map(u => `
+    <div class="update-card">
+      <div class="update-date">${escHtml(u.date)}</div>
+      <div>
+        <div class="update-title">${escHtml(u.title)}</div>
+        <div class="update-body">${escHtml(u.body)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(str){
+  const d = document.createElement('div');
+  d.appendChild(document.createTextNode(str));
+  return d.innerHTML;
+}
+
+// ── PARTICLES ─────────────────────────────────────────────
+const canvas  = document.getElementById('particles');
+const ctx     = canvas.getContext('2d');
+let particles = [];
+let W, H;
+
+function resize(){
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initParticles(){
+  particles = [];
+  for(let i = 0; i < 60; i++){
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -Math.random() * 0.4 - 0.1,
+      size: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.4 + 0.05,
+      life: Math.random(),
+    });
+  }
+}
+
+function animateParticles(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life -= 0.002;
+    if(p.life <= 0 || p.y < -10){
+      p.x = Math.random() * W;
+      p.y = H + 10;
+      p.life = Math.random() * 0.6 + 0.4;
+      p.vx = (Math.random() - 0.5) * 0.3;
+      p.vy = -Math.random() * 0.4 - 0.1;
+    }
+    const a = p.alpha * p.life;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(160,0,8,${a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
+
+resize();
+initParticles();
+animateParticles();
+window.addEventListener('resize', ()=>{ resize(); initParticles(); });
+
+// ── INIT ──────────────────────────────────────────────────
+renderUpdates();
+</script>
+</body>
+</html>
