@@ -41,13 +41,12 @@ canvas{
 </div>
 
 <script>
-// === YOUR GAME CODE (UNCHANGED LOGIC) ===
+// === VOID BREACH: LITE ===
 const canvas=document.getElementById('gc');
 const ctx=canvas.getContext('2d');
 const W=700,H=500;
 canvas.width=W;canvas.height=H;
 
-// (I kept everything EXACT — no gameplay changes below)
 let state='start',score=0,wave=1,hiScore=0;
 const keys={};
 let mx=W/2,my=H/2;
@@ -62,7 +61,12 @@ let shX=0,shY=0,shT=0;
 function initStars(){stars=[];for(let i=0;i<130;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+0.3,b:Math.random()});}
 
 function spawnEnemy(x,y,type){
-  const C={drone:{hp:28,spd:1.9,r:12,col:'#ff4466',pts:10,cdmg:0.28,sr:0},tank:{hp:130,spd:0.85,r:22,col:'#ff8800',pts:30,cdmg:0.38,sr:0},shooter:{hp:50,spd:1.1,r:14,col:'#bb44ff',pts:20,cdmg:0.1,sr:85},boss:{hp:450,spd:0.65,r:38,col:'#ff1155',pts:200,cdmg:0.12,sr:48}};
+  const C={
+    drone:{hp:28,spd:1.9,r:12,col:'#ff4466',pts:10,cdmg:0.28,sr:45},
+    tank:{hp:130,spd:0.85,r:22,col:'#ff8800',pts:30,cdmg:0.38,sr:0},
+    shooter:{hp:50,spd:1.1,r:14,col:'#bb44ff',pts:20,cdmg:0.1,sr:120},
+    boss:{hp:380,spd:0.95,r:32,col:'#ffaa00',pts:150,cdmg:0.5,sr:50}
+  };
   const c=C[type];
   enemies.push({x,y,type,hp:c.hp,mhp:c.hp,spd:c.spd,r:c.r,col:c.col,pts:c.pts,cdmg:c.cdmg,sr:c.sr,st:0,ang:0,fl:0});
 }
