@@ -22,6 +22,7 @@
     height: 100vh;
     overflow: hidden;
     font-family: monospace;
+    position: relative;
   }
 
   canvas {
@@ -29,6 +30,30 @@
     box-shadow: 0 0 25px rgba(0, 238, 255, 0.2);
     max-width: 95vw;
     display: block;
+  }
+
+  .quit-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0, 0, 0, 0.45);
+    color: #dfefff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 30;
+    transition: all 0.2s ease;
+  }
+
+  .quit-btn:hover {
+    background: rgba(255, 80, 80, 0.18);
+    border-color: rgba(255, 120, 120, 0.5);
+    color: white;
+    transform: scale(1.04);
   }
 
   .back {
@@ -60,6 +85,7 @@
 </head>
 <body>
 
+<button class="quit-btn" id="quitGame" aria-label="Close game">✕</button>
 <a class="back" href="index.html">← BACK TO HRR STUDIOS</a>
 
 <h2 class="sr-only">VOID BREACH: LITE — top-down shooter game by HRR Studios</h2>
@@ -71,6 +97,7 @@
 (() => {
   const canvas = document.getElementById('gc');
   const ctx = canvas.getContext('2d');
+  const quitBtn = document.getElementById('quitGame');
   const W = 700, H = 500;
   canvas.width = W;
   canvas.height = H;
@@ -747,6 +774,10 @@
     ctx.fillText('[ CLICK TO RETRY ]', W / 2, H / 2 + 54);
     ctx.globalAlpha = 1;
   }
+
+  quitBtn.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
 
   document.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();

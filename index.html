@@ -27,7 +27,6 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;cursor:crosshair;}
 
-/* ── SCANLINE OVERLAY ── */
 body::before{
   content:'';
   position:fixed;inset:0;
@@ -35,10 +34,8 @@ body::before{
   pointer-events:none;z-index:9998;
 }
 
-/* ── CANVAS PARTICLES ── */
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-/* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:14px 40px;
@@ -72,7 +69,6 @@ nav{
 }
 .nav-links a:hover{color:var(--red);}
 
-/* ── HERO ── */
 #hero{
   position:relative;
   min-height:100vh;
@@ -212,7 +208,6 @@ nav{
 
 @keyframes float{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
 
-/* ── SECTIONS ── */
 section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 auto;}
 
 .section-tag{
@@ -232,14 +227,12 @@ section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 
   margin-bottom:40px;line-height:1;
 }
 
-/* ── DIVIDER ── */
 .divider{
   width:100%;height:1px;
   background:linear-gradient(90deg,transparent,var(--red-dim),transparent);
   margin:0;
 }
 
-/* ── LORE ── */
 #lore-section{border-top:none;}
 
 .lore-grid{
@@ -304,7 +297,6 @@ section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 
   font-family:serif;line-height:1;
 }
 
-/* ── GAMES ── */
 #games-section{max-width:1100px;}
 
 .games-intro{
@@ -346,6 +338,23 @@ section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 
   margin-bottom:24px;
 }
 
+.preview-strip{
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin:18px 0 26px;
+}
+
+.preview-chip{
+  display:inline-flex;align-items:center;
+  background:rgba(192,0,10,0.06);
+  border:1px solid rgba(192,0,10,0.26);
+  color:#cfcfcf;
+  padding:8px 12px;
+  font-family:var(--mono);
+  letter-spacing:0.08em;
+  font-size:10px;
+  text-transform:uppercase;
+}
+
 .game-actions{
   display:flex;gap:14px;flex-wrap:wrap;align-items:center;
 }
@@ -384,7 +393,6 @@ section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 
   .btn-secondary{width:100%;}
 }
 
-/* ── UPDATES ── */
 #updates-section{max-width:1100px;}
 
 .updates-header{
@@ -451,7 +459,6 @@ section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 
   letter-spacing:0.1em;
 }
 
-/* ── JOIN ── */
 #join-section{
   text-align:center;
   padding:100px 40px;
@@ -485,7 +492,6 @@ section{position:relative;z-index:1;padding:80px 40px;max-width:1100px;margin:0 
   letter-spacing:0.04em;
 }
 
-/* ── FOOTER ── */
 footer{
   position:relative;z-index:1;
   padding:30px 40px;
@@ -512,7 +518,6 @@ footer{
   color:#222;letter-spacing:0.05em;
 }
 
-/* ── ADMIN MODAL ── */
 #admin-modal{
   position:fixed;inset:0;z-index:9999;
   background:rgba(0,0,0,0.92);
@@ -593,7 +598,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
   align-items:flex-start;gap:10px;
 }
 
-.saved-update-item .info{}
 .saved-update-item .info .t{font-size:13px;color:white;font-weight:600;margin-bottom:2px;}
 .saved-update-item .info .d{font-family:var(--mono);font-size:10px;color:var(--red);}
 
@@ -616,7 +620,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
 <canvas id="particles"></canvas>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
     <div class="logo-mark">H</div>
@@ -631,7 +634,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
   </div>
 </nav>
 
-<!-- HERO -->
 <div id="hero">
   <div class="hero-bg"></div>
   <div class="hero-eyebrow">Transmission Active</div>
@@ -644,7 +646,7 @@ textarea.modal-input{resize:vertical;min-height:80px;}
   <div class="hero-btns">
     <a href="#join-section" class="btn-primary">Join the Studio</a>
     <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" class="btn-outline">
-      <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><path d="M13.7 1.6C13.5.7 12.8 0 12 0 10.3 0 7 0 7 0S3.7 0 2 0C1.2 0 .5.7.3 1.6 0 2.5 0 5 0 5s0 2.5.3 3.4C.5 9.3 1.2 10 2 10c1.7 0 5 0 5 0s3.3 0 5 0c.8 0 1.5-.7 1.7-1.6.3-.9.3-3.4.3-3.4s0-2.5-.3-3.4zM5.5 7.5V2.5L10 5l-4.5 2.5z"/></svg>
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><path d="M13.7 1.6C13.5.7 12.8 0 12 0 10.3 0 7 0 7 0S3.7 0 2 0C1.2 0 .5.7.3 1.6 0 2.5 0 5 0 5s0 2.5.3 3.4C.5 9.3 1.2 10 2 10c1.7 0 5 0 5 0s3.3 0 5 0c.8 0 1.5-.7 1.7-1.6.3-.9.3-3.4.3-3.4s0-2.5-.3-3.4zM5.7 7.2V2.8l4.3 2.2-4.3 2.2z"/></svg>
       Watch
     </a>
   </div>
@@ -653,7 +655,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
 <div class="divider"></div>
 
-<!-- LORE -->
 <section id="lore-section">
   <div class="section-tag">Origins</div>
   <h2 class="section-title">The Lore</h2>
@@ -662,22 +663,22 @@ textarea.modal-input{resize:vertical;min-height:80px;}
     <div class="lore-block">
       <div class="lore-block-num">// FILE_001</div>
       <div class="lore-block-title">The Beginning</div>
-      <div class="lore-block-text">HRR Studios was not founded. It was summoned. Born from the obsession of builders who refused to accept the games they were given — who needed to create the ones that haunt them.</div>
+      <div class="lore-block-text">HRR Studios was not founded. It was summoned. Born from the obsession of builders who refused to accept the games they were given — who needed to create the only kind that could hold their attention for more than a night.</div>
     </div>
     <div class="lore-block">
       <div class="lore-block-num">// FILE_002</div>
       <div class="lore-block-title">The Mission</div>
-      <div class="lore-block-text">We don't make safe games. We forge experiences that leave marks — worlds with weight, stories with consequence, mechanics that rewire how you think. This is not entertainment. This is transmission.</div>
+      <div class="lore-block-text">We don't make safe games. We forge experiences that leave marks — worlds with weight, stories with consequence, mechanics that rewire how you think. This is not entertainment. This is a breach.</div>
     </div>
     <div class="lore-block">
       <div class="lore-block-num">// FILE_003</div>
       <div class="lore-block-title">The Collective</div>
-      <div class="lore-block-text">Every person here was chosen. Designers, testers, strategists — assembled not for what they know, but for how they think. We operate in the dark so the player can find light.</div>
+      <div class="lore-block-text">Every person here was chosen. Designers, testers, strategists — assembled not for what they know, but for how they think. We operate in the dark so the player can feel the light when it finally arrives.</div>
     </div>
     <div class="lore-block">
       <div class="lore-block-num">// FILE_004</div>
       <div class="lore-block-title">What's Coming</div>
-      <div class="lore-block-text">We cannot tell you what we're building. Not yet. But signals have been detected. Progress is being made in the deep. Something is almost ready to surface. Watch the space.</div>
+      <div class="lore-block-text">We cannot tell you what we're building. Not yet. But signals have been detected. Progress is being made in the deep. Something is almost ready to surface. Watch the void carefully.</div>
     </div>
   </div>
 
@@ -689,16 +690,25 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
 <div class="divider"></div>
 
-<!-- GAMES -->
 <section id="games-section">
   <div class="section-tag">Playable</div>
   <h2 class="section-title">Games</h2>
 
-  <p class="games-intro">Step into our experimental worlds. Play directly in your browser or take the experience with you—download the game files and run them locally anytime, anywhere.</p>
+  <p class="games-intro">A sharp little slice of the full VOID BREACH experience — a browser-based survival preview built to show the tone, pacing, and danger of the larger game.</p>
 
   <div class="game-card">
     <div class="game-title">VOID BREACH: LITE</div>
-    <div class="game-desc">A high-intensity top-down shooter where every wave brings new threats. Survive the void. Collect power-ups. Chase the high score. Built for pure arcade chaos.</div>
+    <div class="game-desc">
+      Sneak peek of the full VOID BREACH experience: a fast arcade survival shooter where cursed drones, elite enemies, and random power-ups push you deeper into the breach. The full game will expand this world with more story, mechanics, upgrades, and larger combat encounters.
+    </div>
+
+    <div class="preview-strip">
+      <span class="preview-chip">Wave survival</span>
+      <span class="preview-chip">Boss pressure</span>
+      <span class="preview-chip">Power-up chaos</span>
+      <span class="preview-chip">Full game teaser</span>
+    </div>
+
     <div class="game-actions">
       <a href="#" onclick="toggleGameEmbed(event)" class="btn-secondary">▶ Play Here</a>
       <a href="game.html" download class="btn-secondary">↓ Download Game</a>
@@ -712,7 +722,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
 <div class="divider"></div>
 
-<!-- UPDATES -->
 <section id="updates-section" style="max-width:1100px;">
   <div class="updates-header">
     <div>
@@ -726,7 +735,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
 <div class="divider"></div>
 
-<!-- JOIN -->
 <div id="join-section">
   <div class="join-inner">
     <div class="join-warning">Recruitment Open</div>
@@ -735,13 +743,10 @@ textarea.modal-input{resize:vertical;min-height:80px;}
       We're looking for game designers, testers, strategists, and those who don't fit neatly into any box.<br>
       If you think you belong here — prove it.
     </p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" class="btn-primary" style="font-size:13px;padding:16px 36px;">
-      Submit Your Application
-    </a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" class="btn-primary" style="font-size:13px;padding:16px 30px;">Submit Your Application</a>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">HRR STUDIOS</div>
   <div class="footer-links">
@@ -752,12 +757,10 @@ textarea.modal-input{resize:vertical;min-height:80px;}
   <div class="footer-copy">© 2026 HRR Studios. All rights reserved.</div>
 </footer>
 
-<!-- ADMIN MODAL -->
 <div id="admin-modal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAdminModal()">✕</button>
 
-    <!-- Password screen -->
     <div id="pw-screen">
       <div class="modal-title">Admin Access</div>
       <div>
@@ -768,11 +771,9 @@ textarea.modal-input{resize:vertical;min-height:80px;}
       <button class="modal-btn" onclick="checkPassword()">Unlock</button>
     </div>
 
-    <!-- Editor screen -->
     <div id="editor-screen" class="hidden">
       <div class="modal-title">Manage Updates</div>
 
-      <!-- Existing updates -->
       <div>
         <div class="field-label">Existing Updates</div>
         <div class="saved-updates-list" id="saved-updates-list"></div>
@@ -780,7 +781,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
       <div class="section-divider-label">// Add New Update</div>
 
-      <!-- Add new update -->
       <div>
         <div class="field-label">Title</div>
         <input type="text" id="new-title" class="modal-input" placeholder="e.g. Level Design — Phase 2 Complete">
@@ -802,8 +802,6 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 </div>
 
 <script>
-// ── PASSWORD ──────────────────────────────────────────────
-// Change this to whatever you want your admin password to be
 const ADMIN_PASSWORD = "HRRAdmin2026";
 
 function openAdminModal(){
@@ -830,19 +828,16 @@ function checkPassword(){
   }
 }
 
-// Close modal when clicking outside
 document.getElementById('admin-modal').addEventListener('click', function(e){
   if(e.target === this) closeAdminModal();
 });
 
-// ── GAME EMBED TOGGLE ─────────────────────────────────────
 function toggleGameEmbed(e){
   e.preventDefault();
   const embed = document.getElementById('game-embed');
   embed.style.display = embed.style.display === 'none' ? 'block' : 'none';
 }
 
-// ── UPDATES STORAGE ───────────────────────────────────────
 function loadUpdates(){
   try{ return JSON.parse(localStorage.getItem('hrr_updates') || '[]'); }
   catch(e){ return []; }
@@ -920,7 +915,6 @@ function escHtml(str){
   return d.innerHTML;
 }
 
-// ── PARTICLES ─────────────────────────────────────────────
 const canvas  = document.getElementById('particles');
 const ctx     = canvas.getContext('2d');
 let particles = [];
@@ -973,7 +967,6 @@ initParticles();
 animateParticles();
 window.addEventListener('resize', ()=>{ resize(); initParticles(); });
 
-// ── INIT ──────────────────────────────────────────────────
 renderUpdates();
 </script>
 </body>
