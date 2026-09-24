@@ -54,10 +54,39 @@ nav{
 
 .nav-logo .logo-mark{
   width:28px;height:28px;
-  border:1.5px solid var(--red);
+  position:relative;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;color:var(--red);
-  font-family:var(--display);
+  transform:rotate(45deg);
+  border:1.7px solid var(--red);
+  background:linear-gradient(135deg,rgba(192,0,10,0.12),rgba(192,0,10,0.02));
+  box-shadow:0 0 18px rgba(192,0,10,0.25), inset 0 0 12px rgba(255,0,0,0.14);
+  clip-path:polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.nav-logo .logo-mark::before,
+.nav-logo .logo-mark::after{
+  content:'';
+  position:absolute;
+  inset:5px;
+  background:linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0));
+  clip-path:polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.nav-logo .logo-mark::before{
+  transform:scale(0.58);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.nav-logo .logo-mark::after{
+  inset:0;
+  background:linear-gradient(135deg, transparent 49%, var(--red) 49%, var(--red) 51%, transparent 51%);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.nav-logo .nav-wordmark{
+  display:inline-block;
+  transform:translateY(1px);
+  text-shadow:0 0 12px rgba(192,0,10,0.22);
 }
 
 .nav-links{display:flex;gap:28px;align-items:center;}
@@ -622,8 +651,8 @@ textarea.modal-input{resize:vertical;min-height:80px;}
 
 <nav>
   <a href="#" class="nav-logo">
-    <div class="logo-mark">H</div>
-    HRR STUDIOS
+    <span class="logo-mark" aria-hidden="true"></span>
+    <span class="nav-wordmark">HRR STUDIOS</span>
   </a>
   <div class="nav-links">
     <a href="#lore-section">Lore</a>
