@@ -33,11 +33,11 @@ Some visual styling loads Google Fonts, so those fonts require an internet conne
 
 ## Deployment
 
-This repository can be hosted as a static website, for example with GitHub Pages. Configure the hosting source to use the repository's `main` branch and root folder if you choose to enable GitHub Pages.
+A GitHub Actions workflow in `.github/workflows/deploy-pages.yml` is configured to deploy the site to GitHub Pages whenever changes are pushed to `main`. The first deployment may take a few minutes. GitHub Pages must be enabled for the repository and allow GitHub Actions deployments.
 
 ## Security note
 
-The current website includes an admin interface implemented in front-end JavaScript and browser storage. Anything shipped to a visitor's browser can be inspected or changed by that visitor, so a password check in client-side code is **not secure authentication**. Do not use it to protect private information or sensitive publishing actions. Real admin access should be handled by a trusted server-side service.
+The former browser-only admin panel was removed because its password check and browser storage were not secure or shared between visitors. Do not put passwords, private information, or publishing credentials in front-end code. If shared update management is needed later, use a trusted server-side service.
 
 ## Contact and community
 
