@@ -33,7 +33,7 @@ Some visual styling loads Google Fonts, so those fonts require an internet conne
 
 ## Deployment
 
-A GitHub Actions workflow in `.github/workflows/deploy-pages.yml` is configured to deploy the site to GitHub Pages whenever changes are pushed to `main`. The first deployment may take a few minutes. GitHub Pages must be enabled for the repository and allow GitHub Actions deployments.
+GitHub Pages is already configured for this repository and automatically builds the site when changes are pushed to `main`. Deployments can take a few minutes.
 
 ## Security note
 
