@@ -1,0 +1,190 @@
+name: Build HRR OS 0.3 Preview ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hrr-os-build]
+    paths:
+      - '.github/workflows/build-hrr-os.yml'
+      - 'hrr-os/**'
+      - 'hrr-os-source-0.3.b64.*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hrr-os-0-3-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build custom Intel live ISO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Check out HRR OS source
+        uses: actions/checkout@v4
+
+      - name: Reconstruct the compressed source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          chunks=(hrr-os-source-0.3.b64.*)
+          if [[ ${#chunks[@]} -lt 2 ]]; then
+            echo 'HRR OS source archive chunks are missing.' >&2
+            exit 1
+          fi
+          cat "${chunks[@]}" | base64 --decode > /tmp/hrr-os-source-0.3.zip
+          unzip -t /tmp/hrr-os-source-0.3.zip
+          mkdir -p hrr-os
+          unzip -q /tmp/hrr-os-source-0.3.zip -d hrr-os
+          test -s hrr-os/tools/prepare-t2-base.py
+          test -s hrr-os/overlay/install-overlay.sh
+
+      - name: Validate HRR source files
+        working-directory: hrr-os
+        shell: bash
+        run: |
+          set -euo pipefail
+          tools/check-source.sh
+          test -s overlay/hrr-wallpaper.svg
+
+      - name: Free space on the disposable runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          # These folders belong to this temporary GitHub-hosted runner only.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+            /usr/local/share/powershell /usr/local/.ghcup 2>/dev/null || true
+          sudo apt-get clean
+          df -h /
+
+      - name: Check out the pinned T2-Ubuntu source
+        working-directory: hrr-os
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch v7.3.4-2 \
+            https://github.com/t2linux/T2-Ubuntu.git upstream
+          test "$(git -C upstream describe --tags --exact-match HEAD)" = "v7.3.4-2"
+          test "$(git -C upstream rev-parse --short HEAD)" = "7fc1556"
+          git -C upstream log -1 --format='%h %s'
+
+      - name: Apply the HRR OS desktop layer
+        working-directory: hrr-os
+        shell: bash
+        run: python3 tools/prepare-t2-base.py upstream
+
+      - name: Build the live filesystem and ISO
+        working-directory: hrr-os/upstream
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo ./build.sh 2>&1 | tee ../hrr-os-build.log
+
+      - name: Assemble, validate and split the custom HRR ISO
+        working-directory: hrr-os
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          mapfile -d '' parts < <(
+            find upstream/output -maxdepth 1 -type f \
+              -name 'ubuntu-24.04-7.3.4-t2-noble.iso.[0-9][0-9]' \
+              -print0 | LC_ALL=C sort -z
+          )
+          if [[ ${#parts[@]} -lt 2 ]]; then
+            echo 'Expected split ISO chunks were not produced.' >&2
+            find upstream/output -maxdepth 1 -type f -printf '%f %s bytes\\n' >&2 || true
+            exit 1
+          fi
+          image='dist/HRR-OS-0.3-Preview.iso'
+          cat "${parts[@]}" > "$image"
+          test "$(stat -c%s "$image")" -gt 1000000000
+          python3 - <<'PY'
+          from pathlib import Path
+          image = Path('dist/HRR-OS-0.3-Preview.iso')
+          with image.open('rb') as handle:
+              handle.seek(32769)
+              identifier = handle.read(5)
+          if identifier != b'CD001':
+              raise SystemExit(f'ISO-9660 primary volume descriptor missing: {identifier!r}')
+          print(f'ISO-9660 signature looks valid; size={image.stat().st_size:,} bytes')
+          PY
+          (cd dist && sha256sum HRR-OS-0.3-Preview.iso > HRR-OS-0.3-Preview.iso.sha256)
+          split -b 1800M -d -a 2 "$image" 'dist/HRR-OS-0.3-Preview.iso.part-'
+          manifest='dist/HRR-OS-0.3-Preview-BUILD-MANIFEST.txt'
+          iso_hash="$(awk '{print $1}' dist/HRR-OS-0.3-Preview.iso.sha256)"
+          {
+            echo 'FORMAT=HRR-OS-RELEASE-1'
+            echo 'ISO=HRR-OS-0.3-Preview.iso'
+            echo "ISO_SHA256=$iso_hash"
+            echo 'ARCHITECTURE=x86_64'
+            echo 'BASE=t2linux/T2-Ubuntu@v7.3.4-2'
+            echo 'UBUNTU=24.04-LTS-Noble'
+            for part in dist/HRR-OS-0.3-Preview.iso.part-*; do
+              name="$(basename "$part")"
+              hash="$(sha256sum "$part" | awk '{print $1}')"
+              echo "PART=$name"
+              echo "PART_SHA256=$hash"
+            done
+          } > "$manifest"
+          {
+            cat dist/HRR-OS-0.3-Preview.iso.sha256
+            sha256sum dist/HRR-OS-0.3-Preview.iso.part-* | sed 's#dist/##'
+            sha256sum "$manifest" | sed 's#dist/##'
+          } > dist/HRR-OS-0.3-Preview-SHA256SUMS.txt
+          cat > dist/HRR-OS-0.3-build-manifest.txt <<EOF2
+          HRR OS 0.3 Preview
+          Base source: t2linux/T2-Ubuntu
+          Base tag: v7.3.4-2
+          Expected upstream commit: 7fc1556c86a79eb6415e9f60df576195731e2be8
+          Architecture: amd64 / x86_64
+          Ubuntu base: 24.04 LTS (Noble)
+          Desktop overlay: HRR Studios 0.3
+          Build mode: live ISO; intended for QEMU preview first
+          ISO SHA-256: $iso_hash
+          EOF2
+          ls -lh dist
+          cat "$manifest"
+
+      - name: Publish a versioned public release
+        working-directory: hrr-os
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="hrr-os-0.3-preview-build-${GITHUB_RUN_NUMBER}"
+          gh release create "$tag" \
+            dist/HRR-OS-0.3-Preview.iso.part-* \
+            dist/HRR-OS-0.3-Preview-BUILD-MANIFEST.txt \
+            dist/HRR-OS-0.3-Preview-SHA256SUMS.txt \
+            dist/HRR-OS-0.3-build-manifest.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "HRR OS 0.3 Preview — Build ${GITHUB_RUN_NUMBER}" \
+            --notes "HRR OS 0.3 Preview live ISO. This is an early QEMU-first preview, not a production OS. Verify all split parts against the SHA-256 values in the build manifest before assembling."
+
+      - name: Upload ISO parts and manifests as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HRR-OS-0.3-Preview-ISO
+          path: |
+            hrr-os/dist/HRR-OS-0.3-Preview.iso.part-*
+            hrr-os/dist/HRR-OS-0.3-Preview-BUILD-MANIFEST.txt
+            hrr-os/dist/HRR-OS-0.3-Preview-SHA256SUMS.txt
+            hrr-os/dist/HRR-OS-0.3-build-manifest.txt
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
+      - name: Upload build log if the job fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HRR-OS-0.3-Build-Log
+          path: hrr-os/hrr-os-build.log
+          if-no-files-found: ignore
+          retention-days: 7
