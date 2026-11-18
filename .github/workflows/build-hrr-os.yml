@@ -74,7 +74,33 @@ jobs:
       - name: Apply the HRR OS desktop layer
         working-directory: hrr-os
         shell: bash
-        run: python3 tools/prepare-t2-base.py upstream
+        run: |
+          set -euo pipefail
+          # The pinned upstream builder leaves a bind mount of the runner's
+          # /run inside its disposable chroot. Detach it lazily: a normal
+          # unmount fails with EBUSY after package hooks touch runtime paths.
+          python3 - <<'PYFIX'
+          from pathlib import Path
+          replacements = {
+              Path("overlay/install-overlay.sh"): (
+                  '  umount "${CHROOT_PATH}/run"',
+                  '  umount -l "${CHROOT_PATH}/run"',
+              ),
+              Path("tools/prepare-t2-base.py"): (
+                  '  umount "${CHROOT_PATH}_${ALTERNATIVE}/run"',
+                  '  umount -l "${CHROOT_PATH}_${ALTERNATIVE}/run"',
+              ),
+          }
+          for path, (old, new) in replacements.items():
+              source = path.read_text(encoding="utf-8")
+              count = source.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected exactly one run-mount cleanup in {path}, found {count}")
+              path.write_text(source.replace(old, new, 1), encoding="utf-8")
+              print(f"Patched busy /run cleanup: {path}")
+          PYFIX
+          tools/check-source.sh
+          python3 tools/prepare-t2-base.py upstream
 
       - name: Build the live filesystem and ISO
         working-directory: hrr-os/upstream
