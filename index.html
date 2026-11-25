@@ -3,221 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#08090d">
-<meta name="description" content="HRR Studios creates strange worlds, atmospheric experiences, and games built to stay with you. Enter the VOID BREACH universe.">
-<title>HRR Studios — Worlds Beyond the Familiar</title>
+<meta name="theme-color" content="#f4f2ed">
+<meta name="description" content="HRR Studios makes original games and experiments. Play the VOID BREACH: LITE browser preview.">
+<title>HRR Studios — Games and experiments</title>
 <style>
-:root{color-scheme:dark;--bg:#08090d;--panel:#11141c;--line:rgba(255,255,255,.09);--text:#f5f6f8;--muted:#a1a6b2;--red:#f05b67;--cyan:#83dce8;--max:1180px}
+:root{color-scheme:light;--paper:#f4f2ed;--ink:#171717;--muted:#66645f;--rule:#d6d2ca;--red:#a92936;--red-dark:#84212c;--dark:#101116;--max:1160px}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:95px}
-body{margin:0;min-width:320px;background:radial-gradient(ellipse at 78% 2%,rgba(100,34,51,.18),transparent 34rem),radial-gradient(ellipse at 4% 40%,rgba(28,65,78,.12),transparent 34rem),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.15;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
-a{color:inherit}button{font:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}::selection{background:rgba(240,91,103,.35);color:#fff}
-.container{width:min(var(--max),calc(100% - 48px));margin-inline:auto}
-.site-header{position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(8,9,13,.78);backdrop-filter:blur(24px)}
-.nav-wrap{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:28px}
-.brand{display:inline-flex;align-items:center;gap:12px;color:var(--text);text-decoration:none;white-space:nowrap}
-.brand-mark{position:relative;width:30px;height:30px;border-radius:10px;border:1px solid rgba(240,91,103,.56);background:linear-gradient(145deg,rgba(240,91,103,.22),rgba(131,220,232,.08));box-shadow:inset 0 0 16px rgba(240,91,103,.12),0 0 22px rgba(240,91,103,.1);transform:rotate(-8deg)}
-.brand-mark:before,.brand-mark:after{content:"";position:absolute;left:7px;right:7px;height:1.5px;background:linear-gradient(90deg,var(--red),var(--cyan));transform:rotate(-35deg)}
-.brand-mark:before{top:10px}.brand-mark:after{top:17px;left:10px;right:5px;opacity:.7}
-.brand-name{font-size:14px;font-weight:750;letter-spacing:.16em}.brand-name span{color:#777e8c;font-weight:500}
-.nav-links{display:flex;align-items:center;gap:29px}
-.nav-links a{color:#aeb3be;text-decoration:none;font-size:13px;font-weight:550;transition:color .2s}
-.nav-links a:hover{color:#fff}
-.nav-links .nav-cta{padding:10px 16px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:#f7f7f8}
-.nav-links .nav-cta:hover{border-color:rgba(240,91,103,.65);background:rgba(240,91,103,.09)}
-.menu-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:#fff;align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer}
-.menu-toggle span{width:16px;height:1.5px;background:#f5f6f8;border-radius:2px}
-.hero{min-height:680px;padding:80px 0 88px;display:grid;grid-template-columns:1.04fr .96fr;align-items:center;gap:48px}
-.eyebrow,.kicker{color:#d58d96;font-size:11px;font-weight:750;letter-spacing:.2em;text-transform:uppercase}
-.eyebrow{display:inline-flex;align-items:center;gap:10px}
-.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(240,91,103,.8)}
-.hero h1{max-width:720px;margin:24px 0 22px;font-size:clamp(55px,7.7vw,98px);line-height:.96;letter-spacing:-.075em;font-weight:760}
-.hero h1 span{display:block;color:transparent;background:linear-gradient(100deg,#fff 4%,#f6a2a9 55%,#86dce8 110%);-webkit-background-clip:text;background-clip:text}
-.hero-lead{max-width:540px;margin:0;color:#aeb3bf;font-size:17px;line-height:1.75}
-.hero-actions{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin-top:34px}
-.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 20px;border-radius:999px;border:1px solid transparent;text-decoration:none;font-size:13px;font-weight:700;transition:transform .22s,background .22s,border-color .22s,box-shadow .22s;cursor:pointer}
-.button:hover{transform:translateY(-2px)}
-.primary{color:#fff;background:linear-gradient(115deg,#d94355,#f16b75);box-shadow:0 9px 28px rgba(217,67,85,.22)}
-.primary:hover{box-shadow:0 12px 34px rgba(217,67,85,.34)}
-.secondary{color:#f4f5f7;background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.15)}
-.secondary:hover{background:rgba(255,255,255,.085);border-color:rgba(255,255,255,.28)}
-.hero-note{display:flex;align-items:center;gap:10px;margin-top:27px;color:#777e8c;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-.hero-note i{width:4px;height:4px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
-.hero-art{position:relative;min-height:500px;aspect-ratio:1.03/1;border:1px solid rgba(255,255,255,.1);border-radius:34px;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,rgba(240,91,103,.2),transparent 35%),radial-gradient(ellipse at 52% 50%,rgba(36,97,119,.22),transparent 57%),linear-gradient(145deg,#141720,#0b0d13 66%,#11111a);box-shadow:0 35px 100px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.05)}
-.hero-art:before{content:"";position:absolute;inset:0;opacity:.25;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at center,black,transparent 75%)}
-.portal{position:absolute;left:50%;top:48%;width:66%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) rotate(-20deg);border:1px solid rgba(131,220,232,.42);box-shadow:0 0 36px rgba(131,220,232,.11),inset 0 0 44px rgba(240,91,103,.12)}
-.portal:before,.portal:after{content:"";position:absolute;border-radius:50%;inset:9%;border:1px solid rgba(240,91,103,.62);transform:rotate(48deg) scaleX(.74);box-shadow:0 0 34px rgba(240,91,103,.18)}
-.portal:after{inset:18%;border-color:rgba(131,220,232,.38);transform:rotate(-42deg) scaleX(.72)}
-.portal-core{position:absolute;left:50%;top:50%;width:31%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 40% 40%,#fff 0,rgba(255,178,188,.82) 5%,rgba(240,91,103,.35) 23%,rgba(12,15,22,.1) 68%);box-shadow:0 0 25px rgba(240,91,103,.55),0 0 100px rgba(240,91,103,.22)}
-.portal-line{position:absolute;width:120%;height:1px;left:-10%;top:51%;background:linear-gradient(90deg,transparent,rgba(131,220,232,.75),rgba(240,91,103,.72),transparent);transform:rotate(-24deg);filter:drop-shadow(0 0 7px rgba(131,220,232,.6))}
-.art-label{position:absolute;display:flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:rgba(9,11,16,.72);backdrop-filter:blur(18px);color:#dce0e8;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.art-label.top{top:22px;left:22px}.art-label.bottom{right:22px;bottom:22px}
-.art-label strong{color:var(--cyan)}.art-dot{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red)}
-.art-crosshair{position:absolute;width:18px;height:18px;right:25%;top:24%;border:1px solid rgba(131,220,232,.6);border-radius:50%}
-.art-crosshair:before,.art-crosshair:after{content:"";position:absolute;background:rgba(131,220,232,.65)}
-.art-crosshair:before{width:30px;height:1px;left:-7px;top:8px}.art-crosshair:after{height:30px;width:1px;left:8px;top:-7px}
-.section{padding:94px 0}
-.section-heading{max-width:700px;margin-bottom:38px}
-.section-heading h2{margin:13px 0;font-size:clamp(35px,5vw,57px);line-height:1.04;letter-spacing:-.065em;font-weight:720}
-.section-heading p{max-width:620px;margin:0;color:var(--muted);font-size:16px;line-height:1.75}
-.studio-layout{display:grid;grid-template-columns:.86fr 1.14fr;gap:58px;align-items:start}
-.studio-aside{padding:26px 0 0 24px;border-left:1px solid rgba(240,91,103,.42);color:#aeb3bf;font-size:16px;line-height:1.85}
-.studio-aside strong{display:block;color:#f3f4f6;font-size:18px;margin-bottom:12px}
-.lore-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
-.lore-card{min-height:220px;padding:25px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,rgba(255,255,255,.055),rgba(255,255,255,.018));transition:transform .25s,border-color .25s,background .25s}
-.lore-card:hover{transform:translateY(-5px);border-color:rgba(240,91,103,.35);background:linear-gradient(150deg,rgba(240,91,103,.08),rgba(255,255,255,.02))}
-.card-index{color:#c77d87;font-size:10px;font-weight:750;letter-spacing:.16em}
-.lore-card h3{margin:23px 0 10px;font-size:21px;letter-spacing:-.04em}
-.lore-card p{margin:0;color:#969ca9;font-size:14px;line-height:1.75}
-.quote-strip{margin-top:16px;padding:23px 27px;border:1px solid var(--line);border-radius:18px;color:#c3c7d0;background:rgba(255,255,255,.025);font-size:14px;line-height:1.8}
-.featured{display:grid;grid-template-columns:1.08fr .92fr;gap:32px;align-items:center;padding:clamp(25px,4vw,48px);overflow:hidden;border:1px solid rgba(240,91,103,.24);border-radius:30px;background:radial-gradient(ellipse at 83% 50%,rgba(240,91,103,.13),transparent 42%),linear-gradient(135deg,#15151e,#0e1118 65%,#171119);box-shadow:0 28px 90px rgba(0,0,0,.2)}
-.project-tag{display:inline-flex;align-items:center;gap:9px;padding:8px 11px;border:1px solid rgba(240,91,103,.3);border-radius:999px;color:#f0a1a8;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;background:rgba(240,91,103,.07)}
-.featured h3{margin:22px 0 13px;font-size:clamp(37px,5vw,60px);line-height:.98;letter-spacing:-.07em}
-.featured h3 span{color:#f07883}.featured-copy p{max-width:520px;margin:0;color:#a8aeba;font-size:15px;line-height:1.8}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:23px 0 27px}
-.chip{padding:8px 11px;border-radius:999px;border:1px solid var(--line);color:#bdc2cc;font-size:10px;font-weight:650;background:rgba(255,255,255,.035)}
-.featured-actions{display:flex;gap:10px;flex-wrap:wrap}
-.featured-art{position:relative;min-height:320px;aspect-ratio:1.15/1;border-radius:23px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:radial-gradient(ellipse at 50% 50%,rgba(240,91,103,.28),transparent 36%),radial-gradient(ellipse at 52% 52%,rgba(46,118,135,.2),transparent 65%),#0b0e15}
-.featured-art:before{content:"";position:absolute;inset:0;opacity:.22;background:repeating-linear-gradient(0deg,transparent 0 24px,rgba(255,255,255,.09) 25px),repeating-linear-gradient(90deg,transparent 0 24px,rgba(255,255,255,.09) 25px)}
-.featured-ring{position:absolute;width:70%;aspect-ratio:1;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%) rotate(25deg);border:1px solid rgba(240,91,103,.75);box-shadow:0 0 35px rgba(240,91,103,.2),inset 0 0 35px rgba(131,220,232,.1)}
-.featured-ring:before,.featured-ring:after{content:"";position:absolute;inset:13%;border-radius:50%;border:1px solid rgba(131,220,232,.55);transform:scaleX(.72) rotate(57deg)}
-.featured-ring:after{inset:28%;border-color:rgba(240,91,103,.58);transform:scaleX(.8) rotate(-44deg)}
-.featured-ring-core{position:absolute;left:50%;top:50%;width:19%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:#f7a3ab;box-shadow:0 0 18px #f05b67,0 0 70px rgba(240,91,103,.7)}
-.art-caption{position:absolute;left:18px;bottom:17px;color:#aeb5c2;font-size:9px;font-weight:700;letter-spacing:.17em}
-.preview-panel{margin-top:20px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#090b10}
-.preview-panel[hidden]{display:none}
-.preview-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 17px;border-bottom:1px solid var(--line);color:#b7bdc8;font-size:11px;font-weight:650;letter-spacing:.1em;text-transform:uppercase}
-.preview-bar button{color:#f0a0a7;border:0;background:none;font-size:11px;font-weight:700;cursor:pointer}
-.preview-panel iframe{display:block;width:100%;height:620px;border:0;background:#05070b}
-.archive-link{display:inline-flex;margin-top:17px;color:#b8dbe0;text-decoration:none;font-size:13px;font-weight:650}
-.archive-link:hover{color:#fff}
-.updates-card{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:28px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(120deg,rgba(255,255,255,.045),rgba(255,255,255,.015))}
-.updates-card p{margin:12px 0 0;color:#9ba1ad;font-size:14px;line-height:1.7}
-.transmission-status{display:inline-flex;align-items:center;gap:9px;color:#c4c9d2;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.transmission-status:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px rgba(131,220,232,.65)}
-.join-block{position:relative;overflow:hidden;padding:clamp(35px,6vw,70px);border:1px solid rgba(240,91,103,.22);border-radius:30px;text-align:center;background:radial-gradient(ellipse at 50% 0,rgba(240,91,103,.14),transparent 55%),linear-gradient(145deg,#14141c,#0c0e14)}
-.join-block:before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;border:1px solid rgba(240,91,103,.12);left:50%;top:-325px;transform:translateX(-50%);box-shadow:0 0 0 35px rgba(240,91,103,.025),0 0 0 70px rgba(240,91,103,.02)}
-.join-block>*{position:relative}.join-block h2{margin:15px 0 12px;font-size:clamp(35px,5vw,58px);letter-spacing:-.065em}
-.join-block p{max-width:610px;margin:0 auto 26px;color:#a5abb7;font-size:15px;line-height:1.8}
-.site-footer{padding:34px 0 40px;border-top:1px solid var(--line);margin-top:88px}
-.footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.footer-links{display:flex;gap:22px;flex-wrap:wrap}
-.footer-links a{color:#9da3af;text-decoration:none;font-size:12px;transition:color .2s}.footer-links a:hover{color:#fff}
-.footer-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:28px;color:#676e7b;font-size:11px}
-@media(max-width:900px){.hero{grid-template-columns:1fr;gap:34px;padding-top:62px}.hero-art{min-height:430px;max-height:560px;width:min(100%,650px);margin-inline:auto}.studio-layout{grid-template-columns:1fr;gap:24px}.studio-aside{max-width:700px}.featured{grid-template-columns:1fr}.featured-art{min-height:300px;max-height:440px}}
-@media(max-width:700px){.container{width:calc(100% - 34px)}.nav-wrap{min-height:68px}.menu-toggle{display:flex}.nav-links{display:none;position:absolute;top:calc(100% + 1px);left:0;right:0;padding:16px 20px 20px;background:rgba(8,9,13,.97);border-bottom:1px solid var(--line);box-shadow:0 18px 32px rgba(0,0,0,.28);flex-direction:column;align-items:stretch;gap:0}.nav-links.is-open{display:flex}.nav-links a{padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.05)}.nav-links .nav-cta{margin-top:12px;text-align:center;padding:13px}.hero{min-height:auto;padding:56px 0 66px}.hero h1{font-size:clamp(53px,13vw,78px)}.hero-lead{font-size:15px}.hero-art{min-height:340px;border-radius:25px}.art-label{font-size:8px;padding:9px 10px}.section{padding:72px 0}.lore-grid{grid-template-columns:1fr;gap:10px}.lore-card{min-height:0;padding:22px}.lore-card h3{margin-top:15px}.featured{padding:23px;border-radius:24px}.featured-art{min-height:245px}.preview-panel iframe{height:520px}.updates-card{align-items:flex-start;padding:22px}.site-footer{margin-top:65px}}
-@media(max-width:420px){.hero-actions,.featured-actions{align-items:stretch;flex-direction:column}.hero-actions .button,.featured-actions .button{width:100%}.hero-art{min-height:300px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+html{scroll-behavior:smooth;scroll-padding-top:86px}
+body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}button{font:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+.container{width:min(var(--max),calc(100% - 56px));margin-inline:auto}
+.site-header{border-bottom:1px solid var(--rule);background:rgba(244,242,237,.96)}
+.nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.wordmark{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:14px;font-weight:800;letter-spacing:.12em}
+.wordmark-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:12px;font-weight:800;letter-spacing:-.08em}
+.wordmark small{display:block;margin-top:2px;color:#77736c;font-size:8px;font-weight:650;letter-spacing:.19em}
+.nav-links{display:flex;align-items:center;gap:27px}
+.nav-links a{color:#4e4b46;text-decoration:none;font-size:12px;font-weight:650;transition:color .18s}
+.nav-links a:hover{color:var(--red)}
+.nav-links .nav-apply{padding:10px 15px;border:1px solid #a8a39a;border-radius:4px;color:var(--ink)}
+.nav-links .nav-apply:hover{border-color:var(--red);color:var(--red)}
+.menu-toggle{display:none;background:none;border:1px solid var(--rule);border-radius:4px;width:40px;height:38px;cursor:pointer}
+.menu-toggle span{display:block;width:17px;height:1.5px;background:var(--ink);margin:4px auto}
+.hero{padding:100px 0 85px;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:end}
+.eyebrow,.section-label{color:var(--red);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.hero h1{max-width:650px;margin:22px 0 24px;font-size:clamp(56px,7.2vw,91px);line-height:.96;letter-spacing:-.075em;font-weight:760}
+.hero h1 em{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.07em}
+.hero-copy{max-width:500px;color:#55524d;font-size:17px;line-height:1.75}
+.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:0 17px;border:1px solid var(--ink);border-radius:4px;text-decoration:none;font-size:12px;font-weight:750;transition:background .18s,color .18s,border-color .18s}
+.button-primary{background:var(--ink);color:#fff}
+.button-primary:hover{background:var(--red);border-color:var(--red)}
+.button-light{background:transparent;color:var(--ink)}
+.button-light:hover{border-color:var(--red);color:var(--red)}
+.hero-side{padding:0 0 6px 22px;border-left:2px solid var(--red)}
+.hero-side p{max-width:360px;margin:0;color:#5e5a54;font-size:14px;line-height:1.8}
+.hero-side strong{display:block;margin-bottom:7px;color:var(--ink);font-size:12px;letter-spacing:.05em}
+.project-section{padding:66px 0 80px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.project-header{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:28px}
+.project-header h2{margin:10px 0 0;font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.065em}
+.project-meta{color:#6c6861;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+.project-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:34px;align-items:start}
+.project-copy{padding:10px 0}
+.project-copy p{color:#5d5953;font-size:14px;line-height:1.85;margin:0 0 18px}
+.project-copy h3{margin:0 0 13px;font-size:19px;letter-spacing:-.035em}
+.project-facts{margin:24px 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
+.project-facts li{padding:11px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:12px;color:#66615a;font-size:12px}
+.project-facts strong{color:var(--ink);font-weight:700}
+.game-window{overflow:hidden;border:1px solid #292a30;background:#08090d;box-shadow:0 15px 38px rgba(25,22,18,.12)}
+.game-window-top{height:39px;padding:0 13px;display:flex;align-items:center;justify-content:space-between;background:#17181d;color:#d6d4d0;font-size:9px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.window-dots{display:flex;gap:5px}
+.window-dots i{width:6px;height:6px;border-radius:50%;background:#696a70}
+.window-dots i:first-child{background:#ab3744}
+.game-window iframe{display:block;width:100%;height:535px;border:0;background:#08090d}
+.game-caption{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:10px 13px;background:#17181d;color:#aaa7a1;font-size:10px}
+.game-caption a{color:#f0b8bd;text-decoration:none}
+.game-caption a:hover{text-decoration:underline}
+.about{padding:82px 0;display:grid;grid-template-columns:.7fr 1.3fr;gap:70px}
+.about h2{margin:12px 0;font-size:clamp(34px,4.5vw,51px);line-height:1.04;letter-spacing:-.06em}
+.about-copy{max-width:660px;color:#5d5953;font-size:15px;line-height:1.9}
+.about-copy p{margin:0 0 16px}
+.updates{padding:26px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:grid;grid-template-columns:.7fr 1.3fr;gap:70px;align-items:center}
+.updates h2{margin:8px 0;font-size:24px;letter-spacing:-.045em}
+.updates p{margin:0;color:#625e58;font-size:13px;line-height:1.75}
+.updates a{color:var(--red);font-weight:700;text-decoration:none}
+.updates a:hover{text-decoration:underline}
+.join{margin:78px auto 85px;padding:33px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:28px}
+.join h2{margin:8px 0 5px;font-size:clamp(27px,3.3vw,38px);letter-spacing:-.055em}
+.join p{max-width:590px;margin:0;color:#65615b;font-size:13px;line-height:1.7}
+.footer{border-top:1px solid var(--rule);padding:23px 0 31px}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.footer-links{display:flex;gap:19px;flex-wrap:wrap}
+.footer-links a{color:#625e58;text-decoration:none;font-size:11px;font-weight:650}
+.footer-links a:hover{color:var(--red)}
+.footer-note{margin-top:19px;color:#88837b;font-size:10px}
+@media(max-width:850px){.hero{grid-template-columns:1fr;gap:35px;padding:74px 0 64px}.hero-side{max-width:470px}.project-layout{grid-template-columns:1fr}.project-copy{max-width:660px}.game-window iframe{height:500px}.about,.updates{grid-template-columns:1fr;gap:15px}.about{padding:65px 0}.join{align-items:flex-start;flex-direction:column}}
+@media(max-width:650px){.container{width:calc(100% - 36px)}.nav{min-height:66px}.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:66px;left:0;right:0;padding:12px 18px 18px;background:var(--paper);border-bottom:1px solid var(--rule);flex-direction:column;align-items:stretch;gap:0}.nav-links.open{display:flex}.nav-links a{padding:13px 3px;border-bottom:1px solid var(--rule)}.nav-links .nav-apply{margin-top:10px;text-align:center}.hero{padding:58px 0 58px}.hero h1{font-size:clamp(54px,13vw,76px)}.hero-copy{font-size:15px}.project-section{padding:51px 0 58px}.project-header{display:block}.project-meta{display:block;margin-top:16px}.project-header h2{font-size:43px}.game-window iframe{height:400px}.about{padding:55px 0}.updates{padding:22px 0}.join{margin:55px auto 58px}.footer-inner{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 </style>
 </head>
 <body id="top">
 <header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html" aria-label="HRR Studios home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">HRR <span>STUDIOS</span></span></a>
-    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span></button>
+  <div class="container nav">
+    <a class="wordmark" href="index.html"><span class="wordmark-mark">H.</span><span>HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
     <nav class="nav-links" id="site-nav" aria-label="Main navigation">
-      <a href="#studio">Studio</a><a href="#games-section">Featured game</a><a href="games.html">Game archive</a><a href="#updates">Updates</a><a class="nav-cta" href="#join-section">Join HRR</a>
+      <a href="#project">The game</a><a href="#about">About</a><a href="#updates">Updates</a><a href="games.html">All games</a><a class="nav-apply" href="#join">Join HRR</a>
     </nav>
   </div>
 </header>
 <main>
-  <section class="container hero" aria-labelledby="hero-title">
+  <section class="container hero">
     <div>
-      <div class="eyebrow">Independent game development</div>
-      <h1 id="hero-title">Worlds beyond <span>the familiar.</span></h1>
-      <p class="hero-lead">We build strange places, atmospheric experiences, and games that invite you to step a little further into the unknown. Welcome to HRR Studios.</p>
-      <div class="hero-actions"><a class="button primary" href="#games-section">Explore VOID BREACH <span aria-hidden="true">↗</span></a><a class="button secondary" href="#studio">Meet the studio</a></div>
-      <div class="hero-note"><i aria-hidden="true"></i> Small studio. Big ideas. Unfamiliar worlds.</div>
+      <div class="eyebrow">A small game studio</div>
+      <h1>We make games.<br><em>Come play.</em></h1>
+      <p class="hero-copy">HRR Studios is where we build original games, try out ideas, and share the things we make. Right now, we're working on VOID BREACH — a top-down survival game with waves of enemies and power-ups.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#project">Play the preview ↓</a><a class="button button-light" href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">Our YouTube ↗</a></div>
     </div>
-    <div class="hero-art" role="img" aria-label="Abstract red and cyan dimensional portal artwork">
-      <div class="portal"></div><div class="portal-core"></div><div class="portal-line"></div><div class="art-crosshair"></div>
-      <div class="art-label top"><span class="art-dot"></span> HRR / Signal detected</div><div class="art-label bottom">Unknown space <strong>· 001</strong></div>
-    </div>
+    <aside class="hero-side"><strong>WHAT'S ON THE WORKBENCH</strong><p><b>VOID BREACH: LITE</b> is a playable browser preview. It gives you a taste of the combat while the larger project continues to take shape.</p></aside>
   </section>
 
-  <section class="container section" id="studio">
-    <div class="studio-layout">
-      <div class="section-heading"><div class="kicker">The studio</div><h2>Curiosity is where it starts.</h2><p>HRR Studios is built around one simple idea: the most memorable experiences begin when someone decides to make something different.</p></div>
-      <div class="studio-aside"><strong>We make room for the unusual.</strong>From the first sketch to the final details, we focus on atmosphere, experimentation, and the little moments that make a world feel alive. Every project is a chance to explore a new direction.</div>
-    </div>
-    <div class="lore-grid">
-      <article class="lore-card"><div class="card-index">01 / ORIGIN</div><h3>The beginning</h3><p>HRR Studios started with a drive to create the kinds of games we wanted to play — worlds with their own identity, atmosphere, and surprises.</p></article>
-      <article class="lore-card"><div class="card-index">02 / APPROACH</div><h3>Built with intention</h3><p>We experiment, refine, and keep pushing ideas until they become something worth sharing. Small details can make a whole world feel different.</p></article>
-      <article class="lore-card"><div class="card-index">03 / NEXT</div><h3>More to discover</h3><p>New concepts are always taking shape. Some are ready to be explored; others are still somewhere in the dark.</p></article>
-    </div>
-    <div class="quote-strip">“Not every world is meant to feel familiar. Sometimes the best part is discovering what waits just beyond the edge.”</div>
-  </section>
-
-  <section class="container section" id="games-section">
-    <div class="section-heading"><div class="kicker">Featured project</div><h2>Step into the breach.</h2><p>A first look at the worlds we're building. Start with the playable preview, then explore the archive.</p></div>
-    <article class="featured">
-      <div class="featured-copy">
-        <div class="project-tag"><span class="art-dot"></span> Playable preview</div>
-        <h3>VOID BREACH<br><span>: LITE</span></h3>
-        <p>A fast arcade survival experience set inside a hostile unknown. Survive waves, collect power-ups, and see how long you can hold your ground. This is a small preview of the larger VOID BREACH world.</p>
-        <div class="chips"><span class="chip">Wave survival</span><span class="chip">Arcade action</span><span class="chip">Browser playable</span></div>
-        <div class="featured-actions">
-          <button class="button primary" id="preview-toggle" type="button" aria-expanded="false" aria-controls="preview-panel">Play browser preview <span aria-hidden="true">↗</span></button>
-          <a class="button secondary" href="games.html#void-breach">Game details</a>
-          <a class="button secondary" href="game.html" download>Download</a>
+  <section class="project-section" id="project">
+    <div class="container">
+      <div class="project-header"><div><div class="section-label">Current project / 01</div><h2>VOID BREACH: LITE</h2></div><div class="project-meta">Browser game · Playable preview</div></div>
+      <div class="project-layout">
+        <div class="project-copy">
+          <h3>How long can you last?</h3>
+          <p>VOID BREACH is a top-down arcade survival game. Enemies close in from around the arena, each wave gets tougher, and power-ups can give you a little more time.</p>
+          <p>The Lite version is a small playable preview of the project. Jump in, see how far you get, and come back for another run.</p>
+          <ul class="project-facts">
+            <li><span>Format</span><strong>Top-down survival</strong></li>
+            <li><span>Play</span><strong>In your browser</strong></li>
+            <li><span>Controls</span><strong>Keyboard + mouse</strong></li>
+          </ul>
+          <a class="button button-primary" href="game.html" target="_blank" rel="noopener noreferrer">Open game on its own page ↗</a>
         </div>
-        <a class="archive-link" href="games.html">Explore the full game archive →</a>
+        <div class="game-window">
+          <div class="game-window-top"><span>VOID BREACH / LITE</span><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+          <iframe src="game.html?embed=1" title="Play VOID BREACH: LITE" loading="lazy"></iframe>
+          <div class="game-caption"><span>WASD / arrow keys to move · Mouse to aim</span><a href="games.html#void-breach">Game details →</a></div>
+        </div>
       </div>
-      <div class="featured-art" role="img" aria-label="Abstract VOID BREACH portal artwork"><div class="featured-ring"></div><div class="featured-ring-core"></div><div class="art-caption">VOID BREACH : LITE / EXPERIMENT 001</div></div>
-    </article>
-    <div class="preview-panel" id="preview-panel" hidden>
-      <div class="preview-bar"><span>VOID BREACH : LITE / Browser preview</span><button id="preview-close" type="button">Close preview ×</button></div>
-      <iframe src="game.html" title="Play VOID BREACH: LITE" loading="lazy" allow="fullscreen"></iframe>
     </div>
   </section>
 
-  <section class="container section" id="updates">
-    <div class="section-heading"><div class="kicker">From the studio</div><h2>Progress, as it happens.</h2><p>New ideas, experiments, and milestones will appear here as the studio keeps building.</p></div>
-    <div class="updates-card"><div><div class="transmission-status">Transmission channel open</div><p>// No new transmissions just yet. Check back soon.</p></div><a class="button secondary" href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">Follow on YouTube ↗</a></div>
+  <section class="container about" id="about">
+    <div><div class="section-label">A bit about us</div><h2>Made by people who like making games.</h2></div>
+    <div class="about-copy">
+      <p>HRR Studios is a small independent game studio. This is our corner of the internet to show what we're working on, share playable builds, and keep track of projects as they grow.</p>
+      <p>We’re starting with games, but we like experimenting and seeing where a good idea can go. The site will change as the projects do.</p>
+    </div>
   </section>
 
-  <section class="container section" id="join-section">
-    <div class="join-block"><div class="kicker">Be part of the story</div><h2>Make something unexpected.</h2><p>Interested in game design, testing, ideas, or helping shape what comes next? Tell us a little about yourself and what you'd bring to HRR Studios.</p><a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" rel="noopener noreferrer">Apply to join HRR ↗</a></div>
+  <section class="container updates" id="updates">
+    <div><div class="section-label">From the studio</div><h2>Want to see what we're up to?</h2></div>
+    <div><p>We'll share news and new builds as they're ready. For now, the best place to catch anything new is the <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">HRR Studios YouTube channel</a>.</p></div>
+  </section>
+
+  <section class="container join" id="join">
+    <div><div class="section-label">Get involved</div><h2>Want to be part of HRR?</h2><p>Interested in testing games, sharing ideas, or helping with a project? Send in an application and tell us a little about yourself.</p></div>
+    <a class="button button-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" rel="noopener noreferrer">Apply to join ↗</a>
   </section>
 </main>
-<footer class="container site-footer">
-  <div class="footer-top">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">HRR <span>STUDIOS</span></span></a>
-    <div class="footer-links"><a href="games.html">Games</a><a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" rel="noopener noreferrer">Apply</a><a href="mailto:hrrstudiosofficial@gmail.com">Contact</a></div>
-  </div>
-  <div class="footer-bottom"><span>© 2026 HRR Studios. All rights reserved.</span><a href="#top">Back to top ↑</a></div>
+<footer class="footer">
+  <div class="container"><div class="footer-inner">
+    <a class="wordmark" href="index.html"><span class="wordmark-mark">H.</span><span>HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
+    <div class="footer-links"><a href="games.html">Games</a><a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">YouTube</a><a href="mailto:hrrstudiosofficial@gmail.com">Contact</a><a href="#top">Back to top ↑</a></div>
+  </div><div class="footer-note">© 2026 HRR Studios. All rights reserved.</div></div>
 </footer>
 <script>
 (function(){
- const menuButton=document.getElementById('menu-toggle');
+ const button=document.getElementById('menu-toggle');
  const nav=document.getElementById('site-nav');
- if(menuButton&&nav){
-  menuButton.addEventListener('click',function(){
-   const open=nav.classList.toggle('is-open');
-   menuButton.setAttribute('aria-expanded',String(open));
-   menuButton.setAttribute('aria-label',open?'Close navigation':'Open navigation');
-  });
-  nav.querySelectorAll('a').forEach(function(link){
-   link.addEventListener('click',function(){
-    nav.classList.remove('is-open');
-    menuButton.setAttribute('aria-expanded','false');
-    menuButton.setAttribute('aria-label','Open navigation');
-   });
-  });
- }
- const toggle=document.getElementById('preview-toggle');
- const panel=document.getElementById('preview-panel');
- const close=document.getElementById('preview-close');
- function setPreview(open){
-  if(!toggle||!panel)return;
-  panel.hidden=!open;
-  toggle.setAttribute('aria-expanded',String(open));
-  toggle.innerHTML=open?'Close browser preview <span aria-hidden="true">−</span>':'Play browser preview <span aria-hidden="true">↗</span>';
-  if(open)panel.scrollIntoView({behavior:'smooth',block:'start'});
- }
- if(toggle)toggle.addEventListener('click',function(){setPreview(panel.hidden)});
- if(close)close.addEventListener('click',function(){setPreview(false);toggle.focus()});
+ if(!button||!nav)return;
+ button.addEventListener('click',function(){
+  const open=nav.classList.toggle('open');
+  button.setAttribute('aria-expanded',String(open));
+  button.setAttribute('aria-label',open?'Close menu':'Open menu');
+ });
+ nav.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){nav.classList.remove('open');button.setAttribute('aria-expanded','false')})});
 })();
 </script>
 </body>
