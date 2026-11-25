@@ -3,71 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#08090d">
-<meta name="description" content="Play the HRR Studios game archive. Enter VOID BREACH: LITE, a browser-based arcade survival preview.">
+<meta name="theme-color" content="#f4f2ed">
+<meta name="description" content="Playable games from HRR Studios. Play VOID BREACH: LITE in your browser.">
 <title>Games — HRR Studios</title>
 <style>
-:root{color-scheme:dark;--bg:#08090d;--line:rgba(255,255,255,.09);--text:#f5f6f8;--muted:#a1a6b2;--red:#f05b67;--cyan:#83dce8;--max:1120px}
+:root{color-scheme:light;--paper:#f4f2ed;--ink:#171717;--muted:#625e58;--rule:#d6d2ca;--red:#a92936;--max:1120px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;min-width:320px;background:radial-gradient(ellipse at 82% 0,rgba(100,34,51,.18),transparent 34rem),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.14;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:72px 72px}
-a{color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
-.container{width:min(var(--max),calc(100% - 48px));margin-inline:auto}
-header{position:sticky;top:0;z-index:10;background:rgba(8,9,13,.8);backdrop-filter:blur(22px);border-bottom:1px solid var(--line)}
-.nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-size:14px;font-weight:750;letter-spacing:.16em}
-.brand-mark{width:30px;height:30px;border-radius:10px;border:1px solid rgba(240,91,103,.56);background:linear-gradient(145deg,rgba(240,91,103,.22),rgba(131,220,232,.08));box-shadow:inset 0 0 16px rgba(240,91,103,.12);transform:rotate(-8deg);position:relative}
-.brand-mark:before,.brand-mark:after{content:"";position:absolute;left:7px;right:7px;height:1.5px;background:linear-gradient(90deg,var(--red),var(--cyan));transform:rotate(-35deg)}
-.brand-mark:before{top:10px}.brand-mark:after{top:17px;left:10px;right:5px;opacity:.7}
-.brand span:last-child span{color:#777e8c;font-weight:500}
-.back{padding:10px 15px;border:1px solid var(--line);border-radius:999px;color:#c4c9d2;text-decoration:none;font-size:12px}.back:hover{border-color:rgba(240,91,103,.5);color:#fff}
-main{padding:78px 0 96px}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#d58d96;font-size:11px;font-weight:750;letter-spacing:.2em;text-transform:uppercase}
-.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}
-h1{margin:20px 0 15px;font-size:clamp(52px,8vw,92px);line-height:.94;letter-spacing:-.075em}
-.intro{max-width:660px;color:var(--muted);font-size:16px;line-height:1.8;margin:0}
-.project{margin-top:45px;padding:clamp(22px,4vw,42px);border:1px solid rgba(240,91,103,.23);border-radius:28px;background:radial-gradient(ellipse at 83% 26%,rgba(240,91,103,.13),transparent 40%),linear-gradient(135deg,#15151e,#0e1118 68%,#171119)}
-.project-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:25px}
-.tag{display:inline-flex;align-items:center;gap:9px;padding:8px 11px;border:1px solid rgba(240,91,103,.3);border-radius:999px;background:rgba(240,91,103,.07);color:#f0a1a8;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.tag:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red)}
-.project-code{color:#7e8592;font-size:10px;font-weight:650;letter-spacing:.15em}
-.project-heading{display:grid;grid-template-columns:1fr .56fr;gap:30px;align-items:center;margin-bottom:26px}
-.project h2{margin:0 0 12px;font-size:clamp(34px,5.3vw,58px);letter-spacing:-.07em;line-height:1}
-.project-copy p{max-width:640px;color:#a8aeba;font-size:15px;line-height:1.8;margin:0}
-.art{min-height:185px;aspect-ratio:1.6/1;position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:radial-gradient(ellipse at center,rgba(240,91,103,.26),transparent 38%),radial-gradient(ellipse at center,rgba(50,112,130,.18),transparent 70%),#0b0e15}
-.art:before{content:"";position:absolute;inset:0;opacity:.24;background:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.08) 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(255,255,255,.08) 24px)}
-.ring{position:absolute;width:57%;aspect-ratio:1;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%) rotate(22deg);border:1px solid rgba(240,91,103,.72);box-shadow:0 0 28px rgba(240,91,103,.18)}
-.ring:before,.ring:after{content:"";position:absolute;inset:13%;border:1px solid rgba(131,220,232,.55);border-radius:50%;transform:scaleX(.72) rotate(56deg)}
-.ring:after{inset:29%;border-color:rgba(240,91,103,.55);transform:scaleX(.8) rotate(-44deg)}
-.ring-core{position:absolute;width:16%;aspect-ratio:1;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);background:#f7a3ab;box-shadow:0 0 18px #f05b67,0 0 65px rgba(240,91,103,.7)}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 26px}
-.button{min-height:46px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-size:12px;font-weight:700;cursor:pointer;transition:transform .2s,background .2s,border-color .2s}
-.button:hover{transform:translateY(-2px)}.primary{background:linear-gradient(115deg,#d94355,#f16b75);border-color:transparent;color:#fff;box-shadow:0 8px 24px rgba(217,67,85,.2)}
-.secondary{background:rgba(255,255,255,.04);color:#f4f5f7}.secondary:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25)}
-.embed{overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:#05070b}.embed iframe{display:block;width:100%;height:min(72vh,690px);min-height:560px;border:0}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;color:#9198a5;font-size:11px;line-height:1.7}.controls strong{color:#c9dfe2}
-footer{padding:26px 0 38px;border-top:1px solid var(--line);color:#737987;font-size:11px}.footer-row{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}footer a{color:#a1a6b2;text-decoration:none}footer a:hover{color:#fff}
-@media(max-width:760px){.project-heading{grid-template-columns:1fr}.art{min-height:160px;max-height:240px}.project-code{display:none}}
-@media(max-width:560px){.container{width:calc(100% - 34px)}.nav{min-height:66px}main{padding:54px 0 70px}.actions{flex-direction:column}.actions .button{width:100%}.embed iframe{height:580px;min-height:580px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}a:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+.container{width:min(var(--max),calc(100% - 56px));margin-inline:auto}
+header{border-bottom:1px solid var(--rule);background:rgba(244,242,237,.96)}
+.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.wordmark{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:14px;font-weight:800;letter-spacing:.12em}
+.mark{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--paper);font-size:12px;font-weight:800;letter-spacing:-.08em}
+.wordmark small{display:block;margin-top:2px;color:#77736c;font-size:8px;font-weight:650;letter-spacing:.19em}
+.back{font-size:12px;font-weight:650;color:#5e5952;text-decoration:none}.back:hover{color:var(--red)}
+main{padding:76px 0 92px}
+.label{color:var(--red);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+h1{margin:15px 0;font-size:clamp(49px,7vw,78px);letter-spacing:-.075em;line-height:.98}
+.intro{max-width:660px;margin:0;color:#615d56;font-size:16px;line-height:1.8}
+.project{margin-top:50px;padding-top:28px;border-top:2px solid var(--ink)}
+.project-header{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.project h2{margin:8px 0 0;font-size:clamp(31px,4vw,45px);letter-spacing:-.06em}
+.project-meta{color:#777169;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.project-description{max-width:700px;color:#5d5953;font-size:14px;line-height:1.8;margin:0 0 24px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:0 16px;border:1px solid var(--ink);border-radius:4px;text-decoration:none;font-size:12px;font-weight:750;transition:background .18s,color .18s,border-color .18s}
+.primary{background:var(--ink);color:#fff}.primary:hover{background:var(--red);border-color:var(--red)}
+.secondary{background:transparent;color:var(--ink)}.secondary:hover{color:var(--red);border-color:var(--red)}
+.game-window{overflow:hidden;border:1px solid #292a30;background:#08090d;box-shadow:0 15px 38px rgba(25,22,18,.12)}
+.window-top{height:39px;padding:0 13px;display:flex;justify-content:space-between;align-items:center;background:#17181d;color:#d6d4d0;font-size:9px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.dots{display:flex;gap:5px}.dots i{width:6px;height:6px;border-radius:50%;background:#696a70}.dots i:first-child{background:#ab3744}
+.game-window iframe{display:block;width:100%;height:600px;border:0;background:#08090d}
+.game-caption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 13px;background:#17181d;color:#aaa7a1;font-size:10px}
+.help{margin-top:14px;color:#716c65;font-size:12px;line-height:1.7}
+footer{border-top:1px solid var(--rule);padding:23px 0 30px;color:#7b766e;font-size:10px}
+@media(max-width:650px){.container{width:calc(100% - 36px)}main{padding:54px 0 65px}.project{margin-top:38px}.project-header{display:block}.project-meta{margin-top:11px}.game-window iframe{height:440px}.actions{flex-direction:column}.actions a{width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<header><div class="container nav"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>HRR <span>STUDIOS</span></span></a><a class="back" href="index.html">← Back to home</a></div></header>
+<header><div class="container nav">
+  <a class="wordmark" href="index.html"><span class="mark">H.</span><span>HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
+  <a class="back" href="index.html">← Back to the studio</a>
+</div></header>
 <main class="container">
-  <div class="eyebrow">The playable archive</div>
-  <h1>Games worth<br>getting lost in.</h1>
-  <p class="intro">Explore the current playable projects from HRR Studios. Start with VOID BREACH: LITE, a browser-based preview from the VOID BREACH universe.</p>
+  <div class="label">The games</div>
+  <h1>What we're making.</h1>
+  <p class="intro">This is where we'll share the games and playable builds coming out of HRR Studios. There's one public preview here right now — more will be added as they're ready.</p>
   <section class="project" id="void-breach">
-    <div class="project-top"><div class="tag">Playable preview</div><div class="project-code">PROJECT 001 / HRR STUDIOS</div></div>
-    <div class="project-heading">
-      <div class="project-copy"><h2>VOID BREACH: LITE</h2><p>Survive wave after wave in a fast arcade experience set inside the breach. Face incoming threats, collect power-ups, and chase your best run. This is a small playable slice of a larger world.</p></div>
-      <div class="art" role="img" aria-label="Abstract red and cyan portal art for VOID BREACH"><div class="ring"></div><div class="ring-core"></div></div>
+    <div class="project-header"><div><div class="label">Current project / 01</div><h2>VOID BREACH: LITE</h2></div><div class="project-meta">Browser game · Playable preview</div></div>
+    <p class="project-description">A top-down arcade survival game. Enemies approach from every side, the waves get tougher, and power-ups can help you stay in the fight. The Lite build is a small preview of the larger VOID BREACH project.</p>
+    <div class="actions"><a class="button primary" href="#play">Play below ↓</a><a class="button secondary" href="game.html" target="_blank" rel="noopener noreferrer">Open in a new tab ↗</a><a class="button secondary" href="game.html" download>Download game</a></div>
+    <div class="game-window" id="play">
+      <div class="window-top"><span>VOID BREACH / LITE</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+      <iframe src="game.html?embed=1" title="Play VOID BREACH: LITE" loading="lazy"></iframe>
+      <div class="game-caption"><span>WASD / arrow keys to move · Mouse to aim</span><span>Click the game to start</span></div>
     </div>
-    <div class="actions"><a class="button primary" href="#game-frame">Play VOID BREACH ↘</a><a class="button secondary" href="game.html" target="_blank" rel="noopener noreferrer">Open fullscreen ↗</a><a class="button secondary" href="game.html" download>Download game ↓</a></div>
-    <div class="embed" id="game-frame"><iframe src="game.html" title="VOID BREACH: LITE game" loading="lazy" allow="fullscreen"></iframe></div>
-    <div class="controls"><span><strong>CONTROLS</strong></span><span>WASD / Arrow keys to move</span><span>Mouse to aim</span><span>Click the game to start</span></div>
+    <p class="help">Tip: open the game in a new tab for a larger view.</p>
   </section>
 </main>
-<footer><div class="container footer-row"><span>© 2026 HRR Studios. All rights reserved.</span><span><a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">YouTube</a> · <a href="mailto:hrrstudiosofficial@gmail.com">Contact</a></span></div></footer>
+<footer><div class="container">© 2026 HRR Studios. <a href="mailto:hrrstudiosofficial@gmail.com">Get in touch</a></div></footer>
 </body>
 </html>
