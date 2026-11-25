@@ -3,154 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f4f2ed">
-<meta name="description" content="HRR Studios makes original games and experiments. Play the VOID BREACH: LITE browser preview.">
-<title>HRR Studios — Games and experiments</title>
+<meta name="theme-color" content="#070708">
+<meta name="description" content="HRR Studios makes original games and experiments. Play VOID BREACH: LITE, a browser-based survival game.">
+<title>HRR Studios — Something is out there.</title>
 <style>
-:root{color-scheme:light;--paper:#f4f2ed;--ink:#171717;--muted:#66645f;--rule:#d6d2ca;--red:#a92936;--red-dark:#84212c;--dark:#101116;--max:1160px}
+:root{color-scheme:dark;--bg:#070708;--panel:#101013;--panel2:#151518;--line:#282529;--ink:#eeeae8;--muted:#a19b9c;--dim:#706a6c;--red:#b52b3c;--red2:#e34b59;--max:1200px}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:86px}
-body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;min-width:320px;background:radial-gradient(ellipse at 72% 13%,rgba(84,16,26,.18),transparent 36rem),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.10;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0,rgba(255,255,255,.035) 1px,transparent 1px,transparent 3px)}
 a{color:inherit}button{font:inherit}
-a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+a:focus-visible,button:focus-visible{outline:2px solid #e07882;outline-offset:4px}
 .container{width:min(var(--max),calc(100% - 56px));margin-inline:auto}
-.site-header{border-bottom:1px solid var(--rule);background:rgba(244,242,237,.96)}
-.nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.wordmark{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:14px;font-weight:800;letter-spacing:.12em}
-.wordmark-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:12px;font-weight:800;letter-spacing:-.08em}
-.wordmark small{display:block;margin-top:2px;color:#77736c;font-size:8px;font-weight:650;letter-spacing:.19em}
+.header{position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(7,7,8,.91);backdrop-filter:blur(18px)}
+.nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+.brand-mark{width:27px;height:27px;display:grid;place-items:center;border:1px solid #77313a;color:#f0dfe0;font-family:Georgia,serif;font-size:15px}
+.brand-name{font-size:12px;font-weight:800;letter-spacing:.17em}
+.brand-name small{display:block;margin-top:3px;color:#777174;font-size:8px;font-weight:550;letter-spacing:.19em}
 .nav-links{display:flex;align-items:center;gap:27px}
-.nav-links a{color:#4e4b46;text-decoration:none;font-size:12px;font-weight:650;transition:color .18s}
-.nav-links a:hover{color:var(--red)}
-.nav-links .nav-apply{padding:10px 15px;border:1px solid #a8a39a;border-radius:4px;color:var(--ink)}
-.nav-links .nav-apply:hover{border-color:var(--red);color:var(--red)}
-.menu-toggle{display:none;background:none;border:1px solid var(--rule);border-radius:4px;width:40px;height:38px;cursor:pointer}
-.menu-toggle span{display:block;width:17px;height:1.5px;background:var(--ink);margin:4px auto}
-.hero{padding:100px 0 85px;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:end}
-.eyebrow,.section-label{color:var(--red);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
-.hero h1{max-width:650px;margin:22px 0 24px;font-size:clamp(56px,7.2vw,91px);line-height:.96;letter-spacing:-.075em;font-weight:760}
-.hero h1 em{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.07em}
-.hero-copy{max-width:500px;color:#55524d;font-size:17px;line-height:1.75}
-.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}
-.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:0 17px;border:1px solid var(--ink);border-radius:4px;text-decoration:none;font-size:12px;font-weight:750;transition:background .18s,color .18s,border-color .18s}
-.button-primary{background:var(--ink);color:#fff}
-.button-primary:hover{background:var(--red);border-color:var(--red)}
-.button-light{background:transparent;color:var(--ink)}
-.button-light:hover{border-color:var(--red);color:var(--red)}
-.hero-side{padding:0 0 6px 22px;border-left:2px solid var(--red)}
-.hero-side p{max-width:360px;margin:0;color:#5e5a54;font-size:14px;line-height:1.8}
-.hero-side strong{display:block;margin-bottom:7px;color:var(--ink);font-size:12px;letter-spacing:.05em}
-.project-section{padding:66px 0 80px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.project-header{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:28px}
-.project-header h2{margin:10px 0 0;font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.065em}
-.project-meta{color:#6c6861;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
-.project-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:34px;align-items:start}
-.project-copy{padding:10px 0}
-.project-copy p{color:#5d5953;font-size:14px;line-height:1.85;margin:0 0 18px}
-.project-copy h3{margin:0 0 13px;font-size:19px;letter-spacing:-.035em}
-.project-facts{margin:24px 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
-.project-facts li{padding:11px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:12px;color:#66615a;font-size:12px}
-.project-facts strong{color:var(--ink);font-weight:700}
-.game-window{overflow:hidden;border:1px solid #292a30;background:#08090d;box-shadow:0 15px 38px rgba(25,22,18,.12)}
-.game-window-top{height:39px;padding:0 13px;display:flex;align-items:center;justify-content:space-between;background:#17181d;color:#d6d4d0;font-size:9px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.window-dots{display:flex;gap:5px}
-.window-dots i{width:6px;height:6px;border-radius:50%;background:#696a70}
-.window-dots i:first-child{background:#ab3744}
-.game-window iframe{display:block;width:100%;height:535px;border:0;background:#08090d}
-.game-caption{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:10px 13px;background:#17181d;color:#aaa7a1;font-size:10px}
-.game-caption a{color:#f0b8bd;text-decoration:none}
-.game-caption a:hover{text-decoration:underline}
-.about{padding:82px 0;display:grid;grid-template-columns:.7fr 1.3fr;gap:70px}
-.about h2{margin:12px 0;font-size:clamp(34px,4.5vw,51px);line-height:1.04;letter-spacing:-.06em}
-.about-copy{max-width:660px;color:#5d5953;font-size:15px;line-height:1.9}
+.nav-links a{color:#aaa3a5;text-decoration:none;font-size:12px;font-weight:600;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.menu-toggle{display:none;width:40px;height:38px;border:1px solid var(--line);background:transparent;cursor:pointer}
+.menu-toggle span{display:block;width:16px;height:1px;margin:5px auto;background:#eee}
+.hero{min-height:650px;padding:78px 0 76px;display:grid;grid-template-columns:.82fr 1.18fr;gap:54px;align-items:center}
+.eyebrow,.section-label{color:#c96b75;font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.hero h1{margin:23px 0 22px;font-size:clamp(55px,7.3vw,91px);line-height:.94;letter-spacing:-.075em;font-weight:740}
+.hero h1 em{color:#ce4654;font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.08em}
+.hero-copy{max-width:430px;margin:0;color:#aaa3a5;font-size:16px;line-height:1.8}
+.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:29px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:43px;padding:0 16px;border:1px solid #554047;background:transparent;color:#e9e3e3;text-decoration:none;font-size:11px;font-weight:750;letter-spacing:.04em;transition:background .2s,border-color .2s,color .2s}
+.button:hover{border-color:#dc5966;background:rgba(181,43,60,.12)}
+.button-primary{background:#9f2735;border-color:#9f2735;color:#fff}
+.button-primary:hover{background:#c33545;border-color:#c33545}
+.hero-note{margin-top:35px;color:#777174;font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+.game-window{min-width:0;border:1px solid #393035;background:#050506;box-shadow:0 24px 75px rgba(0,0,0,.54),0 0 55px rgba(111,20,34,.11)}
+.window-top{height:39px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px;border-bottom:1px solid #282226;background:#101012;color:#bcb4b6;font-size:9px;font-weight:750;letter-spacing:.16em;text-transform:uppercase}
+.window-top span:last-child{color:#9a555e}
+.window-dots{display:flex;gap:5px}.window-dots i{width:6px;height:6px;border-radius:50%;background:#4e484a}.window-dots i:first-child{background:#a72a39}
+.game-window iframe{display:block;width:100%;height:510px;border:0;background:#070708}
+.window-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 14px;border-top:1px solid #282226;background:#101012;color:#827a7c;font-size:10px}
+.window-bottom a{color:#d78a91;text-decoration:none}.window-bottom a:hover{color:white}
+.project{padding:67px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.project-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:70px}
+.project h2,.about h2,.updates h2{margin:12px 0 0;font-size:clamp(34px,4.6vw,54px);line-height:1.02;letter-spacing:-.065em}
+.project-copy{max-width:690px;color:#aaa3a5;font-size:14px;line-height:1.9}
+.project-copy p{margin:0 0 15px}
+.project-meta{display:flex;gap:25px;flex-wrap:wrap;margin-top:25px;padding-top:16px;border-top:1px solid var(--line);color:#80797b;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.project-meta strong{display:block;margin-top:6px;color:#ddd6d7;font-size:12px;letter-spacing:0;text-transform:none}
+.about{padding:78px 0;display:grid;grid-template-columns:.7fr 1.3fr;gap:70px}
+.about-copy{max-width:690px;color:#a19b9c;font-size:15px;line-height:1.9}
 .about-copy p{margin:0 0 16px}
-.updates{padding:26px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:grid;grid-template-columns:.7fr 1.3fr;gap:70px;align-items:center}
-.updates h2{margin:8px 0;font-size:24px;letter-spacing:-.045em}
-.updates p{margin:0;color:#625e58;font-size:13px;line-height:1.75}
-.updates a{color:var(--red);font-weight:700;text-decoration:none}
-.updates a:hover{text-decoration:underline}
-.join{margin:78px auto 85px;padding:33px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:28px}
-.join h2{margin:8px 0 5px;font-size:clamp(27px,3.3vw,38px);letter-spacing:-.055em}
-.join p{max-width:590px;margin:0;color:#65615b;font-size:13px;line-height:1.7}
-.footer{border-top:1px solid var(--rule);padding:23px 0 31px}
+.updates{padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:.7fr 1.3fr;gap:70px;align-items:center}
+.updates h2{font-size:clamp(25px,3vw,34px)}
+.updates p{margin:0;color:#999294;font-size:13px;line-height:1.8}
+.updates a{color:#d27680;text-decoration:none}.updates a:hover{color:#fff}
+.footer{padding:27px 0 32px}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
-.footer-links{display:flex;gap:19px;flex-wrap:wrap}
-.footer-links a{color:#625e58;text-decoration:none;font-size:11px;font-weight:650}
-.footer-links a:hover{color:var(--red)}
-.footer-note{margin-top:19px;color:#88837b;font-size:10px}
-@media(max-width:850px){.hero{grid-template-columns:1fr;gap:35px;padding:74px 0 64px}.hero-side{max-width:470px}.project-layout{grid-template-columns:1fr}.project-copy{max-width:660px}.game-window iframe{height:500px}.about,.updates{grid-template-columns:1fr;gap:15px}.about{padding:65px 0}.join{align-items:flex-start;flex-direction:column}}
-@media(max-width:650px){.container{width:calc(100% - 36px)}.nav{min-height:66px}.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:66px;left:0;right:0;padding:12px 18px 18px;background:var(--paper);border-bottom:1px solid var(--rule);flex-direction:column;align-items:stretch;gap:0}.nav-links.open{display:flex}.nav-links a{padding:13px 3px;border-bottom:1px solid var(--rule)}.nav-links .nav-apply{margin-top:10px;text-align:center}.hero{padding:58px 0 58px}.hero h1{font-size:clamp(54px,13vw,76px)}.hero-copy{font-size:15px}.project-section{padding:51px 0 58px}.project-header{display:block}.project-meta{display:block;margin-top:16px}.project-header h2{font-size:43px}.game-window iframe{height:400px}.about{padding:55px 0}.updates{padding:22px 0}.join{margin:55px auto 58px}.footer-inner{align-items:flex-start;flex-direction:column}}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{color:#8e8789;text-decoration:none;font-size:11px}.footer-links a:hover{color:#fff}
+.footer-note{margin-top:18px;color:#5f595b;font-size:10px}
+@media(max-width:900px){.hero{grid-template-columns:1fr;gap:37px;padding:62px 0}.hero-copy{max-width:580px}.game-window iframe{height:490px}.project-grid,.about,.updates{grid-template-columns:1fr;gap:18px}.project-grid{gap:23px}.about{padding:62px 0}}
+@media(max-width:650px){.container{width:calc(100% - 34px)}.nav{min-height:64px}.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:64px;left:0;right:0;padding:11px 17px 17px;background:#0a090b;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.nav-links.open{display:flex}.nav-links a{padding:13px 3px;border-bottom:1px solid #211d20}.hero{min-height:auto;padding:55px 0 57px;gap:32px}.hero h1{font-size:clamp(53px,13vw,77px)}.hero-copy{font-size:15px}.game-window iframe{height:390px}.project{padding:54px 0}.about{padding:55px 0}.updates{padding:24px 0}.footer-inner{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 </style>
 </head>
 <body id="top">
-<header class="site-header">
+<header class="header">
   <div class="container nav">
-    <a class="wordmark" href="index.html"><span class="wordmark-mark">H.</span><span>HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
+    <a class="brand" href="index.html" aria-label="HRR Studios home"><span class="brand-mark">H.</span><span class="brand-name">HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
     <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
     <nav class="nav-links" id="site-nav" aria-label="Main navigation">
-      <a href="#project">The game</a><a href="#about">About</a><a href="#updates">Updates</a><a href="games.html">All games</a><a class="nav-apply" href="#join">Join HRR</a>
+      <a href="#project">VOID BREACH</a><a href="#about">The studio</a><a href="#updates">Updates</a><a href="games.html">All games</a><a href="mailto:hrrstudiosofficial@gmail.com">Contact</a>
     </nav>
   </div>
 </header>
 <main>
   <section class="container hero">
-    <div>
-      <div class="eyebrow">A small game studio</div>
-      <h1>We make games.<br><em>Come play.</em></h1>
-      <p class="hero-copy">HRR Studios is where we build original games, try out ideas, and share the things we make. Right now, we're working on VOID BREACH — a top-down survival game with waves of enemies and power-ups.</p>
-      <div class="hero-actions"><a class="button button-primary" href="#project">Play the preview ↓</a><a class="button button-light" href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">Our YouTube ↗</a></div>
+    <div class="hero-copy-wrap">
+      <div class="eyebrow">HRR STUDIOS / PROJECT 001</div>
+      <h1>Something is<br>out <em>there.</em></h1>
+      <p class="hero-copy">We make games and experiment with ideas. Our current project is VOID BREACH — a top-down survival game where every wave gets harder. The first playable build is waiting below.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#project">Enter the breach ↓</a><a class="button" href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></div>
+      <div class="hero-note">CURRENT BUILD · VOID BREACH: LITE</div>
     </div>
-    <aside class="hero-side"><strong>WHAT'S ON THE WORKBENCH</strong><p><b>VOID BREACH: LITE</b> is a playable browser preview. It gives you a taste of the combat while the larger project continues to take shape.</p></aside>
+    <div class="game-window">
+      <div class="window-top"><span>VOID BREACH / LITE</span><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>PLAYABLE BUILD</span></div>
+      <iframe src="game.html?embed=1" title="Play VOID BREACH: LITE" loading="lazy"></iframe>
+      <div class="window-bottom"><span>WASD / ARROWS TO MOVE · MOUSE TO AIM</span><a href="game.html" target="_blank" rel="noopener noreferrer">OPEN FULLSCREEN ↗</a></div>
+    </div>
   </section>
 
-  <section class="project-section" id="project">
-    <div class="container">
-      <div class="project-header"><div><div class="section-label">Current project / 01</div><h2>VOID BREACH: LITE</h2></div><div class="project-meta">Browser game · Playable preview</div></div>
-      <div class="project-layout">
-        <div class="project-copy">
-          <h3>How long can you last?</h3>
-          <p>VOID BREACH is a top-down arcade survival game. Enemies close in from around the arena, each wave gets tougher, and power-ups can give you a little more time.</p>
-          <p>The Lite version is a small playable preview of the project. Jump in, see how far you get, and come back for another run.</p>
-          <ul class="project-facts">
-            <li><span>Format</span><strong>Top-down survival</strong></li>
-            <li><span>Play</span><strong>In your browser</strong></li>
-            <li><span>Controls</span><strong>Keyboard + mouse</strong></li>
-          </ul>
-          <a class="button button-primary" href="game.html" target="_blank" rel="noopener noreferrer">Open game on its own page ↗</a>
+  <section class="project" id="project">
+    <div class="container project-grid">
+      <div><div class="section-label">The current project</div><h2>VOID BREACH:<br>LITE</h2></div>
+      <div class="project-copy">
+        <p>VOID BREACH is a top-down arcade survival game. Enemies come in from around the arena, waves build on each other, and power-ups can help you stay alive a little longer.</p>
+        <p>The Lite build is a small browser-playable preview. It's here so you can try the game for yourself, not just read about it.</p>
+        <div class="project-meta">
+          <div>TYPE<strong>Arcade survival</strong></div>
+          <div>STATUS<strong>Playable preview</strong></div>
+          <div>CONTROLS<strong>Keyboard + mouse</strong></div>
         </div>
-        <div class="game-window">
-          <div class="game-window-top"><span>VOID BREACH / LITE</span><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-          <iframe src="game.html?embed=1" title="Play VOID BREACH: LITE" loading="lazy"></iframe>
-          <div class="game-caption"><span>WASD / arrow keys to move · Mouse to aim</span><a href="games.html#void-breach">Game details →</a></div>
-        </div>
+        <div class="hero-actions"><a class="button button-primary" href="games.html#void-breach">More about the game →</a><a class="button" href="game.html" download>Download build ↓</a></div>
       </div>
     </div>
   </section>
 
   <section class="container about" id="about">
-    <div><div class="section-label">A bit about us</div><h2>Made by people who like making games.</h2></div>
+    <div><div class="section-label">About HRR</div><h2>A small studio.<br>A lot to make.</h2></div>
     <div class="about-copy">
-      <p>HRR Studios is a small independent game studio. This is our corner of the internet to show what we're working on, share playable builds, and keep track of projects as they grow.</p>
-      <p>We’re starting with games, but we like experimenting and seeing where a good idea can go. The site will change as the projects do.</p>
+      <p>HRR Studios is an independent game studio focused on making original games and trying out ideas. This site is where we put our playable builds and share what we're working on.</p>
+      <p>We're keeping things simple: make something, improve it, and put it out there when it's ready. VOID BREACH is the project we're showing right now.</p>
     </div>
   </section>
 
   <section class="container updates" id="updates">
-    <div><div class="section-label">From the studio</div><h2>Want to see what we're up to?</h2></div>
-    <div><p>We'll share news and new builds as they're ready. For now, the best place to catch anything new is the <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">HRR Studios YouTube channel</a>.</p></div>
-  </section>
-
-  <section class="container join" id="join">
-    <div><div class="section-label">Get involved</div><h2>Want to be part of HRR?</h2><p>Interested in testing games, sharing ideas, or helping with a project? Send in an application and tell us a little about yourself.</p></div>
-    <a class="button button-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdOOOrFAPuIq5-FKesqzFM31BWmRPXnE_AzYZDJ9RYG_4q9vA/viewform?usp=header" target="_blank" rel="noopener noreferrer">Apply to join ↗</a>
+    <div><div class="section-label">Updates</div><h2>When there's news, it'll be here.</h2></div>
+    <div><p>There aren't any studio updates posted here yet. For videos and new builds, check the <a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">HRR Studios YouTube channel</a>.</p></div>
   </section>
 </main>
-<footer class="footer">
-  <div class="container"><div class="footer-inner">
-    <a class="wordmark" href="index.html"><span class="wordmark-mark">H.</span><span>HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
+<footer class="container footer">
+  <div class="footer-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">H.</span><span class="brand-name">HRR STUDIOS<small>INDEPENDENT GAME DEVELOPMENT</small></span></a>
     <div class="footer-links"><a href="games.html">Games</a><a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">YouTube</a><a href="mailto:hrrstudiosofficial@gmail.com">Contact</a><a href="#top">Back to top ↑</a></div>
-  </div><div class="footer-note">© 2026 HRR Studios. All rights reserved.</div></div>
+  </div>
+  <div class="footer-note">© 2026 HRR Studios. All rights reserved.</div>
 </footer>
 <script>
 (function(){
