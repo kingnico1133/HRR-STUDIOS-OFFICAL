@@ -7,14 +7,14 @@
 <style>
   :root{color-scheme:dark;--red:#f05b67;--cyan:#83dce8;--bg:#08090d}
   *{box-sizing:border-box}
-  body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(ellipse at 50% 42%,rgba(125,44,58,.2),transparent 32rem),radial-gradient(ellipse at 50% 70%,rgba(41,91,105,.12),transparent 35rem),var(--bg);display:flex;justify-content:center;align-items:center;padding:76px 18px 26px;overflow-x:hidden;overflow-y:auto;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;position:relative}
+  body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(ellipse at 50% 42%,rgba(80,12,24,.18),transparent 32rem),#070708;display:flex;justify-content:center;align-items:center;padding:76px 18px 26px;overflow-x:hidden;overflow-y:auto;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;position:relative}
   body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:54px 54px}
   .game-shell{position:relative;z-index:1;width:min(100%,760px);margin:auto}
   .game-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 13px;color:#aeb5c2;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
   .game-heading strong{color:#f0a0a8;font-weight:750}
   .game-frame{padding:8px;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015));box-shadow:0 30px 90px rgba(0,0,0,.48),0 0 50px rgba(240,91,103,.08)}
   canvas{display:block;width:100%;height:auto;max-width:700px;border:1px solid rgba(131,220,232,.25);border-radius:15px;box-shadow:0 0 28px rgba(0,238,255,.12);touch-action:none}
-  .quit-btn{position:fixed;top:17px;right:20px;min-height:40px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:rgba(15,17,24,.82);color:#e8eaf0;font-size:12px;font-weight:650;cursor:pointer;z-index:30;transition:background .2s,border-color .2s,transform .2s}
+  .quit-btn{position:fixed;top:17px;right:20px;min-height:40px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:rgba(10,9,10,.94);color:#e8eaf0;font-size:12px;font-weight:650;cursor:pointer;z-index:30;transition:background .2s,border-color .2s,transform .2s}
   .quit-btn:hover{background:rgba(240,91,103,.15);border-color:rgba(240,91,103,.55);transform:translateY(-1px)}
   .back{position:fixed;top:25px;left:22px;color:#b8c0cb;text-decoration:none;font-size:11px;font-weight:650;letter-spacing:.08em;z-index:30;transition:color .2s}
   .back:hover{color:var(--cyan)}
@@ -24,7 +24,7 @@
   body.embedded{padding:12px;min-height:100vh;overflow:hidden}
   body.embedded .back,body.embedded .quit-btn{display:none}
   body.embedded .game-shell{width:min(100%,700px)}
-  body.embedded .game-heading{margin-bottom:8px}
+  body.embedded .game-heading{display:none}
 </style>
 </head>
 
