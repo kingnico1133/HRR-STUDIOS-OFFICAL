@@ -3,42 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f4f2ed">
+<meta name="theme-color" content="#070708">
 <meta name="description" content="Playable games from HRR Studios. Play VOID BREACH: LITE in your browser.">
 <title>Games — HRR Studios</title>
 <style>
-:root{color-scheme:light;--paper:#f4f2ed;--ink:#171717;--muted:#625e58;--rule:#d6d2ca;--red:#a92936;--max:1120px}
+:root{color-scheme:dark;--bg:#070708;--line:#2b2528;--ink:#eeeae8;--muted:#a19b9c;--red:#b52b3c;--max:1120px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:inherit}a:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+body{margin:0;min-width:320px;background:radial-gradient(ellipse at 75% 5%,rgba(84,16,26,.17),transparent 34rem),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}a:focus-visible{outline:2px solid #e07882;outline-offset:4px}
 .container{width:min(var(--max),calc(100% - 56px));margin-inline:auto}
-header{border-bottom:1px solid var(--rule);background:rgba(244,242,237,.96)}
-.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.wordmark{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:14px;font-weight:800;letter-spacing:.12em}
-.mark{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--paper);font-size:12px;font-weight:800;letter-spacing:-.08em}
-.wordmark small{display:block;margin-top:2px;color:#77736c;font-size:8px;font-weight:650;letter-spacing:.19em}
-.back{font-size:12px;font-weight:650;color:#5e5952;text-decoration:none}.back:hover{color:var(--red)}
-main{padding:76px 0 92px}
-.label{color:var(--red);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
-h1{margin:15px 0;font-size:clamp(49px,7vw,78px);letter-spacing:-.075em;line-height:.98}
-.intro{max-width:660px;margin:0;color:#615d56;font-size:16px;line-height:1.8}
-.project{margin-top:50px;padding-top:28px;border-top:2px solid var(--ink)}
-.project-header{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
-.project h2{margin:8px 0 0;font-size:clamp(31px,4vw,45px);letter-spacing:-.06em}
-.project-meta{color:#777169;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.project-description{max-width:700px;color:#5d5953;font-size:14px;line-height:1.8;margin:0 0 24px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
-.button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:0 16px;border:1px solid var(--ink);border-radius:4px;text-decoration:none;font-size:12px;font-weight:750;transition:background .18s,color .18s,border-color .18s}
-.primary{background:var(--ink);color:#fff}.primary:hover{background:var(--red);border-color:var(--red)}
-.secondary{background:transparent;color:var(--ink)}.secondary:hover{color:var(--red);border-color:var(--red)}
-.game-window{overflow:hidden;border:1px solid #292a30;background:#08090d;box-shadow:0 15px 38px rgba(25,22,18,.12)}
-.window-top{height:39px;padding:0 13px;display:flex;justify-content:space-between;align-items:center;background:#17181d;color:#d6d4d0;font-size:9px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.dots{display:flex;gap:5px}.dots i{width:6px;height:6px;border-radius:50%;background:#696a70}.dots i:first-child{background:#ab3744}
-.game-window iframe{display:block;width:100%;height:600px;border:0;background:#08090d}
-.game-caption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 13px;background:#17181d;color:#aaa7a1;font-size:10px}
-.help{margin-top:14px;color:#716c65;font-size:12px;line-height:1.7}
-footer{border-top:1px solid var(--rule);padding:23px 0 30px;color:#7b766e;font-size:10px}
-@media(max-width:650px){.container{width:calc(100% - 36px)}main{padding:54px 0 65px}.project{margin-top:38px}.project-header{display:block}.project-meta{margin-top:11px}.game-window iframe{height:440px}.actions{flex-direction:column}.actions a{width:100%}}
+header{position:sticky;top:0;z-index:10;background:rgba(7,7,8,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav{min-height:69px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.16em}
+.mark{width:27px;height:27px;display:grid;place-items:center;border:1px solid #77313a;color:#f0dfe0;font-family:Georgia,serif;font-size:15px}
+.wordmark small{display:block;margin-top:3px;color:#777174;font-size:8px;font-weight:550;letter-spacing:.19em}
+.back{color:#aaa3a5;font-size:11px;text-decoration:none}.back:hover{color:#fff}
+main{padding:75px 0 91px}
+.label{color:#c96b75;font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+h1{margin:16px 0;font-size:clamp(51px,7vw,79px);line-height:.95;letter-spacing:-.075em}
+.intro{max-width:650px;color:#a19b9c;font-size:15px;line-height:1.8}
+.project{margin-top:52px;padding-top:28px;border-top:1px solid var(--line)}
+.project-header{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+.project h2{margin:8px 0 0;font-size:clamp(32px,4.5vw,48px);letter-spacing:-.065em}
+.project-meta{color:#81797c;font-size:9px;font-weight:750;letter-spacing:.14em;text-transform:uppercase}
+.description{max-width:680px;color:#a19b9c;font-size:14px;line-height:1.85}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:23px 0 17px}
+.button{min-height:42px;padding:0 15px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #554047;color:#e9e3e3;text-decoration:none;font-size:11px;font-weight:750}
+.button:hover{border-color:#dc5966;background:rgba(181,43,60,.12)}
+.primary{background:#9f2735;border-color:#9f2735;color:white}.primary:hover{background:#c33545;border-color:#c33545}
+.game-window{overflow:hidden;border:1px solid #393035;background:#050506}
+.window-top{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 13px;background:#101012;border-bottom:1px solid #282226;color:#bcb4b6;font-size:9px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}
+.game-window iframe{display:block;width:100%;height:620px;border:0;background:#070708}
+.caption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 13px;border-top:1px solid #282226;background:#101012;color:#827a7c;font-size:10px}
+footer{border-top:1px solid var(--line);padding:22px 0 30px;color:#716a6c;font-size:10px}
+@media(max-width:650px){.container{width:calc(100% - 34px)}main{padding:53px 0 65px}.project{margin-top:38px}.project-header{display:block}.project-meta{margin-top:12px}.actions{flex-direction:column}.actions a{width:100%}.game-window iframe{height:430px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -49,20 +47,19 @@ footer{border-top:1px solid var(--rule);padding:23px 0 30px;color:#7b766e;font-s
 </div></header>
 <main class="container">
   <div class="label">The games</div>
-  <h1>What we're making.</h1>
-  <p class="intro">This is where we'll share the games and playable builds coming out of HRR Studios. There's one public preview here right now — more will be added as they're ready.</p>
+  <h1>Playable builds.</h1>
+  <p class="intro">A look at what we're making at HRR Studios. There's one public build here right now. More will show up when they're ready.</p>
   <section class="project" id="void-breach">
-    <div class="project-header"><div><div class="label">Current project / 01</div><h2>VOID BREACH: LITE</h2></div><div class="project-meta">Browser game · Playable preview</div></div>
-    <p class="project-description">A top-down arcade survival game. Enemies approach from every side, the waves get tougher, and power-ups can help you stay in the fight. The Lite build is a small preview of the larger VOID BREACH project.</p>
-    <div class="actions"><a class="button primary" href="#play">Play below ↓</a><a class="button secondary" href="game.html" target="_blank" rel="noopener noreferrer">Open in a new tab ↗</a><a class="button secondary" href="game.html" download>Download game</a></div>
+    <div class="project-header"><div><div class="label">Project 001</div><h2>VOID BREACH: LITE</h2></div><div class="project-meta">Browser game / Playable preview</div></div>
+    <p class="description">A top-down arcade survival game. Enemies approach from every side, each wave gets tougher, and power-ups can help you stay in the fight. The Lite build is a small preview of the larger project.</p>
+    <div class="actions"><a class="button primary" href="#play">Play below ↓</a><a class="button" href="game.html" target="_blank" rel="noopener noreferrer">Open in a new tab ↗</a><a class="button" href="game.html" download>Download build ↓</a></div>
     <div class="game-window" id="play">
-      <div class="window-top"><span>VOID BREACH / LITE</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+      <div class="window-top"><span>VOID BREACH / LITE</span><span>HRR STUDIOS</span></div>
       <iframe src="game.html?embed=1" title="Play VOID BREACH: LITE" loading="lazy"></iframe>
-      <div class="game-caption"><span>WASD / arrow keys to move · Mouse to aim</span><span>Click the game to start</span></div>
+      <div class="caption"><span>WASD / ARROW KEYS TO MOVE · MOUSE TO AIM</span><span>CLICK THE GAME TO START</span></div>
     </div>
-    <p class="help">Tip: open the game in a new tab for a larger view.</p>
   </section>
 </main>
-<footer><div class="container">© 2026 HRR Studios. <a href="mailto:hrrstudiosofficial@gmail.com">Get in touch</a></div></footer>
+<footer><div class="container">© 2026 HRR Studios · <a href="mailto:hrrstudiosofficial@gmail.com">Contact</a></div></footer>
 </body>
 </html>
