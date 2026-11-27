@@ -12,10 +12,74 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body { position:fixed; inset:0; width:100%; height:100%; background:#000; overflow:hidden; display:flex; justify-content:center; align-items:center; font-family:'Courier New', monospace; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent; touch-action:none; overscroll-behavior:none; }
     #gameCanvas { display:block; cursor:none; image-rendering:auto; touch-action:none; }
+    #fullscreenBtn { display:none; position:fixed; z-index:20; top:calc(env(safe-area-inset-top, 0px) + 8px); left:50%; transform:translateX(-50%); width:42px; height:36px; border:1px solid rgba(0,245,255,.55); border-radius:8px; background:rgba(3,12,24,.82); color:#b9f8ff; font:bold 23px/1 Arial,sans-serif; touch-action:manipulation; -webkit-appearance:none; appearance:none; }
+    #fullscreenBtn:active { background:rgba(0,70,95,.95); }
+    #fullscreenStatus { display:none; position:fixed; z-index:19; top:calc(env(safe-area-inset-top, 0px) + 50px); left:50%; transform:translateX(-50%); width:min(88vw,360px); padding:9px 12px; border:1px solid rgba(0,245,255,.35); border-radius:7px; background:rgba(2,8,18,.94); color:#c5eaf2; font:11px/1.45 'Courier New',monospace; text-align:center; pointer-events:none; }
+    @media (pointer:coarse) { #fullscreenBtn { display:block; } }
   </style>
 </head>
 <body>
+  <button id="fullscreenBtn" type="button" aria-label="Enter fullscreen" title="Fullscreen">⛶</button>
+  <div id="fullscreenStatus" role="status" aria-live="polite"></div>
   <canvas id="gameCanvas"></canvas>
+  <script>
+    (() => {
+      const button = document.getElementById('fullscreenBtn');
+      const status = document.getElementById('fullscreenStatus');
+      const touchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+      if (!touchDevice) { button.remove(); status.remove(); return; }
+
+      const isFullscreen = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const showStatus = message => {
+        status.textContent = message;
+        status.style.display = 'block';
+        clearTimeout(showStatus.timer);
+        showStatus.timer = setTimeout(() => { status.style.display = 'none'; }, 5200);
+      };
+      const syncButton = () => {
+        const active = isFullscreen();
+        button.textContent = active ? '×' : '⛶';
+        button.setAttribute('aria-label', active ? 'Exit fullscreen' : 'Enter fullscreen');
+        button.title = active ? 'Exit fullscreen' : 'Fullscreen';
+      };
+
+      button.addEventListener('click', async event => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (isFullscreen()) {
+          try {
+            if (document.exitFullscreen) await document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          } catch (_) { showStatus('Your browser did not allow fullscreen to close.'); }
+          syncButton();
+          return;
+        }
+
+        try {
+          const root = document.documentElement;
+          if (root.requestFullscreen) await root.requestFullscreen();
+          else if (root.webkitRequestFullscreen) root.webkitRequestFullscreen();
+          else {
+            showStatus('This browser does not allow webpage fullscreen. On iPhone, use Share → Add to Home Screen, then open VOID BREACH from your Home Screen for an app-like full-screen view.');
+            return;
+          }
+          syncButton();
+          try {
+            if (screen.orientation && screen.orientation.lock) await screen.orientation.lock('landscape');
+          } catch (_) {}
+        } catch (_) {
+          showStatus('Fullscreen was blocked by your browser. Try opening the game directly in your browser, then tap this button again.');
+        }
+      });
+
+      document.addEventListener('fullscreenchange', syncButton);
+      document.addEventListener('webkitfullscreenchange', syncButton);
+      if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+        button.title = 'Fullscreen mode';
+      }
+      syncButton();
+    })();
+  </script>
   <script src="game.js"></script>
 </body>
 </html>
