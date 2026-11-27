@@ -1,6 +1,4 @@
 // =============================================================================
-//  VOID BREACH  —  v6.0  |  CrazyGames Compliant Build
-//  Full SDK compliance per docs.crazygames.com/requirements
 // =============================================================================
 'use strict';
 const W=960,H=640;
@@ -10,15 +8,12 @@ const IS_TOUCH=('ontouchstart' in window)||(navigator.maxTouchPoints>0);
 const buzz=p=>{try{if(IS_TOUCH&&navigator.vibrate)navigator.vibrate(p);}catch(e){}};
 // On touch devices: say TAP instead of CLICK, and hide hints that only make sense with a keyboard.
 if(IS_TOUCH){const _ft=ctx.fillText;ctx.fillText=function(t,x,y,w){if(typeof t==='string'){t=t.replace(/CLICK\s+or\s+ENTER/gi,'TAP').replace(/\bCLICK\b/g,'TAP').replace(/\bClick\b/g,'Tap');if(/\bENTER\b|\bESC\b|Press P|\bF2\b|\bH = /.test(t))return;}return _ft.call(this,t,x,y,w);};}
-// ── Storage: CrazyGames SDK.data (cloud-synced for logged-in players) with localStorage fallback ──
+// ── Local browser storage ────────────────────────────────────────────────────
 const STORE={
-  _d(){try{const s=window.CrazyGames&&window.CrazyGames.SDK;return(window.__cgInited&&s&&s.environment!=='disabled'&&s.data)?s.data:null;}catch(e){return null;}},
-  _n:0,_err:'',
-  _why(){try{const s=window.CrazyGames&&window.CrazyGames.SDK;if(!s)return'no SDK object';if(!window.__cgInited)return'SDK not initialised yet';if(s.environment==='disabled')return'environment disabled';if(!s.data)return'SDK.data MISSING';return'SDK.data active';}catch(e){return'error';}},
-  getItem(k){try{const d=this._d();if(d){this._n++;const v=d.getItem(k);if(v!==null&&v!==undefined)return v;}}catch(e){this._err=String(e&&e.message||e);}try{return localStorage.getItem(k);}catch(e){return null;}},
-  setItem(k,v){v=String(v);try{const d=this._d();if(d){this._n++;d.setItem(k,v);}}catch(e){this._err=String(e&&e.message||e);}try{localStorage.setItem(k,v);}catch(e){}},
-  removeItem(k){try{const d=this._d();if(d){this._n++;d.removeItem(k);}}catch(e){this._err=String(e&&e.message||e);}try{localStorage.removeItem(k);}catch(e){}},
-  clear(){try{const d=this._d();if(d){this._n++;d.clear();}}catch(e){this._err=String(e&&e.message||e);}try{localStorage.clear();}catch(e){}},
+  getItem(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+  setItem(k,v){try{localStorage.setItem(k,String(v));}catch(e){}},
+  removeItem(k){try{localStorage.removeItem(k);}catch(e){}},
+  clear(){try{localStorage.clear();}catch(e){}},
 };
 canvas.width=W; canvas.height=H;
 
@@ -177,222 +172,22 @@ rotEl.innerHTML=`<div style="font-size:68px;animation:rs 2s linear infinite">�
 <div style="font-size:13px;color:#4a8ab0;line-height:1.8">VOID BREACH requires<br><strong style="color:#00f5ff">LANDSCAPE MODE</strong></div>
 <style>@keyframes rs{to{transform:rotate(360deg)}}</style>`;
 document.body.appendChild(rotEl);
-// NOTE: CrazyGames handles orientation on their platform. We keep this for standalone use.
-const chkOri=()=>{const port=IS_TOUCH&&innerHeight>innerWidth;rotEl.style.display=port?'flex':'none';try{if(port&&CUR&&(CUR.state===ST.PLAY||CUR.state===ST.BOSS)&&!CUR.paused){CUR.paused=true;CG.gameplayStop();}}catch(e){}};
+const chkOri=()=>{const port=IS_TOUCH&&innerHeight>innerWidth;rotEl.style.display=port?'flex':'none';try{if(port&&CUR&&(CUR.state===ST.PLAY||CUR.state===ST.BOSS)&&!CUR.paused){CUR.paused=true;GAME_HOOKS.gameplayStop();}}catch(e){}};
 addEventListener('resize',chkOri);addEventListener('orientationchange',()=>{chkOri();setTimeout(()=>{try{resize();}catch(e){}},250);});chkOri();
 
-// ── CrazyGames Leaderboard (optional — requires manual setup) ────────────────
-// CrazyGames' platform leaderboard requires YOUR studio to contact CrazyGames
-// and have them configure it on their end (leaderboard guide text, score type,
-// min/max score, etc) — see docs.crazygames.com/sdk/leaderboards. Until that's
-// done, there is no real key to encrypt with, so submission stays a safe no-op.
-// Once HRR Studios sets this up, replace the string below with the 32-byte
-// base64 Encryption Key CrazyGames gives you and scores will start submitting.
-const LEADERBOARD_KEY = 'REPLACE_ME_WITH_REAL_KEY';
-const TEST_LB_KEY = 'dGhpcyBpcyBhIDMyLWJ5dGUga2V5IGZvciB0ZXN0aW4='; // docs example key — used ONLY on localhost / QA tool
-async function encryptScore(score, key) {
-  const iv = window.crypto.getRandomValues(new Uint8Array(12));
-  const cryptoKey = await window.crypto.subtle.importKey(
-    'raw',
-    new Uint8Array(atob(key).split('').map(c => c.charCodeAt(0))),
-    { name: 'AES-GCM' }, false, ['encrypt']
-  );
-  const enc = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv },
-    cryptoKey, new TextEncoder().encode(score.toString()));
-  const combined = new Uint8Array(iv.length + enc.byteLength);
-  combined.set(iv); combined.set(new Uint8Array(enc), iv.length);
-  return btoa(String.fromCharCode(...combined));
-}
-
-// ── CrazyGames SDK v3 — complete integration ────────────────────────────────
-// Docs: docs.crazygames.com/sdk/intro · /game · /user · /data · /leaderboards-client
-// index.html awaits SDK.init() BEFORE game.js loads, so SDK.data is ready for the very first save read.
-// Every call is gated on CG.ok (SDK present AND environment is 'local' or 'crazygames'),
-// because on any other domain the SDK's methods throw.
-const CG={
-  _s:null, env:'none', user:null,
-  _dbg:false,
-  _playing:false, _loading:false, _sdkMuted:false, _pct:-1,
-  _authFn:null, _joinFn:null, _setFn:null, _qaPending:false,
-
-  get ok(){ return !!this._s && (this.env==='local' || this.env==='crazygames'); },
-  debugLines(){
-    return['CG DEBUG   (F2 hides)',
-      `env: ${this.env}   ok: ${this.ok}   QA tool: ${this.isQaTool}`,
-      `user: ${this.user?this.user.username:'guest'}   accounts available: ${this.accountAvailable}`,
-      `data: ${STORE._why()}   SDK.data calls: ${STORE._n}   error: ${STORE._err||'-'}`];
-  },
-  onMenu(){ if(this._qaPending){ this._qaPending=false; setTimeout(()=>this.qaSelfTest(),2800); } },
-  get isQaTool(){ try{ return !!this._s?.isQaTool; }catch(e){ return false; } },
-
-  async init(){
-    try{
-      const sdk=window.CrazyGames?.SDK;
-      if(!sdk){ console.log('[CG] SDK script not present – running standalone'); return; }
-      this._s=sdk;
-      if(!window.__cgInited){ await sdk.init(); window.__cgInited=true; }   // normally done by index.html already
-      this.env=sdk.environment||'disabled';
-      console.log('[CG] SDK ready · environment:',this.env,this.isQaTool?'· QA tool':'');
-      if(!this.ok){ console.log('[CG] SDK disabled on this domain – calls are skipped'); return; }
-      // Mute audio support
-      this._applySettings(sdk.game.settings);
-      this._setFn=s=>this._applySettings(s); sdk.game.addSettingsChangeListener(this._setFn);
-      // User auth listener
-      this._registerAuthListener();
-      // Multiplayer hooks (single-player game: listener is registered for platform compatibility)
-      this._registerJoinListener();
-      if(sdk.game.inviteParams) console.log('[CG] started from invite link:',sdk.game.inviteParams);
-      // Game completion: report saved progress on start
-      this._reportStartProgress();
-      reloadFromStore(); STORE.setItem('vb_ver','10.7'); ['vb_tmp','vb_test','cg_qa'].forEach(k=>STORE.removeItem(k));   // data module: get / set / remove (cleans obsolete keys)
-      if(this.isQaTool)this._qaPending=true;
-      if(/[?&]cgdebug=1/.test(location.search))this._dbg=true;
-      if(/[?&]cgqa=1/.test(location.search)) setTimeout(()=>this.qaSelfTest(),1500);
-    }catch(e){ console.warn('[CG] init failed – running standalone',e); this.env='disabled'; }
-  },
-
-  // ── Mute audio support (SDK setting beats the in-game toggle) ──
-  _applySettings(s){
-    if(!s)return;
-    this._sdkMuted=!!s.muteAudio;
-    if(this._sdkMuted){ audioOn=false; _stopMusic(); }
-    else { audioOn=!_userMuted; if(audioOn&&AC)_startMusic(_desiredMusicMode); }
-  },
-  get disableChat(){ try{ return !!this._s?.game?.settings?.disableChat; }catch(e){ return false; } },
-
-  // ── Loading start / stop ──
-  loadingStart(){ if(!this.ok||this._loading)return; this._loading=true; if(window.__cgLoadStarted)return; try{ this._s.game.loadingStart(); }catch(e){} },
-  loadingStop(){ if(!this.ok||!this._loading)return; this._loading=false; try{ this._s.game.loadingStop(); }catch(e){} },
-
-  // ── Gameplay start / stop (+ feedback context) ──
-  gameplayStart(){
-    if(!this.ok||this._playing)return; this._playing=true;
-    try{ this._s.game.gameplayStart(); console.log('[CG] gameplayStart'); }catch(e){}
-    this.setContext({wave:currentWave||1});
-  },
-  gameplayStop(){
-    if(!this.ok||!this._playing)return; this._playing=false;
-    try{ this._s.game.gameplayStop(); console.log('[CG] gameplayStop'); }catch(e){}
-  },
-  setContext(o){
-    if(!this.ok)return;
-    try{
-      const c={}; Object.keys(o||{}).forEach(k=>c[k]=String(o[k]));
-      const p=CUR&&CUR.player; if(p){ c.weapon=WEAPONS[p.weapon]?.name||p.weapon; c.skin=curSkin().name; c.score=String(CUR.score|0); }
-      this._s.game.setGameContext(c);
-    }catch(e){}
-  },
-  clearContext(){ if(!this.ok)return; try{ this._s.game.clearGameContext(); }catch(e){} },
-
-  // ── Happy time + game completion ──
-  happyTime(){ if(!this.ok)return; try{ this._s.game.happytime(); }catch(e){} },
-  reportProgress(pct){
-    if(!this.ok)return; pct=Math.max(0,Math.min(100,Math.round(pct)));
-    if(pct<=this._pct)return; this._pct=pct;
-    try{ this._s.game.reportGameCompletedPercentage(pct); console.log('[CG] completion',pct+'%'); }catch(e){}
-  },
-  _reportStartProgress(){
-    const pct=SAVE.wins>0?100:Math.round(Math.min(SAVE.bestWave,12)/12*100);
-    if(pct>0)this.reportProgress(pct);
-  },
-
-  // (This build contains no ads and no banners.)
-
-  // ── User: availability, auth prompt, account link, user, tokens, auth listener ──
-  get showLoginBtn(){ return this.ok&&this.accountAvailable&&!this.user&&this.isQaTool; },
-  get accountAvailable(){ try{ return !!this._s?.user?.isUserAccountAvailable; }catch(e){ return false; } },
-  async showAuthPrompt(){
-    if(!this.ok||!this.accountAvailable)return null;
-    try{ const u=await this._s.user.showAuthPrompt(); this.user=u||null; console.log('[CG] showAuthPrompt:',u?.username||'cancelled'); return this.user; }
-    catch(e){ console.warn('[CG] showAuthPrompt cancelled/failed',e); return null; }
-  },
-  async showAccountLinkPrompt(){
-    if(!this.ok||!this.accountAvailable)return null;
-    try{ return await this._s.user.showAccountLinkPrompt(); }catch(e){ console.warn('[CG] showAccountLinkPrompt',e); return null; }
-  },
-  async getUser(){
-    if(!this.ok||!this.accountAvailable)return null;
-    try{ const u=await this._s.user.getUser(); this.user=u||null; return this.user; }catch(e){ return null; }
-  },
-  async getUserToken(){ if(!this.ok)return null; try{ return await this._s.user.getUserToken(); }catch(e){ console.warn('[CG] getUserToken',e); return null; } },
-  async getXsollaUserToken(){ if(!this.ok)return null; try{ return await this._s.user.getXsollaUserToken(); }catch(e){ console.warn('[CG] getXsollaUserToken',e); return null; } },
-  _registerAuthListener(){
-    this._authFn=u=>{
-      const changed=(u?.username||null)!==(this.user?.username||null);
-      this.user=u||null; console.log('[CG] authListener:',u?.username||'guest');
-      if(changed)reloadFromStore();      // SDK.data now points at this player's cloud save
-    };
-    try{ this._s.user.addAuthListener(this._authFn); }catch(e){ console.warn('[CG] addAuthListener failed',e); }
-    this.getUser();
-  },
-  removeAuthListener(){ try{ if(this._authFn)this._s.user.removeAuthListener(this._authFn); }catch(e){} },
-
-  // ── Leaderboard (client-only): encrypted + plain score ──
-  async submitScore(score){
-    if(!this.ok)return;
-    if(!this.user&&!this.isQaTool&&this.env!=='local'){ console.log('[CG] guest player — leaderboard score skipped'); return; }
-    let key=LEADERBOARD_KEY;
-    if(key==='REPLACE_ME_WITH_REAL_KEY'){
-      if(this.env==='local'||this.isQaTool)key=TEST_LB_KEY;
-      else{ console.log('[CG] submitScore skipped — no leaderboard key yet. Score was:',score); return; }
-    }
-    try{ const enc=await encryptScore(score,key); await this._s.user.submitScore({encryptedScore:enc,score}); console.log('[CG] submitScore OK:',score); }
-    catch(e){ console.warn('[CG] submitScore failed',e); }
-  },
-
-  // ── Multiplayer helpers (kept ready; this game is single-player) ──
-  get isInstantMultiplayer(){ try{ return !!this._s?.game?.isInstantMultiplayer; }catch(e){ return false; } },
-  get inviteParams(){ try{ return this._s?.game?.inviteParams||null; }catch(e){ return null; } },
-  getInviteParam(k){ try{ return this._s.game.getInviteParam(k); }catch(e){ return null; } },
-  inviteLink(params){ if(!this.ok)return null; try{ return this._s.game.inviteLink(params); }catch(e){ return null; } },
-  updateRoom(o){ if(!this.ok)return; try{ this._s.game.updateRoom(o); }catch(e){} },
-  leftRoom(){ if(!this.ok)return; try{ this._s.game.leftRoom(); }catch(e){} },
-  showInviteButton(params){ if(!this.ok)return null; try{ return this._s.game.showInviteButton(params); }catch(e){ return null; } },   // deprecated by CrazyGames — use updateRoom
-  hideInviteButton(){ if(!this.ok)return; try{ this._s.game.hideInviteButton(); }catch(e){} },                                          // deprecated
-  addJoinRoomListener(fn){ if(!this.ok)return; try{ this._s.game.addJoinRoomListener(fn); }catch(e){} },
-  removeJoinRoomListener(fn){ if(!this.ok)return; try{ this._s.game.removeJoinRoomListener(fn); }catch(e){} },
-  _registerJoinListener(){ this._joinFn=p=>console.log('[CG] join-room request',p); this.addJoinRoomListener(this._joinFn); },
-
-  // ── Analytics: track order (for in-game purchases; this game has none yet) ──
-  trackOrder(provider,order){ if(!this.ok)return; try{ this._s.analytics.trackOrder(provider,order); }catch(e){ console.warn('[CG] trackOrder',e); } },
-
-  // ── Cloud data passthrough (SDK.data: getItem / setItem / removeItem / clear) ──
-  data:STORE,
-
-  // QA sweep — runs ONLY inside CrazyGames' QA tool (or with ?cgqa=1 / VB_CG.qaSelfTest()). Real players never trigger it.
-  // It exercises every safe SDK call so the QA checklist can turn green. It never touches real save data, never opens login
-  // prompts, and never fires purchase analytics.
-  async qaSelfTest(){
-    if(!this.ok){ console.log('[CG QA] SDK not active here'); return; }
-    const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-    const t=async(n,f)=>{ try{ console.log('[CG QA]',n,'→',await f()); }catch(e){ console.warn('[CG QA]',n,'failed',e); } };
-    await t('environment',()=>this.env+(this.isQaTool?' (QA tool)':''));
-    await t('data module: set / get / remove / clear (saves are backed up and restored)',()=>{
-      const d=this._s.data; if(!d)return 'SDK.data MISSING';
-      const K=['vb_hs','vb_p','vb_gq','vb_auto','vb_opt','vb_save','vb_lb','vb_ach','vb_mute','vb_ver'],snap={};
-      K.forEach(k=>{ let v=d.getItem(k); if(v===null||v===undefined)v=STORE.getItem(k); if(v!==null&&v!==undefined)snap[k]=v; });
-      d.setItem('cg_qa','1'); const v=d.getItem('cg_qa'); d.removeItem('cg_qa'); d.clear();
-      Object.keys(snap).forEach(k=>d.setItem(k,snap[k])); return 'ok ('+v+')';
-    });
-    await t('isUserAccountAvailable',()=>this.accountAvailable);
-    await t('getUser',()=>this.getUser());
-    await t('getUserToken',async()=>{ const x=await this.getUserToken(); return x?'token received':'no token (guest)'; });
-    await t('getXsollaUserToken',async()=>{ const x=await this.getXsollaUserToken(); return x?'token received':'no token (guest)'; });
-    await t('invite link + room update',()=>{ this.inviteLink({room:'qa'}); this.updateRoom({roomId:'qa',isJoinable:false}); this.leftRoom(); return 'ok'; });
-    await t('invite button show/hide (deprecated)',()=>{ this.showInviteButton({room:'qa'}); this.hideInviteButton(); return 'ok'; });
-    await t('trackOrder (QA test order only)',()=>{ this.trackOrder('xsolla',{id:'qa-test-order',qa:true}); return 'sent'; });
-    await t('submitScore',()=>this.submitScore(1));
-    await t('reportGameCompletedPercentage',()=>{ this.reportProgress(Math.max(this._pct,1)); return this._pct; });
-  },
+// ── Standalone game lifecycle ─────────────────────────────────────────────────
+const GAME_HOOKS={
+  _sdkMuted:false,_pct:-1,showLoginBtn:false,user:null,_dbg:false,
+  onMenu(){},loadingStart(){},loadingStop(){},gameplayStart(){},gameplayStop(){},
+  setContext(){},clearContext(){},happyTime(){},reportProgress(){},submitScore(){},
 };
-window.VB_CG=CG;
 
-// Global wave counter for SDK context
+// Global wave counter
 let currentWave=1;
 
 // ── Audio ─────────────────────────────────────────────────────────────────────
 let AC=null, MG=null, SG=null, MFilter=null, audioOn=true, _userMuted=false;
-try{_userMuted=STORE.getItem('vb_mute')==='1';audioOn=!_userMuted&&!CG._sdkMuted;}catch(e){}
+try{_userMuted=STORE.getItem('vb_mute')==='1';audioOn=!_userMuted;}catch(e){}
 const _saveMute=()=>{try{STORE.setItem('vb_mute',_userMuted?'1':'0');}catch(e){}};
 let _mNodes=[], _mMode='', _mGen=0, _desiredMusicMode='normal';
 
@@ -1140,8 +935,8 @@ class Game{
     this.MUTE_BTN= IS_TOUCH?{x:W-122,y:52,w:110,h:34}:{x:W-104,y:50,w:92,h:26};
     // Studio splash screen state
     this.splashT=0;this.fireParts=[];this._splashLogoSound=false;this._splashTextSound=false;
-    CG.loadingStart();
-    {const done=()=>CG.loadingStop();if(hrrLogo.complete)setTimeout(done,0);else{hrrLogo.addEventListener('load',done);hrrLogo.addEventListener('error',done);}setTimeout(done,5000);}   // assets loaded = loading finished (splash intro is gameplay-side)
+    GAME_HOOKS.loadingStart();
+    {const done=()=>GAME_HOOKS.loadingStop();if(hrrLogo.complete)setTimeout(done,0);else{hrrLogo.addEventListener('load',done);hrrLogo.addEventListener('error',done);}setTimeout(done,5000);}   // assets loaded = loading finished (splash intro is gameplay-side)
     this._bind();
   }
 
@@ -1217,13 +1012,13 @@ class Game{
     const go=()=>{
       t+=.014+rand(0,.012);this.loadPct=Math.min(t,1);
       this.loadPhase=t<.25?0:t<.6?1:2;
-      t<1?requestAnimationFrame(go):(this.state=ST.MENU,CG.loadingStop());
+      t<1?requestAnimationFrame(go):(this.state=ST.MENU,GAME_HOOKS.loadingStop());
     };
     requestAnimationFrame(go);
   }
 
   _bind(){
-    addEventListener('keydown',e=>{if(e.code==='F2'){CG._dbg=!CG._dbg;e.preventDefault();}
+    addEventListener('keydown',e=>{
       this.keys[e.code]=true;
       // Docs: Avoid Escape — it closes fullscreen on web. Use P only.
       if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
@@ -1238,10 +1033,10 @@ class Game{
       if(e.code==='KeyP'&&[ST.PLAY,ST.BOSS,ST.STATS,ST.UPGRADE].includes(this.state)){
         const live=[ST.PLAY,ST.BOSS].includes(this.state);
         this.paused=!this.paused;
-        if(this.paused){sfx.pause();if(live)CG.gameplayStop();}
-        else{sfx.resume();if(live)CG.gameplayStart();}
+        if(this.paused){sfx.pause();if(live)GAME_HOOKS.gameplayStop();}
+        else{sfx.resume();if(live)GAME_HOOKS.gameplayStart();}
       }
-      if(e.code==='KeyM'){_userMuted=!_userMuted;audioOn=!_userMuted&&!CG._sdkMuted;_saveMute();if(!audioOn)_stopMusic();else if(AC)_startMusic(_desiredMusicMode);}
+      if(e.code==='KeyM'){_userMuted=!_userMuted;audioOn=!_userMuted;_saveMute();if(!audioOn)_stopMusic();else if(AC)_startMusic(_desiredMusicMode);}
     });
     addEventListener('keyup',e=>this.keys[e.code]=false);
     canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();this.mouse.x=(e.clientX-r.left)*(W/r.width);this.mouse.y=(e.clientY-r.top)*(H/r.height);});
@@ -1274,7 +1069,7 @@ class Game{
     if(hit(this._numsRect())){OPT.nums=!OPT.nums;saveOpt();sfx.upg();return;}
     if(hit(this._autoRect())){AUTO=!AUTO;if(!AUTO)GQ=GQmax;try{STORE.setItem('vb_auto',AUTO?'1':'0');}catch(e){}sfx.upg();return;}
     if(hit(this._soundToggleRect())){
-      _userMuted=!_userMuted;audioOn=!_userMuted&&!CG._sdkMuted;_saveMute();
+      _userMuted=!_userMuted;audioOn=!_userMuted;_saveMute();
       if(!audioOn)_stopMusic();else if(AC)_startMusic(_desiredMusicMode);
       sfx.upg();return;
     }
@@ -1283,7 +1078,7 @@ class Game{
 
   _coinRevive(){
     this.coins-=this._reviveCost();this.player.dead=false;this.player.hp=Math.ceil(this.player.maxHp*.5);
-    this.player.inv=2.8;this.state=ST.PLAY;this.rewardVisible=false;this.fx.addFlash('#ffd700',.5);CG.gameplayStart();
+    this.player.inv=2.8;this.state=ST.PLAY;this.rewardVisible=false;this.fx.addFlash('#ffd700',.5);GAME_HOOKS.gameplayStart();
     _desiredMusicMode=this.enemies.some(e=>e.type==='boss'&&!e.dead)?'boss':'normal';if(audioOn)_startMusic(_desiredMusicMode);
   }
 
@@ -1301,8 +1096,8 @@ class Game{
   _sc(){return 1+(this.wave-1)*.20+(this.wave>12?(this.wave-12)*.10:0);}
 
   _nextWave(){
-    this.wave++;currentWave=this.wave;CG.reportProgress((this.wave-1)/this.TOTAL*100);
-    if(this.wave>this.TOTAL&&!this.endless){SAVE.wins++;if(this.deathCount===0)SAVE.deathless++;this._endRun();CG.happyTime();saveHS(this.score);this._lbRank=saveToLeaderboard(this.score,this.wave,this.totalKills);CG.submitScore(this.score);this.state=ST.WIN;_stopMusic();return;}
+    this.wave++;currentWave=this.wave;GAME_HOOKS.reportProgress((this.wave-1)/this.TOTAL*100);
+    if(this.wave>this.TOTAL&&!this.endless){SAVE.wins++;if(this.deathCount===0)SAVE.deathless++;this._endRun();GAME_HOOKS.happyTime();saveHS(this.score);this._lbRank=saveToLeaderboard(this.score,this.wave,this.totalKills);GAME_HOOKS.submitScore(this.score);this.state=ST.WIN;_stopMusic();return;}
     this._theme=null;this.bullets=[];this.enemies=[];this.obs=this._genObs();dc.clearRect(0,0,AR.w,AR.h);this.bolts=[];this.pickups=[];this.wells=[];
     if(this.wave%4===0){this.state=ST.BOSS;this.bossT=3.4;sfx.boss();_desiredMusicMode='boss';if(AC&&audioOn)_startMusic('boss');}
     else{this.state=ST.PLAY;this._spawnWave();_desiredMusicMode='normal';if(AC&&audioOn)_startMusic('normal');}
@@ -1314,8 +1109,8 @@ class Game{
   }
 
   _spawnWave(){
-    CG.gameplayStart(); // signal: player is now in live gameplay
-    try{CG.setContext({wave:this.wave});}catch(e){}
+    GAME_HOOKS.gameplayStart(); // signal: player is now in live gameplay
+    try{GAME_HOOKS.setContext({wave:this.wave});}catch(e){}
     const w=this.wave,sc=this._sc();
     const pos=()=>{let x,y,ok,t=0;do{ok=true;const s=rInt(0,3);if(s===0){x=rand(AR.x,AR.x+AR.w);y=AR.y+42;}else if(s===1){x=rand(AR.x,AR.x+AR.w);y=AR.y+AR.h-42;}else if(s===2){x=AR.x+42;y=rand(AR.y,AR.y+AR.h);}else{x=AR.x+AR.w-42;y=rand(AR.y,AR.y+AR.h);}if(dist({x,y},this.player)<175)ok=false;t++;}while(!ok&&t<20);return{x,y};};
     const cnts={crawler:Math.min(3+Math.floor(w*1.6),18),sentinel:Math.max(0,Math.floor((w-1)*1.1)),warden:Math.max(0,Math.floor((w-2)*.7)),spawn:w>=3?Math.floor((w-2)*.8):0,ghost:w>=4?Math.floor((w-3)*.9):0};
@@ -1342,8 +1137,8 @@ class Game{
     let r=Math.random()*T.reduce((a,t)=>a+t.w,0);for(const t of T){r-=t.w;if(r<=0)return t;}return T[0];
   }
   _spawnBoss(){
-    CG.gameplayStart(); // signal: player is now in live boss gameplay
-    try{CG.setContext({wave:this.wave,boss:'VOID LORD'});}catch(e){}
+    GAME_HOOKS.gameplayStart(); // signal: player is now in live boss gameplay
+    try{GAME_HOOKS.setContext({wave:this.wave,boss:'VOID LORD'});}catch(e){}
     const sc=this._sc();
     this.enemies.push(new Enemy(ACX,ACY-80,'boss',sc));
     const ex=Math.floor(this.wave/4);
@@ -1367,7 +1162,7 @@ class Game{
   }
 
   _offerStats(){
-    CG.gameplayStop(); // player is no longer in live gameplay
+    GAME_HOOKS.gameplayStop(); // player is no longer in live gameplay
     this._skinCheck();persist();
     _desiredMusicMode='normal';if(AC&&audioOn)_startMusic('normal');
     this.clearBonus=this.wStats.bonus;
@@ -1469,12 +1264,12 @@ class Game{
     this.enemies=es.filter(e=>!e.dead);this.bullets=bs.filter(b=>!b.dead);this.parts=ps.filter(q=>q.life>0);
     this._checkAchievements();
     if(p.dead){
-      CG.clearContext();this._endRun();saveHS(this.score);this._lbRank=saveToLeaderboard(this.score,this.wave,this.totalKills);CG.submitScore(this.score);
+      GAME_HOOKS.clearContext();this._endRun();saveHS(this.score);this._lbRank=saveToLeaderboard(this.score,this.wave,this.totalKills);GAME_HOOKS.submitScore(this.score);
       this.fx.addShake(18,.8);this.fx.addFlash('#ff0000',.8);this.fx.addChroma(1);this.fx.addFreeze(.12);
       for(let i=0;i<GQP(50);i++)ps.push(new Particle(p.x,p.y,rand(-250,250),rand(-250,250),'#00f5ff',rand(.6,1.6),rand(3,11),true,i%3===0));
       this.shockwaves.push(new Shockwave(p.x,p.y,'#00f5ff',100));
       this.deathCount++;this.rewardVisible=true;this.state=ST.OVER;_stopMusic();
-      CG.gameplayStop();
+      GAME_HOOKS.gameplayStop();
       // Can't combine midgame + rewarded on same death screen.
     }
     if(this.enemies.length===0&&this.state===ST.PLAY)this._offerStats();
@@ -1640,12 +1435,12 @@ class Game{
     const r=canvas.getBoundingClientRect(),mx=(e.clientX-r.left)*(W/r.width),my=(e.clientY-r.top)*(H/r.height);
     const b=this._pBtns().find(q=>mx>=q.x&&mx<=q.x+q.w&&my>=q.y&&my<=q.y+q.h);if(!b)return;
     const live=[ST.PLAY,ST.BOSS].includes(this.state);
-    if(b.id==='resume'){this.paused=false;sfx.resume();if(live)CG.gameplayStart();}
+    if(b.id==='resume'){this.paused=false;sfx.resume();if(live)GAME_HOOKS.gameplayStart();}
     else if(b.id==='gfx'){saveGQ((GQ+1)%4);this._lows=0;sfx.upg();}
     else if(b.id==='auto'){AUTO=!AUTO;if(!AUTO)GQ=GQmax;try{STORE.setItem('vb_auto',AUTO?'1':'0');}catch(e){}sfx.upg();}
     else if(b.id==='fps'){OPT.fps=!OPT.fps;saveOpt();sfx.upg();}
     else if(b.id==='home'){
-      if(this._homeArm>0){this.paused=false;this._homeArm=0;CG.gameplayStop();CG.clearContext();this.state=ST.MENU;_desiredMusicMode='normal';if(AC&&audioOn)_startMusic('normal');this.bullets=[];this.enemies=[];this.pickups=[];this.bolts=[];sfx.resume();}
+      if(this._homeArm>0){this.paused=false;this._homeArm=0;GAME_HOOKS.gameplayStop();GAME_HOOKS.clearContext();this.state=ST.MENU;_desiredMusicMode='normal';if(AC&&audioOn)_startMusic('normal');this.bullets=[];this.enemies=[];this.pickups=[];this.bolts=[];sfx.resume();}
       else{this._homeArm=3;sfx.hit();}
     }
   }
@@ -1677,7 +1472,7 @@ class Game{
     const tg=c.createLinearGradient(px,py,px+pw,py);tg.addColorStop(0,'transparent');tg.addColorStop(.5,'rgba(0,245,255,.55)');tg.addColorStop(1,'transparent');c.fillStyle=tg;c.fillRect(px,py,pw,3);
     c.save();c.shadowBlur=18;c.shadowColor='#00f5ff';c.fillStyle='rgba(0,245,255,1)';c.font='bold 18px "Courier New"';c.textAlign='center';c.fillText('PRIVACY NOTICE',W/2,py+38);c.restore();
     c.strokeStyle='rgba(15,38,65,.9)';c.lineWidth=1;c.beginPath();c.moveTo(px+22,py+50);c.lineTo(px+pw-22,py+50);c.stroke();
-    ['VOID BREACH saves your best score to your','browser\'s local storage. No personal data','is collected or transmitted externally.','','By clicking ACCEPT you agree to this.','Learn more: crazygames.com/privacy-policy'].forEach((l,i)=>{c.fillStyle=l.includes('crazygames')?'rgba(100,180,210,1)':'rgba(190,225,240,1)';c.font=l.includes('crazygames')?'10px "Courier New"':'12px "Courier New"';c.textAlign='center';c.fillText(l,W/2,py+70+i*20);});
+    ['VOID BREACH saves your progress and best score','in this browser using local storage.','','No account is required. No gameplay data is','sent to an external platform.'].forEach((l,i)=>{c.fillStyle='rgba(190,225,240,1)';c.font='12px "Courier New"';c.textAlign='center';c.fillText(l,W/2,py+78+i*24);});
     const b=this._privBtn();const bh=this.mouse.x>=b.x&&this.mouse.x<=b.x+b.w&&this.mouse.y>=b.y&&this.mouse.y<=b.y+b.h;
     c.save();c.fillStyle=bh?'rgba(12,40,22,.98)':'rgba(6,18,10,.96)';c.strokeStyle=bh?'rgba(68,255,136,1)':'rgba(22,110,55,.8)';if(bh){c.shadowBlur=20;c.shadowColor='rgba(68,255,136,1)';}c.lineWidth=2;c.fillRect(b.x,b.y,b.w,b.h);c.strokeRect(b.x,b.y,b.w,b.h);c.restore();
     c.fillStyle=bh?'rgba(136,255,170,1)':'rgba(65,200,95,.9)';c.font='bold 13px "Courier New"';c.textAlign='center';c.fillText('✓  ACCEPT & PLAY',b.x+b.w/2,b.y+b.h/2+5);
@@ -1762,7 +1557,7 @@ class Game{
 
   _kill(e){
     const ps=this.parts,fl=this.floats,p=this.player;
-            if(e.type==='boss'){this.bossKills++;SAVE.bosses++;CG.happyTime();this.fx.addFlash('#ff2200',.32);this.fx.addChroma(.6);this.shockwaves.push(new Shockwave(e.x,e.y,'#ff2200',120));}
+            if(e.type==='boss'){this.bossKills++;SAVE.bosses++;GAME_HOOKS.happyTime();this.fx.addFlash('#ff2200',.32);this.fx.addChroma(.6);this.shockwaves.push(new Shockwave(e.x,e.y,'#ff2200',120));}
             const pts=Math.floor(e.score*this.combo.mult);this.score+=pts;{this._cf=(this._cf||0)+e.coins*(1+.08*forgeLv('scav'));const cg=Math.floor(this._cf);this._cf-=cg;this.coins+=cg;this.earned+=cg;}this.totalKills++;SAVE.kills++;this.wStats.kills++;this.combo.kill();if(this.combo.count>this._bestCombo)this._bestCombo=this.combo.count;
             this.fx.addShake(e.type==='boss'?12:4,.14);this.fx.addFreeze(e.type==='boss'?.09:.028);this.fx.addZoom(e.type==='boss'?.05:.014);this.shockwaves.push(new Shockwave(e.x,e.y,e.col,e.type==='boss'?120:46));
             fl.push(new FloatText(e.x,e.y-e.sz,`+${pts}`,e.type==='boss'?'#ffd700':e.type==='warden'?'#cc66ff':'#fff',e.type==='boss'?22:14));
@@ -1793,7 +1588,7 @@ class Game{
   }
   _wl(){return this.endless?`${this.wave} ∞`:`${this.wave}/${this.TOTAL}`;}
   _winBtns(){const y=H/2+104,h=IS_TOUCH?46:38,w=150,x0=W/2-250;return[['home',x0],['again',x0+175],['endless',x0+350]].map(([id,x])=>({id,x,y,w,h}));}
-  _goHome(){CG.gameplayStop();CG.clearContext();this.paused=false;this.state=ST.MENU;_desiredMusicMode='normal';if(AC&&audioOn)_startMusic('normal');sfx.resume();}
+  _goHome(){GAME_HOOKS.gameplayStop();GAME_HOOKS.clearContext();this.paused=false;this.state=ST.MENU;_desiredMusicMode='normal';if(AC&&audioOn)_startMusic('normal');sfx.resume();}
   _startEndless(){
     const p=this.player;this.endless=true;this.state=ST.PLAY;this.wave--;
     p.hp=Math.min(p.maxHp,p.hp+Math.ceil(p.maxHp*.35));p.inv=1.5;p.dead=false;this.parts=[];this.rewardVisible=false;
@@ -1808,7 +1603,7 @@ class Game{
     STORE.clear();
     Object.assign(SAVE,{kills:0,bosses:0,wins:0,deathless:0,bestWave:0,bank:0,owned:[],sel:'vanguard',forge:{},guns:['pistol'],gun:'pistol',endlessBest:0});
     HS=0;leaderboard=[];unlockedAch=new Set();Object.assign(OPT,{shake:true,nums:true,fps:false});
-    acceptPrivacy();persist();STORE.setItem('vb_ver','10.7');CG._pct=-1;
+    acceptPrivacy();persist();STORE.setItem('vb_ver','10.7');GAME_HOOKS._pct=-1;
     sfx.epic();this.fx.addFlash('#ff2244',.4);
   }
   _fireNova(){
@@ -1943,11 +1738,6 @@ class Game{
       if(this.state===ST.SKINS){this._clickSkins(e);return;}
       if(this.state===ST.FORGE){this._clickForge(e);return;}
       if(this.state===ST.OVER||this.state===ST.WIN){
-        // Login button (only visible when guest)
-        if(CG.showLoginBtn&&this.state===ST.OVER){
-          const lb={x:W/2-80,y:H/2+224,w:160,h:30};
-          if(this.mouse.x>=lb.x&&this.mouse.x<=lb.x+lb.w&&this.mouse.y>=lb.y&&this.mouse.y<=lb.y+lb.h){CG.showAuthPrompt();return;}
-        }
         if(this.state===ST.OVER&&this.rewardVisible){
           const m=this._reviveMode(),rb=this._revBtn();
           if(m&&this.mouse.x>=rb.x&&this.mouse.x<=rb.x+rb.w&&this.mouse.y>=rb.y&&this.mouse.y<=rb.y+rb.h){this._coinRevive();return;}
@@ -1962,13 +1752,13 @@ class Game{
       if([ST.PLAY,ST.BOSS,ST.STATS,ST.UPGRADE].includes(this.state)&&this.mouse.x>=pb.x&&this.mouse.x<=pb.x+pb.w&&this.mouse.y>=pb.y&&this.mouse.y<=pb.y+pb.h){
         const live=[ST.PLAY,ST.BOSS].includes(this.state);
         this.paused=!this.paused;
-        if(this.paused){sfx.pause();if(live)CG.gameplayStop();}
-        else{sfx.resume();if(live)CG.gameplayStart();}
+        if(this.paused){sfx.pause();if(live)GAME_HOOKS.gameplayStop();}
+        else{sfx.resume();if(live)GAME_HOOKS.gameplayStart();}
         return;
       }
       const mb=this.MUTE_BTN;
       if([ST.PLAY,ST.BOSS,ST.STATS,ST.UPGRADE].includes(this.state)&&this.mouse.x>=mb.x&&this.mouse.x<=mb.x+mb.w&&this.mouse.y>=mb.y&&this.mouse.y<=mb.y+mb.h){
-        _userMuted=!_userMuted;audioOn=!_userMuted&&!CG._sdkMuted;_saveMute();if(!audioOn)_stopMusic();else if(AC)_startMusic(_desiredMusicMode);return;
+        _userMuted=!_userMuted;audioOn=!_userMuted;_saveMute();if(!audioOn)_stopMusic();else if(AC)_startMusic(_desiredMusicMode);return;
       }
       if(this.paused){this._clickPause(e);return;}
       // Stats screen → advance to upgrades
@@ -2012,7 +1802,6 @@ class Game{
     {const fb=this._mb(2),fh=this.mouse.x>=fb.x&&this.mouse.x<=fb.x+fb.w&&this.mouse.y>=fb.y&&this.mouse.y<=fb.y+fb.h;
     c.save();c.fillStyle=fh?'rgba(8,22,40,.95)':'rgba(4,10,20,.88)';c.strokeStyle=fh?'#ffd700':'rgba(140,110,40,.85)';if(fh){c.shadowBlur=14;c.shadowColor='#ffd700';}c.lineWidth=fh?2:1.5;c.fillRect(fb.x,fb.y,fb.w,fb.h);c.strokeRect(fb.x,fb.y,fb.w,fb.h);c.restore();
     c.fillStyle=fh?'#ffd700':'rgba(210,180,100,.95)';c.font='bold 13px "Courier New"';c.textAlign='center';c.fillText('🔨 FORGE',fb.x+fb.w/2,fb.y+fb.h/2+5);}
-    if(CG.user&&CG.user.username){c.save();c.textAlign='left';c.font='bold 10px "Courier New"';c.fillStyle='rgba(120,230,170,.95)';const nm=String(CG.user.username);c.fillText('● '+(nm.length>14?nm.slice(0,13)+'…':nm),14,this._mb(2).y+this._mb(2).h+16);c.restore();}
     const hy=H*.58,t=this.fc;c.save();
     const sg=c.createLinearGradient(0,hy-120,0,hy+10);sg.addColorStop(0,'rgba(0,120,255,0)');sg.addColorStop(1,'rgba(0,200,255,.22)');c.fillStyle=sg;c.fillRect(0,hy-120,W,130);
     c.beginPath();c.rect(0,hy,W,H-hy);c.clip();c.strokeStyle='rgba(0,200,255,.3)';c.lineWidth=1;
@@ -2087,7 +1876,6 @@ class Game{
     // Permanent privacy policy link (per docs: make it a simple notice, not just a popup)
     const lnk=this._privacyLinkRect;const lh=this.mouse.x>=lnk.x&&this.mouse.x<=lnk.x+lnk.w&&this.mouse.y>=lnk.y&&this.mouse.y<=lnk.y+lnk.h;
     c.fillStyle=lh?'rgba(0,245,255,.9)':'rgba(70,120,145,.8)';c.font='10px "Courier New"';c.textAlign='right';
-    c.fillText('Privacy Policy  |  crazygames.com',W-8,H-8);
     c.fillStyle='rgba(20,40,60,.7)';c.font='9px "Courier New"';c.textAlign='right';c.fillText('v11.1',W-8,H-20);
   }
 
@@ -2157,13 +1945,6 @@ class Game{
       c.save();c.fillStyle=hov?'rgba(24,16,20,.97)':'rgba(8,10,18,.92)';c.strokeStyle=col;c.lineWidth=hov?2.2:1.6;if(hov){c.shadowBlur=14;c.shadowColor=col;}c.fillRect(b.x,b.y,b.w,b.h);c.strokeRect(b.x,b.y,b.w,b.h);c.restore();
       c.fillStyle=col;c.font='bold 12px "Courier New"';c.textAlign='center';c.fillText(home?'⌂ QUIT TO MENU':'↻ NEW RUN',b.x+b.w/2,b.y+b.h/2+4);});
     c.textAlign='center';c.font='9px "Courier New"';c.fillStyle='rgba(150,160,175,.8)';c.fillText('H = quit to menu   ·   ENTER = new run',W/2,H/2+194);
-    // Show login button only if player is a guest — lets them log in to track scores
-    if(CG.showLoginBtn){
-      const lb={x:W/2-80,y:H/2+224,w:160,h:30};
-      const lbh=this.mouse.x>=lb.x&&this.mouse.x<=lb.x+lb.w&&this.mouse.y>=lb.y&&this.mouse.y<=lb.y+lb.h;
-      c.save();c.fillStyle=lbh?'rgba(10,30,55,.95)':'rgba(4,10,22,.85)';c.strokeStyle=lbh?'#00f5ff':'rgba(40,80,140,.7)';if(lbh){c.shadowBlur=12;c.shadowColor='#00f5ff';}c.lineWidth=1;c.fillRect(lb.x,lb.y,lb.w,lb.h);c.strokeRect(lb.x,lb.y,lb.w,lb.h);c.restore();
-      c.fillStyle=lbh?'#00f5ff':'rgba(120,175,210,.9)';c.font='bold 11px "Courier New"';c.textAlign='center';c.fillText('👤 LOG IN',lb.x+lb.w/2,lb.y+lb.h/2+4);
-    }
   }
 
   _drawWin(c){
@@ -2195,11 +1976,10 @@ class Game{
   draw(){
     ctx.setTransform(RS,0,0,RS,0,0);
     const now=performance.now(),fdt=Math.min(.05,(now-(this._fl||now))/1000);this._fl=now;
-    if(this._pst!==this.state){if(this.touch&&this.touch.isMobile)this.touch.reset();if(this.state===ST.MENU)CG.onMenu();if(this._pst!==undefined&&this._pst!==ST.LOADING&&this.state!==ST.LOADING)this.fadeA=.85;this._pst=this.state;}
+    if(this._pst!==this.state){if(this.touch&&this.touch.isMobile)this.touch.reset();if(this.state===ST.MENU)GAME_HOOKS.onMenu();if(this._pst!==undefined&&this._pst!==ST.LOADING&&this.state!==ST.LOADING)this.fadeA=.85;this._pst=this.state;}
     this._drawInner();
     if(GQ===3)this._post(ctx);
     if(OPT.fps){const f=1/Math.max(.001,this._rawdt||.016);this._fps=lerp(this._fps||60,Math.min(f,240),.08);ctx.save();ctx.font='bold 11px "Courier New"';ctx.textAlign='left';ctx.fillStyle=this._fps<30?'#ff5a5a':this._fps<50?'#ffcc44':'#44ff88';ctx.fillText(Math.round(this._fps)+' FPS · '+GQN[GQ],8,H-8);ctx.restore();}
-    if(CG._dbg){const L=CG.debugLines(),y0=H-22-L.length*13;ctx.save();ctx.fillStyle='rgba(0,0,0,.85)';ctx.fillRect(6,y0,560,L.length*13+12);ctx.font='10px "Courier New"';ctx.textAlign='left';ctx.fillStyle='#8fffb0';L.forEach((l,i)=>ctx.fillText(l,12,y0+12+i*13));ctx.restore();}
     if(this.fadeA>0){this.fadeA=Math.max(0,this.fadeA-fdt*3.2);ctx.save();ctx.globalAlpha=this.fadeA;ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);ctx.restore();}
   }
   _drawInner(){
@@ -2284,11 +2064,11 @@ function reloadFromStore(){
   try{Object.assign(SAVE,{kills:0,bosses:0,wins:0,deathless:0,bestWave:0,bank:0,owned:[],sel:'vanguard',forge:{},guns:['pistol'],gun:'pistol'},JSON.parse(STORE.getItem('vb_save')||'{}'));fixSave();}catch(e){}
   try{leaderboard=JSON.parse(STORE.getItem('vb_lb')||'[]');}catch(e){}
   try{unlockedAch=new Set(JSON.parse(STORE.getItem('vb_ach')||'[]'));}catch(e){}
-  try{_userMuted=STORE.getItem('vb_mute')==='1';audioOn=!_userMuted&&!CG._sdkMuted;}catch(e){}
+  try{_userMuted=STORE.getItem('vb_mute')==='1';audioOn=!_userMuted;}catch(e){}
 }
-(async()=>{ await CG.init(); const G=new Game(); G.run();
+(async()=>{ const G=new Game(); G.run();
   document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){ if([ST.PLAY,ST.BOSS].includes(G.state)&&!G.paused){G.paused=true;CG.gameplayStop();} if(AC&&AC.state==='running')AC.suspend(); }
+    if(document.hidden){ if([ST.PLAY,ST.BOSS].includes(G.state)&&!G.paused){G.paused=true;GAME_HOOKS.gameplayStop();} if(AC&&AC.state==='running')AC.suspend(); }
     else if(AC&&AC.state==='suspended')AC.resume();
   });
 })();
