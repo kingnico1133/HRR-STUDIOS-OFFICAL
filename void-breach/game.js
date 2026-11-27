@@ -1825,7 +1825,7 @@ class Game{
     bx.globalCompositeOperation='copy';bx.drawImage(a,0,0,b.width,b.height);
     c.save();c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='lighter';
     c.globalAlpha=FILT?.55:.2;c.drawImage(a,0,0,cw,ch);c.globalAlpha=FILT?.75:.26;c.drawImage(b,0,0,cw,ch);c.restore();
-    c.save();c.setTransform(RS,0,0,RS,0,0);
+    c.save();c.setTransform(RSX,0,0,RSY,0,0);
     if(!this._np){this._np=c.createPattern(this._noise,'repeat');this._sp=c.createPattern(this._scan,'repeat');}
     c.globalAlpha=.07;c.save();c.translate(rInt(0,127),rInt(0,127));c.fillStyle=this._np;c.fillRect(-128,-128,W+128,H+128);c.restore();
     c.globalAlpha=.16;c.fillStyle=this._sp;c.fillRect(0,0,W,H);
