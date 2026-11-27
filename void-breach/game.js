@@ -1042,8 +1042,6 @@ class Game{
     canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();this.mouse.x=(e.clientX-r.left)*(W/r.width);this.mouse.y=(e.clientY-r.top)*(H/r.height);});
     canvas.addEventListener('mousedown',e=>this._press(e));
     canvas.addEventListener('mouseup',e=>{if(e.button===0)this.mouse.down=false;});
-    // Privacy policy link in menu (bottom-right)
-    this._privacyLinkRect={x:W-160,y:H-22,w:155,h:18};
     // Settings button in menu (bottom-left)
     this._settingsBtnRect=this._mb(0);
   }
@@ -1726,8 +1724,6 @@ class Game{
       if(this.state===ST.LOADING)return;
       if(this.showPrivacy){const b=this._privBtn();if(this.mouse.x>=b.x&&this.mouse.x<=b.x+b.w&&this.mouse.y>=b.y&&this.mouse.y<=b.y+b.h){acceptPrivacy();this.showPrivacy=false;}return;}
       if(this.state===ST.MENU){
-        const lnk=this._privacyLinkRect;
-        if(this.mouse.x>=lnk.x&&this.mouse.x<=lnk.x+lnk.w&&this.mouse.y>=lnk.y&&this.mouse.y<=lnk.y+lnk.h){this.showPrivacy=true;return;}
         const sb=this._settingsBtnRect;
         if(this.mouse.x>=sb.x&&this.mouse.x<=sb.x+sb.w&&this.mouse.y>=sb.y&&this.mouse.y<=sb.y+sb.h){this.state=ST.SETTINGS;return;}
         if(this._in(this._mb(1))){this._skinCheck();persist();this.state=ST.SKINS;return;}
@@ -1873,9 +1869,6 @@ class Game{
     c.restore();
     c.fillStyle=sbh?'#00f5ff':'rgba(120,180,205,.95)';c.font='bold 13px "Courier New"';c.textAlign='center';
     c.fillText('⚙ SETTINGS',sb.x+sb.w/2,sb.y+sb.h/2+5);
-    // Permanent privacy policy link (per docs: make it a simple notice, not just a popup)
-    const lnk=this._privacyLinkRect;const lh=this.mouse.x>=lnk.x&&this.mouse.x<=lnk.x+lnk.w&&this.mouse.y>=lnk.y&&this.mouse.y<=lnk.y+lnk.h;
-    c.fillStyle=lh?'rgba(0,245,255,.9)':'rgba(70,120,145,.8)';c.font='10px "Courier New"';c.textAlign='right';
     c.fillStyle='rgba(20,40,60,.7)';c.font='9px "Courier New"';c.textAlign='right';c.fillText('v11.1',W-8,H-20);
   }
 
