@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function validVote() {
+      let data = request.resource.data;
+      let reasons = data.reasons;
+      return data.keys().hasOnly(['vote', 'reasons'])
+        && data.keys().hasAll(['vote', 'reasons'])
+        && data.vote in ['like', 'dislike']
+        && reasons is map
+        && reasons.keys().size() <= 3
+        && (
+          data.vote == 'like'
+            ? reasons.keys().hasOnly([
+                'graphics',
+                'weapons',
+                'void-forge',
+                'ship-skins',
+                'endless-mode',
+                'sound-effects',
+                'difficulty',
+                'gameplay'
+              ])
+            : reasons.keys().hasOnly([
+                'too-difficult',
+                'too-easy',
+                'bugs-glitches',
+                'controls',
+                'graphics',
+                'content',
+                'weapons',
+                'performance'
+              ])
+        );
+    }
+
+    match /votes/{userId} {
+      // The page reads anonymous vote choices to show shared totals.
+      // No names, comments, email addresses, or profile details are stored.
+      allow read: if true;
+
+      // Each anonymous browser identity may create or change only its own vote.
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && validVote();
+
+      allow delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+  }
+}
