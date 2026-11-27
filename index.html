@@ -66,6 +66,38 @@ a:focus-visible,button:focus-visible{outline:2px solid #e07882;outline-offset:4p
 @media(max-width:900px){.hero{grid-template-columns:1fr;gap:37px;padding:62px 0}.hero-copy{max-width:580px}.game-window iframe{height:490px}.project-grid,.about,.updates{grid-template-columns:1fr;gap:18px}.project-grid{gap:23px}.about{padding:62px 0}}
 @media(max-width:650px){.container{width:calc(100% - 34px)}.nav{min-height:64px}.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:64px;left:0;right:0;padding:11px 17px 17px;background:#0a090b;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.nav-links.open{display:flex}.nav-links a{padding:13px 3px;border-bottom:1px solid #211d20}.hero{min-height:auto;padding:55px 0 57px;gap:32px}.hero h1{font-size:clamp(53px,13vw,77px)}.hero-copy{font-size:15px}.game-window iframe{height:390px}.project{padding:54px 0}.about{padding:55px 0}.updates{padding:24px 0}.footer-inner{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+/* HRR studio refresh: warmer paper, fewer effects, more editorial rhythm */
+:root{--bg:#e9e5dc;--panel:#f1eee7;--panel2:#ded8ce;--line:#c9c1b7;--ink:#24211f;--muted:#665f5a;--dim:#817873;--red:#8e2936;--red2:#a63845}
+body{background:var(--bg);color:var(--ink)}
+body:before{display:none}
+.header{background:rgba(233,229,220,.96);border-bottom:1px solid var(--line);backdrop-filter:none}
+.brand-mark{border-color:#8e2936;color:#8e2936}
+.brand-name small{color:#817873}
+.nav-links a{color:#665f5a}
+.nav-links a:hover{color:#8e2936}
+.menu-toggle{border-color:var(--line)}
+.menu-toggle span{background:#24211f}
+.hero h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:-.065em}
+.hero h1 em{color:#8e2936}
+.eyebrow,.section-label{color:#8e2936}
+.hero-copy,.project-copy,.about-copy,.updates p{color:#665f5a}
+.button{border-color:#9b9188;color:#24211f}
+.button:hover{border-color:#8e2936;background:rgba(142,41,54,.07)}
+.button-primary{background:#8e2936;border-color:#8e2936;color:#fff}
+.button-primary:hover{background:#a63845;border-color:#a63845}
+.game-window{border-color:#2a2424;box-shadow:0 18px 38px rgba(35,28,25,.16)}
+.window-top,.window-bottom{background:#211e1d;border-color:#383130}
+.project{border-color:var(--line)}
+.project-meta{border-color:var(--line);color:#817873}
+.project-meta strong{color:#24211f}
+.about{border-bottom:1px solid var(--line)}
+.updates{border-color:var(--line)}
+.updates a{color:#8e2936}
+.footer{border-top:1px solid var(--line)}
+.footer-links a{color:#665f5a}
+.footer-note{color:#817873}
+@media(max-width:650px){.nav-links{background:#e9e5dc;border-color:var(--line)}.nav-links a{border-color:var(--line)}}
 </style>
 </head>
 <body id="top">
@@ -83,7 +115,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #e07882;outline-offset:4p
     <div class="hero-copy-wrap">
       <div class="eyebrow">HRR STUDIOS / PROJECT 001</div>
       <h1>Something is<br>out <em>there.</em></h1>
-      <p class="hero-copy">We make games and experiment with ideas. Our current project is VOID BREACH — a top-down survival game where every wave gets harder. The first playable build is waiting below.</p>
+      <p class="hero-copy">HRR Studios is a small independent studio making games one project at a time. Right now, we're working on VOID BREACH — an arcade survival game about holding your ground when the odds turn.</p>
       <div class="hero-actions"><a class="button button-primary" href="void-breach.html">Play the full game ↗</a><a class="button" href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></div>
       <div class="hero-note">FULL BUILD AVAILABLE · VOID BREACH</div>
     </div>
@@ -111,10 +143,10 @@ a:focus-visible,button:focus-visible{outline:2px solid #e07882;outline-offset:4p
   </section>
 
   <section class="container about" id="about">
-    <div><div class="section-label">About HRR</div><h2>A small studio.<br>A lot to make.</h2></div>
+    <div><div class="section-label">About HRR</div><h2>Made in small steps.<br>Built to be played.</h2></div>
     <div class="about-copy">
       <p>HRR Studios is an independent game studio focused on making original games and trying out ideas. This site is where we put our playable builds and share what we're working on.</p>
-      <p>We're keeping things simple: make something, improve it, and put it out there when it's ready. VOID BREACH is the project we're showing right now.</p>
+      <p>No giant roadmap or big promises. Just a place to share the things we're building, learn from each release, and make the next version better.</p>
     </div>
   </section>
 
