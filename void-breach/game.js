@@ -40,6 +40,9 @@ try{const sv=parseInt(STORE.getItem('vb_gq'));if(sv>=0&&sv<=3)GQ=sv;}catch(e){}
 GQmax=GQ;
 let AUTO=true;try{AUTO=STORE.getItem('vb_auto')!=='0';}catch(e){}
 const GQN=['LOW','MED','HIGH','OVERCLOCK'];
+// Touch-only aim response: 0=LOW, 1=MED, 2=HIGH.
+let TOUCH_AIM_SENS=1;
+try{const v=parseInt(STORE.getItem('vb_touch_aim_sens'));if(v>=0&&v<=2)TOUCH_AIM_SENS=v;}catch(e){}
 const AUTO_DESC=['Lowers graphics when the game lags,','raises them again when it runs smooth.'];
 const saveGQ=v=>{GQ=GQmax=clamp(v,0,3);try{STORE.setItem('vb_gq',GQ);}catch(e){}};
 const GQP=n=>GQ===0?Math.ceil(n*.3):GQ===1?Math.ceil(n*.65):GQ===2?n:Math.ceil(n*1.5); // particle count scaler
@@ -803,8 +806,8 @@ class Touch{
     if(!mouse._ta)mouse._ta={x:p.x+220,y:p.y};
     if(this.aim.active){
       let a=this.aim.ang;
-      if(Math.hypot(this.aim.dx,this.aim.dy)>.22)a=Math.atan2(this.aim.dy,this.aim.dx);
-      else{let best=null,bd=1e9;for(const e of g.enemies){if(e.dead)continue;const d=(e.x-p.x)*(e.x-p.x)+(e.y-p.y)*(e.y-p.y);if(d<bd){bd=d;best=e;}}if(best&&bd<560*560)a=Math.atan2(best.y-p.y,best.x-p.x);}   // aim assist
+      if(Math.hypot(this.aim.dx,this.aim.dy)>.22){const target=Math.atan2(this.aim.dy,this.aim.dx),delta=Math.atan2(Math.sin(target-a),Math.cos(target-a)),response=[.22,.42,.72][TOUCH_AIM_SENS];a+=delta*response;}
+      else{let best=null,bd=1e9;for(const e of g.enemies){if(e.dead)continue;const d=(e.x-p.x)*(e.x-p.x)+(e.y-p.y)*(e.y-p.y);if(d<bd){bd=d;best=e;}}if(best&&bd<560*560)a=Math.atan2(best.y-p.y,best.x-p.x);}   // existing light touch aim assist
       this.aim.ang=a;mouse._ta={x:p.x+Math.cos(a)*220,y:p.y+Math.sin(a)*220};
     }else if(Math.hypot(this.js.dx,this.js.dy)>.25){mouse._ta={x:p.x+this.js.dx*220,y:p.y+this.js.dy*220};}   // not aiming: face where you move
   }
@@ -1051,17 +1054,19 @@ class Game{
   _coinRevBtn(){return{x:W/2-130,y:H/2+92,w:260,h:IS_TOUCH?44:38};}
 
   _qualityBtnRect(i){return{x:W/2-188+i*96,y:H/2-26,w:88,h:42};}
-  _soundToggleRect(){return IS_TOUCH?{x:W/2-90,y:H/2+132,w:180,h:38}:{x:W/2-90,y:H/2+124,w:180,h:30};}
+  _soundToggleRect(){return IS_TOUCH?{x:W/2-90,y:H/2+190,w:180,h:38}:{x:W/2-90,y:H/2+124,w:180,h:30};}
   _autoRect(){return{x:W/2-120,y:H/2+34,w:240,h:46};}
-  _shakeRect(){return{x:W/2-120,y:H/2+88,w:116,h:IS_TOUCH?38:30};}
-  _numsRect(){return{x:W/2+4,y:H/2+88,w:116,h:IS_TOUCH?38:30};}
-  _settingsBackRect(){return IS_TOUCH?{x:W/2-90,y:H/2+180,w:180,h:42}:{x:W/2-90,y:H/2+162,w:180,h:32};}
+  _aimSensRect(i){return{x:W/2-120+i*82,y:H/2+100,w:74,h:34};}
+  _shakeRect(){return IS_TOUCH?{x:W/2-120,y:H/2+136,w:116,h:38}:{x:W/2-120,y:H/2+88,w:116,h:30};}
+  _numsRect(){return IS_TOUCH?{x:W/2+4,y:H/2+136,w:116,h:38}:{x:W/2+4,y:H/2+88,w:116,h:30};}
+  _settingsBackRect(){return IS_TOUCH?{x:W/2-90,y:H/2+246,w:180,h:42}:{x:W/2-90,y:H/2+162,w:180,h:32};}
 
   _clickSettings(e){
     const r=canvas.getBoundingClientRect();
     const mx=(e.clientX-r.left)*(W/r.width),my=(e.clientY-r.top)*(H/r.height);
     const hit=rect=>mx>=rect.x&&mx<=rect.x+rect.w&&my>=rect.y&&my<=rect.y+rect.h;
     for(let i=0;i<4;i++){if(hit(this._qualityBtnRect(i))){saveGQ(i);(i===3?sfx.epic:sfx.upg)();return;}}
+    if(IS_TOUCH){for(let i=0;i<3;i++){if(hit(this._aimSensRect(i))){TOUCH_AIM_SENS=i;try{STORE.setItem('vb_touch_aim_sens',i);}catch(e){}sfx.upg();return;}}}
     if(hit(this._resetRect())){if(this._rst>0){this._rst=0;this._resetAll();}else{this._rst=3;sfx.hit();}return;}
     if(hit(this._shakeRect())){OPT.shake=!OPT.shake;saveOpt();sfx.upg();return;}
     if(hit(this._numsRect())){OPT.nums=!OPT.nums;saveOpt();sfx.upg();return;}
@@ -1904,6 +1909,10 @@ class Game{
     const ar=this._autoRect(),arh=this.mouse.x>=ar.x&&this.mouse.x<=ar.x+ar.w&&this.mouse.y>=ar.y&&this.mouse.y<=ar.y+ar.h;
     c.save();c.fillStyle=arh?'rgba(8,22,40,.95)':'rgba(4,10,20,.85)';c.strokeStyle=AUTO?'rgba(0,245,255,.7)':'rgba(120,130,150,.5)';if(arh){c.shadowBlur=10;c.shadowColor='#00f5ff';}c.lineWidth=1.5;c.fillRect(ar.x,ar.y,ar.w,ar.h);c.strokeRect(ar.x,ar.y,ar.w,ar.h);c.restore();
     c.fillStyle=AUTO?'#00f5ff':'rgba(150,160,175,.9)';c.font='bold 12px "Courier New"';c.textAlign='center';c.fillText(AUTO?'⚡ AUTO PERFORMANCE: ON':'⚡ AUTO PERFORMANCE: OFF',ar.x+ar.w/2,ar.y+19);c.fillStyle='rgba(130,170,195,.85)';c.font='9px "Courier New"';c.fillText(AUTO_DESC[0],ar.x+ar.w/2,ar.y+32);c.fillText(AUTO_DESC[1],ar.x+ar.w/2,ar.y+43);
+    if(IS_TOUCH){
+      c.fillStyle='rgba(160,210,230,1)';c.font='bold 11px "Courier New"';c.textAlign='center';c.fillText('TOUCH AIM RESPONSE',W/2,H/2+92);
+      ['LOW','MED','HIGH'].forEach((label,i)=>{const b=this._aimSensRect(i),active=TOUCH_AIM_SENS===i,hov=this.mouse.x>=b.x&&this.mouse.x<=b.x+b.w&&this.mouse.y>=b.y&&this.mouse.y<=b.y+b.h;c.save();c.fillStyle=active?'rgba(0,60,90,.95)':hov?'rgba(8,22,40,.95)':'rgba(4,10,20,.85)';c.strokeStyle=active?'#00f5ff':'rgba(22,45,85,.7)';if(active||hov){c.shadowBlur=10;c.shadowColor='#00f5ff';}c.lineWidth=active?2:1;c.fillRect(b.x,b.y,b.w,b.h);c.strokeRect(b.x,b.y,b.w,b.h);c.restore();c.fillStyle=active?'#00f5ff':'rgba(150,190,205,.9)';c.font='bold 11px "Courier New"';c.textAlign='center';c.fillText(label,b.x+b.w/2,b.y+b.h/2+4);});
+    }
     this._tgl(c,this._shakeRect(),'SCREEN SHAKE',OPT.shake);this._tgl(c,this._numsRect(),'DMG NUMBERS',OPT.nums);
     {const rr=this._resetRect(),rh=this.mouse.x>=rr.x&&this.mouse.x<=rr.x+rr.w&&this.mouse.y>=rr.y&&this.mouse.y<=rr.y+rr.h;if(this._rst>0)this._rst-=.016;const arm=this._rst>0;
      c.save();c.fillStyle=rh?'rgba(40,10,14,.95)':'rgba(14,6,8,.85)';c.strokeStyle=arm?'#ff2244':'rgba(150,50,60,.7)';if(rh||arm){c.shadowBlur=10;c.shadowColor='#ff2244';}c.lineWidth=1.5;c.fillRect(rr.x,rr.y,rr.w,rr.h);c.strokeRect(rr.x,rr.y,rr.w,rr.h);c.restore();
@@ -1967,7 +1976,7 @@ class Game{
 
   // ── MAIN DRAW ──────────────────────────────────────────────────────────────
   draw(){
-    ctx.setTransform(RS,0,0,RS,0,0);
+    ctx.setTransform(RSX,0,0,RSY,0,0);
     const now=performance.now(),fdt=Math.min(.05,(now-(this._fl||now))/1000);this._fl=now;
     if(this._pst!==this.state){if(this.touch&&this.touch.isMobile)this.touch.reset();if(this.state===ST.MENU)GAME_HOOKS.onMenu();if(this._pst!==undefined&&this._pst!==ST.LOADING&&this.state!==ST.LOADING)this.fadeA=.85;this._pst=this.state;}
     this._drawInner();
@@ -2043,8 +2052,20 @@ class Game{
 }
 
 // ── Resize ────────────────────────────────────────────────────────────────────
-let RS=1;
-function resize(){const s=Math.min(innerWidth/W,innerHeight/H),k=clamp(s*(window.devicePixelRatio||1),1,IS_TOUCH?1.5:2.5);canvas.style.width=(W*s)+'px';canvas.style.height=(H*s)+'px';canvas.width=Math.round(W*k);canvas.height=Math.round(H*k);RS=k;}
+let RS=1,RSX=1,RSY=1;
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  if(IS_TOUCH){
+    const w=Math.max(1,innerWidth),h=Math.max(1,innerHeight),k=clamp(dpr,1,1.5);
+    canvas.style.width=w+'px';canvas.style.height=h+'px';
+    canvas.width=Math.round(w*k);canvas.height=Math.round(h*k);
+    RSX=canvas.width/W;RSY=canvas.height/H;RS=RSX;
+  }else{
+    const scale=Math.min(innerWidth/W,innerHeight/H),k=clamp(scale*dpr,1,2.5);
+    canvas.style.width=(W*scale)+'px';canvas.style.height=(H*scale)+'px';
+    canvas.width=Math.round(W*k);canvas.height=Math.round(H*k);RS=RSX=RSY=k;
+  }
+}
 addEventListener('resize',resize);resize();
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
