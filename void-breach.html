@@ -14,12 +14,79 @@ footer{border-top:1px solid var(--line);padding:25px 0 32px}.foot{display:flex;j
 @media(max-width:760px){.hero{grid-template-columns:1fr;padding:52px 0}.hero-art{display:none}.links{gap:13px}.hero h1{font-size:clamp(62px,14vw,88px)}.section-top{align-items:start;flex-direction:column}.stage{height:clamp(410px,65vh,570px)}.rate-row{align-items:flex-start;flex-direction:column}.rate-btn{width:100%}.rating{padding:19px 15px}.breakdowns{grid-template-columns:1fr}.wrap{width:calc(100% - 34px)}}
 @media(max-width:430px){.links a:nth-child(2){display:none}.bar{font-size:8px}.underbar{font-size:8px}.votes{gap:7px}.vote{font-size:10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* VOID BREACH: field-console presentation */
+.boot-visual{height:215px;width:min(100%,440px);margin:18px auto 20px;position:relative;overflow:hidden;border:1px solid #453438;background:#0d0b0c}
+.radar-grid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:34px 34px}
+.radar-sweep{position:absolute;left:50%;top:50%;width:190px;height:190px;margin:-95px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 78%,rgba(176,62,74,.04) 83%,rgba(194,76,87,.32) 100%);opacity:.2;transform:rotate(0);transform-origin:center}
+.cover.running .radar-sweep{opacity:1;animation:radar-turn 5s linear infinite}
+.radar-ring{position:absolute;left:50%;top:50%;border:1px solid rgba(185,80,88,.45);border-radius:50%;transform:translate(-50%,-50%)}
+.ring-one{width:132px;height:132px}.ring-two{width:184px;height:184px;opacity:.45}
+.ship-mark{position:absolute;left:50%;top:50%;width:25px;height:35px;transform:translate(-50%,-50%);border:1px solid #d27b7e;clip-path:polygon(50% 0,100% 100%,50% 78%,0 100%);background:#7f333b;filter:drop-shadow(0 0 9px rgba(195,73,84,.45))}
+.ship-mark span{position:absolute;left:50%;top:12px;width:4px;height:4px;transform:translateX(-50%);background:#f2d6ce;border-radius:50%}
+.target-mark{position:absolute;width:8px;height:8px;border:1px solid #b96b70;border-radius:50%;opacity:0}
+.target-a{left:24%;top:29%}.target-b{right:19%;bottom:27%}
+.cover.running .target-a{animation:target-blink 4.3s 1.2s infinite}.cover.running .target-b{animation:target-blink 4.3s 2.4s infinite}
+.visual-coordinates,.visual-state{position:absolute;font:8px/1.4 "Courier New",monospace;letter-spacing:.12em;color:#9a8583}
+.visual-coordinates{left:10px;bottom:9px}.visual-state{right:10px;top:9px;color:#c47a7d}
+.boot-log{min-height:23px;margin:12px auto 8px;color:#a99b97;font:10px "Courier New",monospace;letter-spacing:.02em}
+.boot-log span{color:#c16c73;margin-right:8px}
+.boot-progress{height:2px;max-width:310px;margin:0 auto 18px;background:#332729}
+.boot-progress i{display:block;width:0;height:100%;background:#c45b62;transition:width .65s ease}
+.cover.running .boot-visual{border-color:#75434a}
+.cover.running .ship-mark{filter:drop-shadow(0 0 12px rgba(220,87,97,.65))}
+@keyframes radar-turn{to{transform:rotate(360deg)}}
+@keyframes target-blink{0%,100%{opacity:0}15%,30%{opacity:1}45%{opacity:.15}}
+@media(max-width:560px){.boot-visual{height:180px}.radar-sweep{width:160px;height:160px;margin:-80px}.ring-two{width:154px;height:154px}}
+@media(prefers-reduced-motion:reduce){.cover.running .radar-sweep,.cover.running .target-mark{animation:none!important}}
+
+:root{--bg:#0c0b0b;--panel:#151313;--line:#383030;--ink:#eee8e4;--muted:#a69a95;--red:#a43a45}
+body{background:#0c0b0b;color:#eee8e4}
+header{background:rgba(12,11,11,.96);backdrop-filter:none;border-color:#383030}
+.hero{border-color:#383030}
+.hero h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:-.07em}
+.hero h1 em{color:#c45b62}
+.hero-art{background:#100e0e;border-color:#49373a}
+.orbit,.orbit:before,.orbit:after{border-color:rgba(196,91,98,.3)}
+.core{background:#1b1011;border-color:#a34a53;box-shadow:none}
+.shell{box-shadow:0 18px 42px rgba(0,0,0,.38);border-color:#4a383b}
+.bar{background:#171414;border-color:#383030}
+.stage{background:#050505}
+.cover{background:#090808;transition:opacity .8s,visibility .8s}
+.cover:before{opacity:.055;background:repeating-linear-gradient(0deg,transparent 0 5px,#fff 6px,transparent 7px)}
+.launch{width:min(94%,700px);padding:24px}
+.signal{color:#c4777c;letter-spacing:.16em}
+.launch h3{font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,5vw,52px);font-weight:500;letter-spacing:.04em}
+.status{color:#b3a7a1;letter-spacing:.08em}
+.launch-btn{background:#9b303c;border-color:#b34a55;letter-spacing:.09em}
+.launch-btn:hover{background:#b33b48}
+.skip{color:#9d9290}
+.underbar{background:#171414;border-color:#383030}
+.rate-row{border-color:#383030}
+.rating{background:#151212;border-color:#49373a}
+@media(prefers-reduced-motion:reduce){.cover,.symbol,.stage iframe{transition:none!important}}
 </style></head><body id="top">
 <header><div class="wrap nav"><a class="brand" href="index.html"><span class="mark">H.</span><span><b>HRR STUDIOS</b><small>INDEPENDENT GAME DEVELOPMENT</small></span></a><nav class="links"><a href="index.html">Studio</a><a href="games.html">Games</a><a href="#play">Play</a><a href="#rate">Rate game</a></nav></div></header>
 <main>
 <section class="wrap hero"><div><div class="eyebrow">HRR STUDIOS / FULL GAME</div><h1>VOID<br><em>BREACH.</em></h1><p>Outnumbered. Outgunned. Still in the fight. Survive the waves, build your ship, and find out how long you can last.</p><div class="actions"><a class="btn primary" href="#play">PLAY THE GAME ↓</a><a class="btn" href="games.html">ALL GAMES ↗</a></div></div><div class="hero-art" aria-hidden="true"><div class="orbit"></div><div class="core">VB</div><span class="art-note">SIGNAL / 001</span></div></section>
 <section class="wrap play" id="play"><div class="section-top"><div><div class="eyebrow">THE FULL BUILD</div><h2>Enter the breach.</h2></div><div class="meta">CAMPAIGN · SHIP SKINS · UPGRADES · ENDLESS</div></div>
-<div class="shell"><div class="bar"><span class="live"><i class="dot"></i> VOID BREACH / FULL BUILD</span><span>HRR STUDIOS</span></div><div class="stage" id="stage"><iframe id="game-frame" title="VOID BREACH full game" allow="fullscreen" allowfullscreen></iframe><div class="cover" id="cover"><div class="launch"><div class="signal">SECURE CHANNEL / STANDBY</div><div class="symbol"><span></span></div><h3>VOID BREACH</h3><p class="status" id="launch-status">The signal is waiting.</p><div id="first-step"><button class="launch-btn" id="play-button">INITIALIZE GAME ↗</button></div><div id="second-step" hidden><button class="launch-btn" id="enter-button">ENTER THE BREACH ↗</button></div><button class="skip" id="skip-button" hidden>Skip intro</button></div></div></div><div class="underbar"><span>WASD / ARROWS MOVE · MOUSE AIM + FIRE · P PAUSE · M SOUND</span><button id="fullscreen" disabled>FULLSCREEN ↗</button></div></div>
+<div class="shell"><div class="bar"><span class="live"><i class="dot"></i> VOID BREACH / FULL BUILD</span><span>HRR STUDIOS</span></div><div class="stage" id="stage"><iframe id="game-frame" title="VOID BREACH full game" allow="fullscreen" allowfullscreen></iframe><div class="cover" id="cover">
+<div class="launch">
+<div class="signal" id="signal-label">HRR STUDIOS  /  FIELD TERMINAL 01</div>
+<div class="boot-visual" aria-hidden="true">
+  <div class="radar-grid"></div><div class="radar-sweep"></div><div class="radar-ring ring-one"></div><div class="radar-ring ring-two"></div>
+  <div class="ship-mark"><span></span></div><div class="target-mark target-a"></div><div class="target-mark target-b"></div>
+  <div class="visual-coordinates">SECTOR 07 / UNKNOWN CONTACT</div>
+  <div class="visual-state" id="visual-state">NO CARRIER</div>
+</div>
+<h3>VOID BREACH</h3>
+<p class="status" id="launch-status" aria-live="polite">The channel is quiet.</p>
+<div class="boot-log" id="boot-log" aria-live="polite"><span>01</span> Awaiting operator input</div>
+<div class="boot-progress"><i id="boot-progress-fill"></i></div>
+<div id="first-step"><button class="launch-btn" id="play-button">OPEN CHANNEL</button></div>
+<div id="second-step" hidden><button class="launch-btn" id="enter-button">START MISSION</button></div>
+<button class="skip" id="skip-button" hidden>Skip sequence</button>
+</div></div></div><div class="underbar"><span>WASD / ARROWS MOVE · MOUSE AIM + FIRE · P PAUSE · M SOUND</span><button id="fullscreen" disabled>FULLSCREEN ↗</button></div></div>
 <div class="hint"><span>Progress is saved in this browser.</span><span>Mobile: rotate to landscape for the best view.</span></div>
 <div class="rate-row" id="rate"><div><div class="eyebrow">AFTER YOUR RUN</div><h2>How did it play?</h2><p>Tell us what worked and what could be better. No comments or public profiles.</p></div><button class="rate-btn" id="rate-button">RATE GAME! ↗</button></div>
 <section class="rating" id="rating-panel" hidden><div class="eyebrow">PLAYER FEEDBACK</div><h2>Rate VOID BREACH</h2><p class="sub">Choose like or dislike, then select up to three reasons. You can change your rating later.</p><div class="votes"><button class="vote" id="like">＋ LIKE</button><button class="vote" id="dislike">− DISLIKE</button></div><p class="question" id="question">Choose a rating to see the feedback options.</p><div class="chips" id="chips"></div><p class="hint-small">Selecting reasons is optional. Maximum three.</p><button class="submit" id="submit" disabled>SUBMIT RATING</button><span class="feedback-status" id="feedback-status" role="status">Connecting to ratings…</span>
@@ -27,14 +94,23 @@ footer{border-top:1px solid var(--line);padding:25px 0 32px}.foot{display:flex;j
 <footer><div class="wrap"><div class="foot"><span>HRR STUDIOS</span><span><a href="games.html">Games</a><a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener">YouTube</a><a href="mailto:hrrstudiosofficial@gmail.com">Contact</a><a href="#top">Back to top ↑</a></span></div><div class="copyright">© 2026 HRR Studios. All rights reserved.</div></div></footer>
 <script>
 (function(){
-var cover=document.getElementById('cover'),stage=document.getElementById('stage'),frame=document.getElementById('game-frame'),status=document.getElementById('launch-status'),first=document.getElementById('first-step'),second=document.getElementById('second-step'),skip=document.getElementById('skip-button'),timers=[],started=false,gameLoaded=false;
-function later(ms,fn){timers.push(setTimeout(fn,ms));}function clear(){timers.forEach(clearTimeout);timers=[];}
-function ready(skipped){clear();first.hidden=true;second.hidden=false;skip.hidden=true;cover.classList.add('running');status.textContent=skipped?'Ready when you are.':'Connection established.';}
-document.getElementById('play-button').addEventListener('click',function(){if(started)return;started=true;cover.classList.add('running');skip.hidden=false;status.textContent='Locating signal…';later(700,function(){status.textContent='Signal acquired.';});later(1450,function(){status.textContent='Opening secure channel…';});later(2450,function(){ready(false);});});
+var cover=document.getElementById('cover'),stage=document.getElementById('stage'),frame=document.getElementById('game-frame'),status=document.getElementById('launch-status'),first=document.getElementById('first-step'),second=document.getElementById('second-step'),skip=document.getElementById('skip-button'),log=document.getElementById('boot-log'),fill=document.getElementById('boot-progress-fill'),visual=document.getElementById('visual-state'),label=document.getElementById('signal-label'),timers=[],started=false,gameLoaded=false;
+var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function later(ms,fn){timers.push(setTimeout(fn,ms));}
+function clear(){timers.forEach(clearTimeout);timers=[];}
+function line(n,t){log.innerHTML='<span>'+n+'</span> '+t;}
+function ready(skipped){clear();fill.style.width='100%';first.hidden=true;second.hidden=false;skip.hidden=true;cover.classList.add('running');visual.textContent='CHANNEL STABLE';label.textContent='LINK ESTABLISHED  /  READY';line('05',skipped?'Manual sequence bypassed':'All systems standing by');status.textContent=skipped?'Terminal ready.':'Signal locked. Your move.';}
+function begin(){if(started)return;started=true;cover.classList.add('running');skip.hidden=false;status.textContent='Listening for a signal…';visual.textContent='SCANNING';line('01','Power routed to receiver');fill.style.width='12%';
+if(reduced){ready(true);return;}
+later(850,function(){line('02','Carrier detected — weak signal');status.textContent='Something answered.';visual.textContent='CARRIER FOUND';fill.style.width='34%';});
+later(1850,function(){line('03','Mapping the breach perimeter');status.textContent='Reading the edge of the signal…';visual.textContent='TRACKING';fill.style.width='57%';});
+later(3050,function(){line('04','Stabilising the channel');status.textContent='The connection is holding.';visual.textContent='LOCK ACQUIRED';fill.style.width='82%';});
+later(4300,function(){ready(false);});
+}
+document.getElementById('play-button').addEventListener('click',begin);
 skip.addEventListener('click',function(){ready(true);});
-document.getElementById('enter-button').addEventListener('click',function(){if(gameLoaded)return;gameLoaded=true;clear();frame.src='void-breach/index.html';cover.classList.add('hidden');stage.classList.add('started');document.getElementById('fullscreen').disabled=false;});
+document.getElementById('enter-button').addEventListener('click',function(){if(gameLoaded)return;gameLoaded=true;clear();status.textContent='Launching…';frame.src='void-breach/index.html';cover.classList.add('hidden');stage.classList.add('started');document.getElementById('fullscreen').disabled=false;});
 document.getElementById('fullscreen').addEventListener('click',function(){if(stage.requestFullscreen)stage.requestFullscreen();});
-if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.getElementById('play-button').addEventListener('click',function(){ready(true);},{once:true});}
 })();
 document.getElementById('rate-button').addEventListener('click',function(){var p=document.getElementById('rating-panel');p.hidden=false;p.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
 var likeReasons=[['graphics','The graphics'],['weapons','The weapons'],['void-forge','VOID FORGE'],['ship-skins','The ship skins'],['endless-mode','Endless Mode'],['sound-effects','The sound effects'],['difficulty','The difficulty'],['gameplay','The overall gameplay']];
