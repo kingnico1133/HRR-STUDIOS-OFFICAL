@@ -2066,7 +2066,7 @@ function resize(){
     canvas.width=Math.round(W*k);canvas.height=Math.round(H*k);RS=RSX=RSY=k;
   }
 }
-addEventListener('resize',resize);resize();
+addEventListener('resize',resize);document.addEventListener('fullscreenchange',resize);document.addEventListener('webkitfullscreenchange',resize);if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);resize();
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 function reloadFromStore(){
