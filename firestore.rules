@@ -4,19 +4,27 @@ service cloud.firestore {
     function validVote() {
       let data = request.resource.data;
       let reasons = data.reasons;
-      return data.keys().hasOnly(['vote', 'reasons'])
-        && data.keys().hasAll(['vote', 'reasons'])
+      return data.keys().hasAll(['vote', 'reasons'])
+        && data.keys().hasOnly(['vote', 'reasons'])
+        && data.vote is string
         && data.vote in ['like', 'dislike']
         && reasons is map
-        && reasons.keys().size() <= 3
-        && (data.vote == 'like'
-          ? reasons.keys().hasOnly(['graphics','weapons','void-forge','ship-skins','endless-mode','sound-effects','difficulty','gameplay'])
-          : reasons.keys().hasOnly(['too-difficult','too-easy','bugs-glitches','controls','graphics','content','weapons','performance']));
+        && reasons.size() <= 3
+        && reasons.keys().hasOnly([
+          'graphics', 'weapons', 'void-forge', 'ship-skins',
+          'endless-mode', 'sound-effects', 'difficulty', 'gameplay',
+          'too-difficult', 'too-easy', 'bugs-glitches', 'controls',
+          'content', 'performance'
+        ]);
     }
+
     match /votes/{userId} {
       allow read: if true;
-      allow create, update: if request.auth != null && request.auth.uid == userId && validVote();
-      allow delete: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && validVote();
+      allow delete: if request.auth != null
+        && request.auth.uid == userId;
     }
   }
 }
