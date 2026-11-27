@@ -25,6 +25,15 @@
   body.embedded .back,body.embedded .quit-btn{display:none}
   body.embedded .game-shell{width:min(100%,700px)}
   body.embedded .game-heading{display:none}
+
+/* Cleaner, more tactile game frame */
+body{background:#11100f}
+body:before{opacity:.07;background-size:68px 68px}
+.game-frame{padding:5px;border:1px solid #55464a;border-radius:3px;background:#090909;box-shadow:0 18px 42px rgba(0,0,0,.42)}
+canvas{border:1px solid rgba(201,75,88,.22);border-radius:0;box-shadow:none}
+.quit-btn{border-radius:2px;background:#181615;border-color:#55464a}
+.quit-btn:hover{background:#2a1719;border-color:#a94a56;transform:none}
+.back{color:#c0b5b1}
 </style>
 </head>
 
