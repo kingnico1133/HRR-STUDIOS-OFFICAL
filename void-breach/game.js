@@ -2059,7 +2059,7 @@ function reloadFromStore(){
   try{unlockedAch=new Set(JSON.parse(STORE.getItem('vb_ach')||'[]'));}catch(e){}
   try{_userMuted=STORE.getItem('vb_mute')==='1';audioOn=!_userMuted;}catch(e){}
 }
-(async()=>{ const G=new Game(); G.run();
+(async()=>{ reloadFromStore(); const G=new Game(); G.run();
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden){ if([ST.PLAY,ST.BOSS].includes(G.state)&&!G.paused){G.paused=true;GAME_HOOKS.gameplayStop();} if(AC&&AC.state==='running')AC.suspend(); }
     else if(AC&&AC.state==='suspended')AC.resume();
