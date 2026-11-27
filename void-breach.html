@@ -27,12 +27,12 @@ footer{border-top:1px solid var(--line);padding:25px 0 32px}.foot{display:flex;j
 <footer><div class="wrap"><div class="foot"><span>HRR STUDIOS</span><span><a href="games.html">Games</a><a href="https://www.youtube.com/channel/UCC9YsbvIczQLatE1KFsD7YA" target="_blank" rel="noopener">YouTube</a><a href="mailto:hrrstudiosofficial@gmail.com">Contact</a><a href="#top">Back to top ↑</a></span></div><div class="copyright">© 2026 HRR Studios. All rights reserved.</div></div></footer>
 <script>
 (function(){
-var cover=document.getElementById('cover'),stage=document.getElementById('stage'),frame=document.getElementById('game-frame'),status=document.getElementById('launch-status'),first=document.getElementById('first-step'),second=document.getElementById('second-step'),skip=document.getElementById('skip-button'),timers=[],started=false;
+var cover=document.getElementById('cover'),stage=document.getElementById('stage'),frame=document.getElementById('game-frame'),status=document.getElementById('launch-status'),first=document.getElementById('first-step'),second=document.getElementById('second-step'),skip=document.getElementById('skip-button'),timers=[],started=false,gameLoaded=false;
 function later(ms,fn){timers.push(setTimeout(fn,ms));}function clear(){timers.forEach(clearTimeout);timers=[];}
 function ready(skipped){clear();first.hidden=true;second.hidden=false;skip.hidden=true;cover.classList.add('running');status.textContent=skipped?'Ready when you are.':'Connection established.';}
 document.getElementById('play-button').addEventListener('click',function(){if(started)return;started=true;cover.classList.add('running');skip.hidden=false;status.textContent='Locating signal…';later(700,function(){status.textContent='Signal acquired.';});later(1450,function(){status.textContent='Opening secure channel…';});later(2450,function(){ready(false);});});
 skip.addEventListener('click',function(){ready(true);});
-document.getElementById('enter-button').addEventListener('click',function(){if(frame.src)return;clear();frame.src='void-breach/index.html';cover.classList.add('hidden');stage.classList.add('started');document.getElementById('fullscreen').disabled=false;});
+document.getElementById('enter-button').addEventListener('click',function(){if(gameLoaded)return;gameLoaded=true;clear();frame.src='void-breach/index.html';cover.classList.add('hidden');stage.classList.add('started');document.getElementById('fullscreen').disabled=false;});
 document.getElementById('fullscreen').addEventListener('click',function(){if(stage.requestFullscreen)stage.requestFullscreen();});
 if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.getElementById('play-button').addEventListener('click',function(){ready(true);},{once:true});}
 })();
